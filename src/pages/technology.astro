@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import ContactCta from '../components/ContactCta.astro';
+import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
+import AiPipeline from '../components/AiPipeline.astro';
 
 const philosophy = [
   ['Boring where it matters', 'Databases, hosting and build tooling are chosen for reliability and a long support horizon, not novelty. Innovation goes into the product, not the plumbing.'],
@@ -80,6 +82,19 @@ const ai = [
     </div>
   </section>
 
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">Reference architecture</p>
+        <h2 class="h2 reveal" style="--reveal-delay:60ms">The shape most of our systems take.</h2>
+        <p class="lead reveal" style="--reveal-delay:120ms">Boring on purpose. Each box is a well-understood component with a long support horizon, so the interesting work can happen in the product.</p>
+      </div>
+      <div class="arch-wrap reveal">
+        <ArchitectureDiagram />
+      </div>
+    </div>
+  </section>
+
   <section class="section section--bordered">
     <div class="container">
       <div class="section-head">
@@ -106,7 +121,7 @@ const ai = [
     </div>
   </section>
 
-  <section class="section on-dark dots">
+  <section class="section on-dark dots" id="ai">
     <div class="container ai">
       <div class="section-head reveal">
         <p class="eyebrow">Applied AI</p>
@@ -114,6 +129,9 @@ const ai = [
         <p class="lead">
           We treat language models as a powerful but fallible component. The engineering around them is what makes a product trustworthy.
         </p>
+      </div>
+      <div class="ai__pipe reveal">
+        <AiPipeline />
       </div>
       <div class="rows reveal" style="--reveal-delay:80ms">
         {
@@ -217,6 +235,17 @@ const ai = [
 
   .ai .section-head {
     margin-bottom: 40px;
+  }
+
+  .ai__pipe {
+    margin-bottom: 56px;
+  }
+
+  .arch-wrap {
+    padding: clamp(16px, 3vw, 32px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
   }
 
   .sec .section-head {

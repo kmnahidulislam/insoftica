@@ -4,6 +4,7 @@ import Icon from './Icon.astro';
 import { nav } from '../data/site';
 
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => (href === '/' ? current === '/' : current.startsWith(href.split('#')[0]));
 ---
 
 <header class="header" data-header>
@@ -15,19 +16,56 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
     <nav class="header__nav" aria-label="Primary">
       <ul role="list">
         {
-          nav.map((item) => (
-            <li>
-              <a href={item.href} aria-current={current.startsWith(item.href) ? 'page' : undefined}>
-                {item.label}
-              </a>
-            </li>
-          ))
+          nav.map((item) =>
+            item.children ? (
+              <li class="has-menu">
+                <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined} aria-haspopup="true" aria-expanded="false">
+                  {item.label}
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </a>
+                <div class="menu">
+                  <div class="menu__panel">
+                    <ul role="list" class="menu__grid">
+                      {item.children.map((c) => (
+                        <li>
+                          <a href={c.href} class="menu__item">
+                            <span class="menu__icon">
+                              <Icon name={c.icon as any} size={18} />
+                            </span>
+                            <span>
+                              <span class="menu__label">{c.label}</span>
+                              <span class="menu__desc">{c.desc}</span>
+                            </span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                    <a href={item.href} class="menu__all">
+                      All solutions
+                      <Icon name="arrow-right" size={14} />
+                    </a>
+                  </div>
+                </div>
+              </li>
+            ) : (
+              <li>
+                <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                  {item.label}
+                </a>
+              </li>
+            )
+          )
         }
       </ul>
     </nav>
 
     <div class="header__cta">
-      <a href="/contact" class="btn btn--ink btn--sm">Talk to us</a>
+      <a href="/contact" class="btn btn--ink btn--sm">
+        Start a project
+        <Icon name="arrow-right" size={14} />
+      </a>
     </div>
 
     <button class="header__toggle" aria-expanded="false" aria-controls="mobile-nav" data-nav-toggle>
@@ -44,14 +82,20 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
           nav.map((item) => (
             <li>
               <a href={item.href}>{item.label}</a>
+              {item.children && (
+                <ul role="list" class="mobile-nav__sub">
+                  {item.children.map((c) => (
+                    <li>
+                      <a href={c.href}>{c.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))
         }
-        <li>
-          <a href="/contact">Contact</a>
-        </li>
       </ul>
-      <a href="/contact" class="btn btn--primary">Talk to us</a>
+      <a href="/contact" class="btn btn--primary">Start a project</a>
     </div>
   </div>
 </header>
@@ -61,15 +105,16 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(246, 246, 250, 0.85);
-    backdrop-filter: saturate(180%) blur(12px);
-    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    background: rgba(250, 250, 248, 0.82);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
     border-bottom: 1px solid transparent;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, background 0.2s;
   }
 
   .header.is-scrolled {
     border-color: var(--line);
+    background: rgba(250, 250, 248, 0.92);
   }
 
   .header__inner {
@@ -77,21 +122,23 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
     align-items: center;
     justify-content: space-between;
     gap: 24px;
-    height: 68px;
+    height: 72px;
   }
 
   .header__brand {
     display: inline-flex;
   }
 
-  .header__nav ul {
+  .header__nav > ul {
     display: flex;
-    gap: 4px;
+    gap: 2px;
   }
 
-  .header__nav a {
-    display: inline-block;
-    padding: 8px 14px;
+  .header__nav > ul > li > a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 13px;
     border-radius: 8px;
     font-size: 0.925rem;
     font-weight: 600;
@@ -99,10 +146,109 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
     transition: color 0.15s, background 0.15s;
   }
 
-  .header__nav a:hover,
-  .header__nav a[aria-current='page'] {
+  .header__nav > ul > li > a:hover,
+  .header__nav > ul > li > a[aria-current='page'],
+  .has-menu:hover > a,
+  .has-menu:focus-within > a {
     color: var(--ink);
-    background: rgba(14, 15, 42, 0.05);
+    background: rgba(11, 13, 31, 0.05);
+  }
+
+  .has-menu > a svg {
+    transition: transform 0.2s;
+  }
+
+  .has-menu:hover > a svg,
+  .has-menu:focus-within > a svg {
+    transform: rotate(180deg);
+  }
+
+  .has-menu {
+    position: relative;
+  }
+
+  .menu {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    padding-top: 10px;
+    transform: translateX(-50%) translateY(6px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s var(--ease), transform 0.18s var(--ease), visibility 0s linear 0.18s;
+  }
+
+  .has-menu:hover .menu,
+  .has-menu:focus-within .menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    transition-delay: 0s;
+  }
+
+  .menu__panel {
+    width: 560px;
+    padding: 10px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .menu__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .menu__item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    transition: background 0.15s;
+  }
+
+  .menu__item:hover {
+    background: var(--canvas-2);
+  }
+
+  .menu__icon {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: var(--indigo-tint);
+    color: var(--indigo);
+  }
+
+  .menu__label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .menu__desc {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--slate);
+    margin-top: 1px;
+  }
+
+  .menu__all {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 2px 0;
+    padding: 12px 12px 6px;
+    border-top: 1px solid var(--line);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--indigo);
   }
 
   .header__toggle {
@@ -139,30 +285,54 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
     display: none;
     border-top: 1px solid var(--line);
     background: var(--canvas);
-    padding: 16px 0 28px;
+    padding: 12px 0 28px;
+    max-height: calc(100vh - 72px);
+    max-height: calc(100dvh - 72px);
+    overflow-y: auto;
   }
 
   .mobile-nav.is-open {
     display: block;
+    animation: slide 0.25s var(--ease);
   }
 
-  .mobile-nav ul {
+  @keyframes slide {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+  }
+
+  .mobile-nav > .container > ul {
     margin-bottom: 20px;
   }
 
-  .mobile-nav li a {
+  .mobile-nav > .container > ul > li > a {
     display: block;
     padding: 14px 0;
-    font-size: 1.15rem;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
     font-weight: 600;
     border-bottom: 1px solid var(--line);
+  }
+
+  .mobile-nav__sub {
+    padding: 6px 0 10px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .mobile-nav__sub a {
+    display: block;
+    padding: 8px 0;
+    font-size: 0.95rem;
+    color: var(--slate);
   }
 
   .mobile-nav .btn {
     width: 100%;
   }
 
-  @media (max-width: 860px) {
+  @media (max-width: 960px) {
     .header__nav,
     .header__cta {
       display: none;
@@ -187,5 +357,13 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
     const open = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', String(!open));
     panel?.classList.toggle('is-open', !open);
+    document.body.style.overflow = !open ? 'hidden' : '';
+  });
+
+  // Keyboard: Escape closes the dropdown by blurring it.
+  document.querySelectorAll('.has-menu').forEach((li) => {
+    li.addEventListener('keydown', (e) => {
+      if ((e as KeyboardEvent).key === 'Escape') (document.activeElement as HTMLElement)?.blur();
+    });
   });
 </script>

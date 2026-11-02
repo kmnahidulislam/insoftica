@@ -1,0 +1,186 @@
+---
+/**
+ * How an AI feature is wired inside an Insoftica product: a five-stage
+ * pipeline with the review step made explicit.
+ */
+const stages = [
+  { key: 'input', title: 'Input', text: 'A request, document or record from the product.' },
+  { key: 'retrieve', title: 'Retrieve', text: 'Relevant facts pulled from your own data, with sources.' },
+  { key: 'model', title: 'Model', text: 'A language model drafts an answer, bounded by the retrieved context.' },
+  { key: 'evaluate', title: 'Evaluate', text: 'Automated checks score accuracy, safety and format.' },
+  { key: 'review', title: 'Review', text: 'A person confirms, edits or rejects before anything is saved or sent.' },
+];
+---
+
+<div class="pipe" data-diagram>
+  <ol role="list" class="pipe__list">
+    {
+      stages.map((s, i) => (
+        <li class="pipe__stage" style={`--d:${i}`}>
+          <div class="pipe__node">
+            <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
+              {s.key === 'input' && <path d="M8 12h24M8 20h16M8 28h20" />}
+              {s.key === 'retrieve' && <><circle cx="18" cy="18" r="9" /><path d="m25 25 7 7" /></>}
+              {s.key === 'model' && <><rect x="8" y="8" width="24" height="24" rx="6" /><path d="M14 20h12M20 14v12" /></>}
+              {s.key === 'evaluate' && <><path d="M8 22l7 7 17-17" /></>}
+              {s.key === 'review' && <><circle cx="20" cy="15" r="6" /><path d="M8 33c2-6 7-9 12-9s10 3 12 9" /></>}
+            </svg>
+            <span class="pipe__num">0{i + 1}</span>
+          </div>
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+        </li>
+      ))
+    }
+  </ol>
+  <svg class="pipe__line" viewBox="0 0 1000 2" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 1 L1000 1" />
+  </svg>
+</div>
+
+<style>
+  .pipe {
+    position: relative;
+  }
+
+  .pipe__list {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pipe__stage {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    transition-delay: calc(var(--d) * 110ms);
+  }
+
+  .pipe.is-visible .pipe__stage {
+    opacity: 1;
+    transform: none;
+  }
+
+  .pipe__node {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    margin-bottom: 18px;
+    color: var(--indigo);
+  }
+
+  .pipe__node svg {
+    width: 30px;
+    height: 30px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .pipe__stage:last-child .pipe__node {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+  }
+
+  .pipe__num {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: var(--indigo);
+    color: #fff;
+  }
+
+  .pipe__stage h3 {
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+  }
+
+  .pipe__stage p {
+    font-size: 0.9rem;
+    color: var(--slate);
+  }
+
+  .pipe__line {
+    position: absolute;
+    left: 32px;
+    right: 32px;
+    top: 32px;
+    width: calc(100% - 64px);
+    height: 2px;
+    z-index: 0;
+  }
+
+  .pipe__line path {
+    stroke: var(--line-strong);
+    stroke-width: 2;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    transition: stroke-dashoffset 1.4s var(--ease) 0.2s;
+  }
+
+  .pipe.is-visible .pipe__line path {
+    stroke-dashoffset: 0;
+  }
+
+  .on-dark .pipe__node {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--indigo-light);
+  }
+
+  .on-dark .pipe__stage:last-child .pipe__node {
+    background: #fff;
+    border-color: #fff;
+    color: var(--ink);
+  }
+
+  .on-dark .pipe__stage p {
+    color: rgba(255, 255, 255, 0.62);
+  }
+
+  .on-dark .pipe__line path {
+    stroke: rgba(255, 255, 255, 0.2);
+  }
+
+  @media (max-width: 960px) {
+    .pipe__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px 24px;
+    }
+
+    .pipe__line {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pipe__list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pipe__stage,
+    .pipe__line path {
+      opacity: 1;
+      transform: none;
+      stroke-dashoffset: 0;
+      transition: none;
+    }
+  }
+</style>

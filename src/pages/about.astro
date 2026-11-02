@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import ContactCta from '../components/ContactCta.astro';
-import { site } from '../data/site';
+import { site, addressLines } from '../data/site';
 
 const principles = [
   ['Useful before impressive', 'A product earns its place by solving a real problem well. Novelty is not a feature.'],
@@ -89,11 +89,12 @@ const principles = [
       <div class="reveal" style="--reveal-delay:80ms">
         <dl class="details">
           <div><dt>Legal name</dt><dd>{site.legalName}</dd></div>
-          <div><dt>Registered in</dt><dd>{site.location}</dd></div>
+          <div><dt>Registered office</dt><dd>{addressLines.join(', ')}</dd></div>
           <div><dt>Founded</dt><dd>{site.foundedYear}</dd></div>
           <div><dt>Focus</dt><dd>Software products, AI-powered tools, digital platforms</dd></div>
           <div><dt>Markets</dt><dd>United Kingdom and international</dd></div>
           <div><dt>Email</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+          <div><dt>Company status</dt><dd>Registered in England and Wales</dd></div>
         </dl>
       </div>
     </div>

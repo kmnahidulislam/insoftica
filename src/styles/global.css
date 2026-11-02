@@ -3,22 +3,24 @@
    ------------------------------------------------------------------ */
 :root {
   --indigo: #4c4fd6;
-  --indigo-deep: #3538b8;
-  --indigo-light: #8e93f7;
-  --indigo-tint: #eceeff;
-  --ink: #0e0f2a;
-  --ink-2: #1a1b3d;
-  --slate: #5b5c73;
-  --slate-light: #8a8ba3;
-  --canvas: #f6f6fa;
+  --indigo-deep: #3236b4;
+  --indigo-light: #9da1ff;
+  --indigo-tint: #eef0ff;
+  --ink: #0b0d1f;
+  --ink-2: #171a36;
+  --slate: #555870;
+  --slate-light: #8b8da3;
+  --canvas: #fafaf8;
+  --canvas-2: #f2f1ec;
   --surface: #ffffff;
-  --line: #e3e3ed;
-  --line-strong: #cfcfdd;
-  --signal: #1f9d6a;
-  --amber: #d98a1f;
+  --line: #e6e5df;
+  --line-strong: #d2d1c9;
+  --signal: #0f9f7a;
+  --amber: #e0962a;
 
-  --font-sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-display: 'Bricolage Grotesque', 'Instrument Sans', system-ui, sans-serif;
+  --font-sans: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --container: 1200px;
   --gutter: clamp(20px, 4vw, 40px);
@@ -114,30 +116,45 @@ h1,
 h2,
 h3,
 h4 {
+  font-family: var(--font-display);
   font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
   text-wrap: balance;
+  font-variation-settings: 'opsz' 96;
 }
 
 .display {
-  font-size: clamp(2.75rem, 6.2vw, 4.75rem);
+  font-size: clamp(2.9rem, 6.4vw, 5rem);
+  font-weight: 800;
   letter-spacing: -0.035em;
-  line-height: 1.02;
+  line-height: 0.98;
 }
 
 .h1 {
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-size: clamp(2.4rem, 5vw, 3.7rem);
+  font-weight: 800;
   letter-spacing: -0.03em;
 }
 
 .h2 {
-  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  font-size: clamp(1.9rem, 3.4vw, 2.7rem);
+  letter-spacing: -0.025em;
 }
 
 .h3 {
-  font-size: clamp(1.25rem, 1.6vw, 1.45rem);
+  font-size: clamp(1.2rem, 1.6vw, 1.4rem);
+  font-weight: 700;
   letter-spacing: -0.015em;
+}
+
+.h4 {
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
+.section--alt {
+  background: var(--canvas-2);
 }
 
 .lead {
@@ -457,6 +474,44 @@ h4 {
 
 .card .tag {
   margin-bottom: 18px;
+}
+
+/* Highlight word in headlines */
+.hl {
+  color: var(--indigo);
+}
+
+/* Simple spec table */
+.spec {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.spec th,
+.spec td {
+  text-align: left;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.spec th {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate-light);
+}
+
+.spec td:first-child {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.spec td {
+  color: var(--slate);
 }
 
 /* Module glyph: the brand mark's 3x3 grid as a small icon */

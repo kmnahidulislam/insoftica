@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import { site } from '../data/site';
+import { site, addressLines } from '../data/site';
 const updated = '2 November 2026';
 ---
 
@@ -12,7 +12,7 @@ const updated = '2 November 2026';
     <div class="container prose legal">
       <h2>1. About these terms</h2>
       <p>
-        This website is operated by {site.legalName} ("Insoftica", "we", "us"), a company registered in the United Kingdom. By using the site you agree to these terms. If you do not agree, please do not use the site.
+        This website is operated by {site.legalName} ("Insoftica", "we", "us"), a company registered in England and Wales with its registered office at {addressLines.join(', ')}. By using the site you agree to these terms. If you do not agree, please do not use the site.
       </p>
 
       <h2>2. Using the website</h2>

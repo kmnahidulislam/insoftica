@@ -1,6 +1,7 @@
 ---
 import Logo from './Logo.astro';
-import { site, footerNav } from '../data/site';
+import Icon from './Icon.astro';
+import { site, footerNav, addressLines } from '../data/site';
 const year = new Date().getFullYear();
 ---
 
@@ -10,7 +11,23 @@ const year = new Date().getFullYear();
       <div class="footer__brand">
         <Logo tone="dark" height={20} />
         <p class="footer__tagline">{site.tagline}</p>
-        <a href={`mailto:${site.email}`} class="footer__email">{site.email}</a>
+        <p class="footer__blurb">
+          A London technology company building software products and AI-powered tools, and engineering platforms for businesses in the UK and internationally.
+        </p>
+        <div class="footer__social">
+          {
+            site.social.github && (
+              <a href={site.social.github} rel="noopener" aria-label="Insoftica on GitHub">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.17c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
+                </svg>
+              </a>
+            )
+          }
+          <a href={`mailto:${site.email}`} aria-label="Email Insoftica">
+            <Icon name="mail" size={18} />
+          </a>
+        </div>
       </div>
 
       <div class="footer__cols">
@@ -31,58 +48,112 @@ const year = new Date().getFullYear();
       </div>
     </div>
 
+    <div class="footer__contact">
+      <div class="footer__contact-item">
+        <span class="footer__contact-icon"><Icon name="map-pin" size={16} /></span>
+        <div>
+          <span class="footer__contact-label">Registered office</span>
+          <address>
+            {site.legalName}<br />
+            {addressLines.map((l, i) => (<>{l}{i < addressLines.length - 1 && <br />}</>))}
+          </address>
+        </div>
+      </div>
+      <div class="footer__contact-item">
+        <span class="footer__contact-icon"><Icon name="mail" size={16} /></span>
+        <div>
+          <span class="footer__contact-label">Email</span>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </div>
+      </div>
+      <div class="footer__contact-item">
+        <span class="footer__contact-icon"><Icon name="globe" size={16} /></span>
+        <div>
+          <span class="footer__contact-label">Working with</span>
+          <span>Customers in the United Kingdom and internationally</span>
+        </div>
+      </div>
+    </div>
+
     <div class="footer__bottom">
-      <p>&copy; {year} {site.legalName}. Registered in the {site.location}. All rights reserved.</p>
-      <p class="footer__note">Software products and AI-powered tools.</p>
+      <p>&copy; {year} {site.legalName}. Registered in England and Wales. All rights reserved.</p>
+      <ul role="list" class="footer__legal">
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="#main" class="footer__top-link">Back to top <Icon name="arrow-up-right" size={12} /></a></li>
+      </ul>
     </div>
   </div>
 </footer>
 
 <style>
   .footer {
-    padding: clamp(56px, 7vw, 88px) 0 40px;
+    padding: clamp(56px, 7vw, 88px) 0 36px;
+    background:
+      radial-gradient(60rem 30rem at 100% 0%, rgba(76, 79, 214, 0.18), transparent 60%),
+      var(--ink);
   }
 
   .footer__top {
     display: grid;
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 2fr);
-    gap: 48px;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr);
+    gap: 56px;
     padding-bottom: 48px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .footer__tagline {
-    margin-top: 20px;
-    font-size: 1.1rem;
+    margin-top: 22px;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
     font-weight: 600;
     letter-spacing: -0.015em;
   }
 
-  .footer__email {
-    display: inline-block;
+  .footer__blurb {
     margin-top: 10px;
-    color: var(--indigo-light);
-    font-size: 0.95rem;
+    max-width: 38ch;
+    font-size: 0.925rem;
+    color: rgba(255, 255, 255, 0.62);
   }
 
-  .footer__email:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  .footer__social {
+    display: flex;
+    gap: 8px;
+    margin-top: 22px;
+  }
+
+  .footer__social a {
+    display: inline-flex;
+    width: 38px;
+    height: 38px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.8);
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .footer__social a:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
   }
 
   .footer__cols {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 32px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px;
   }
 
   .footer__col h2 {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.45);
     margin-bottom: 16px;
   }
 
@@ -91,8 +162,9 @@ const year = new Date().getFullYear();
   }
 
   .footer__col a {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.925rem;
+    transition: color 0.15s;
   }
 
   .footer__col a:hover {
@@ -101,29 +173,100 @@ const year = new Date().getFullYear();
     text-underline-offset: 3px;
   }
 
+  .footer__contact {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    padding: 36px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer__contact-item {
+    display: flex;
+    gap: 14px;
+    font-size: 0.925rem;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .footer__contact-icon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--indigo-light);
+  }
+
+  .footer__contact-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    margin-bottom: 4px;
+  }
+
+  .footer__contact address {
+    font-style: normal;
+    line-height: 1.5;
+  }
+
+  .footer__contact a {
+    color: var(--indigo-light);
+  }
+
+  .footer__contact a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   .footer__bottom {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 16px;
     flex-wrap: wrap;
-    padding-top: 28px;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.55);
+    padding-top: 26px;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.5);
   }
 
-  @media (max-width: 860px) {
+  .footer__legal {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer__legal a {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .footer__legal a:hover {
+    color: #fff;
+  }
+
+  .footer__top-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  @media (max-width: 960px) {
     .footer__top {
       grid-template-columns: 1fr;
+      gap: 40px;
     }
 
     .footer__cols {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-  }
 
-  @media (max-width: 480px) {
-    .footer__cols {
+    .footer__contact {
       grid-template-columns: 1fr;
+      gap: 22px;
     }
   }
 </style>

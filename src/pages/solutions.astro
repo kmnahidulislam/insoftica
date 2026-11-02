@@ -3,39 +3,53 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import ContactCta from '../components/ContactCta.astro';
 import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+
+const faq: [string, string][] = [
+  ['How long does a typical project take?', 'A focused web application usually takes eight to sixteen weeks to first release. Larger platforms are delivered in phases of similar length so there is always something usable.'],
+  ['Can you work with our existing codebase?', 'Yes. We start with a short review to understand it, then work incrementally. We avoid rewrites unless the case for one is clear and written down.'],
+  ['What happens after launch?', 'You can take the system in-house with full handover, or we can keep operating it under a monthly agreement that covers monitoring, updates and improvements.'],
+  ['Do you sign NDAs?', 'Yes, before any detailed conversation if you prefer. Send yours or ask for ours.'],
+];
 
 const solutions = [
   {
+    id: 'custom-software',
     icon: 'code',
     title: 'Custom software engineering',
     text: 'Applications built around how your organisation actually works, when off-the-shelf tools stop fitting. Web-based, maintainable and documented.',
     points: ['Internal tools and back-office systems', 'Customer portals and dashboards', 'Replacing spreadsheets and manual processes'],
   },
   {
+    id: 'ai',
     icon: 'sparkle',
     title: 'AI-powered solutions',
     text: 'Language models and machine learning applied to a specific job in your business, with outputs people can check and a clear measure of whether it is working.',
     points: ['Assistants for drafting, summarising and search', 'Document and data extraction', 'Classification and routing of requests'],
   },
   {
+    id: 'web',
     icon: 'monitor',
     title: 'Web applications',
     text: 'Fast, accessible web applications with a clean interface, built on a modern stack and hosted on infrastructure we can monitor and scale.',
     points: ['Multi-user applications with roles and permissions', 'Public-facing sites and portals', 'Progressive web apps for mobile use'],
   },
   {
+    id: 'saas',
     icon: 'layers',
     title: 'SaaS platform development',
     text: 'Subscription products from the ground up: tenancy, billing, onboarding, admin tooling and the operational side that is easy to underestimate.',
     points: ['Multi-tenant architecture', 'Subscription billing and plans', 'Usage metering, audit logs and admin'],
   },
   {
+    id: 'integration',
     icon: 'plug',
     title: 'API and systems integration',
     text: 'Connecting the systems you already run so data moves without copy-and-paste: payment providers, CRMs, accounting tools, internal databases.',
     points: ['REST and webhook integrations', 'Data pipelines and synchronisation', 'Public APIs for your own customers'],
   },
   {
+    id: 'modernisation',
     icon: 'gauge',
     title: 'Modernisation and performance',
     text: 'Bringing an existing application up to current standards: faster, more secure, easier to change, without a risky rewrite.',
@@ -65,7 +79,7 @@ const fit = [
       <div class="grid grid--2 sol__grid">
         {
           solutions.map((s, i) => (
-            <article class="card sol reveal" style={`--reveal-delay:${(i % 2) * 80}ms`}>
+            <article id={s.id} class="card sol reveal" style={`--reveal-delay:${(i % 2) * 80}ms`}>
               <span class="sol__icon">
                 <Icon name={s.icon} size={22} />
               </span>
@@ -131,6 +145,16 @@ const fit = [
           <span>Full source, documentation and infrastructure access are yours. We can keep operating it if you prefer.</span>
         </li>
       </ol>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container faq-wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Questions</p>
+        <h2 class="h2">Common questions about working with us.</h2>
+      </div>
+      <Faq items={faq} />
     </div>
   </section>
 
@@ -227,7 +251,26 @@ const fit = [
     color: var(--slate);
   }
 
+  .faq-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .faq-wrap .section-head {
+    margin-bottom: 0;
+  }
+
+  .sol {
+    scroll-margin-top: 96px;
+  }
+
   @media (max-width: 860px) {
+    .faq-wrap {
+      grid-template-columns: 1fr;
+    }
+
     .how {
       grid-template-columns: 1fr;
     }

@@ -1,0 +1,259 @@
+---
+/**
+ * Reference architecture for an Insoftica product, drawn as SVG so it stays
+ * sharp and themeable. Lines animate in when scrolled into view.
+ */
+interface Props {
+  tone?: 'light' | 'dark';
+}
+const { tone = 'light' } = Astro.props;
+---
+
+<figure class:list={['arch', `arch--${tone}`]} data-diagram>
+  <svg viewBox="0 0 880 420" role="img" aria-labelledby="arch-title arch-desc">
+    <title id="arch-title">Reference architecture for an Insoftica product</title>
+    <desc id="arch-desc">Web and mobile clients connect through an edge layer to an API, which talks to application services, an AI layer with retrieval and evaluation, and a managed PostgreSQL database with object storage. Monitoring spans every layer.</desc>
+
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" class="arch__arrow" />
+      </marker>
+    </defs>
+
+    <!-- Column labels -->
+    <g class="arch__label">
+      <text x="80" y="30">CLIENTS</text>
+      <text x="280" y="30">EDGE</text>
+      <text x="460" y="30">APPLICATION</text>
+      <text x="720" y="30">DATA</text>
+    </g>
+
+    <!-- Clients -->
+    <g class="arch__node" style="--d:0">
+      <rect x="40" y="60" width="150" height="56" rx="10" />
+      <text x="115" y="94" text-anchor="middle">Web app</text>
+    </g>
+    <g class="arch__node" style="--d:1">
+      <rect x="40" y="140" width="150" height="56" rx="10" />
+      <text x="115" y="174" text-anchor="middle">Mobile / PWA</text>
+    </g>
+    <g class="arch__node" style="--d:2">
+      <rect x="40" y="220" width="150" height="56" rx="10" />
+      <text x="115" y="254" text-anchor="middle">Third-party systems</text>
+    </g>
+
+    <!-- Edge -->
+    <g class="arch__node arch__node--accent" style="--d:3">
+      <rect x="250" y="120" width="130" height="96" rx="10" />
+      <text x="315" y="160" text-anchor="middle">CDN + WAF</text>
+      <text x="315" y="184" text-anchor="middle" class="arch__sub">TLS, caching, rate limits</text>
+    </g>
+
+    <!-- API -->
+    <g class="arch__node arch__node--accent" style="--d:4">
+      <rect x="430" y="60" width="170" height="64" rx="10" />
+      <text x="515" y="88" text-anchor="middle">API gateway</text>
+      <text x="515" y="108" text-anchor="middle" class="arch__sub">auth, validation, audit</text>
+    </g>
+
+    <!-- Services -->
+    <g class="arch__node" style="--d:5">
+      <rect x="430" y="150" width="170" height="56" rx="10" />
+      <text x="515" y="184" text-anchor="middle">Application services</text>
+    </g>
+
+    <!-- AI layer -->
+    <g class="arch__node arch__node--ai" style="--d:6">
+      <rect x="430" y="232" width="170" height="96" rx="10" />
+      <text x="515" y="262" text-anchor="middle">AI layer</text>
+      <text x="515" y="284" text-anchor="middle" class="arch__sub">retrieval · model calls</text>
+      <text x="515" y="304" text-anchor="middle" class="arch__sub">evaluation · human review</text>
+    </g>
+
+    <!-- Data -->
+    <g class="arch__node" style="--d:7">
+      <rect x="660" y="60" width="180" height="56" rx="10" />
+      <text x="750" y="94" text-anchor="middle">PostgreSQL (managed)</text>
+    </g>
+    <g class="arch__node" style="--d:8">
+      <rect x="660" y="150" width="180" height="56" rx="10" />
+      <text x="750" y="184" text-anchor="middle">Object storage</text>
+    </g>
+    <g class="arch__node" style="--d:9">
+      <rect x="660" y="240" width="180" height="56" rx="10" />
+      <text x="750" y="274" text-anchor="middle">Vector index · cache</text>
+    </g>
+
+    <!-- Observability band -->
+    <g class="arch__node arch__node--muted" style="--d:10">
+      <rect x="40" y="356" width="800" height="40" rx="10" />
+      <text x="440" y="381" text-anchor="middle">Observability: structured logs · traces · metrics · alerts · backups with tested restores</text>
+    </g>
+
+    <!-- Connections -->
+    <g class="arch__lines">
+      <path d="M190 88 C 220 88, 220 150, 250 150" />
+      <path d="M190 168 L250 168" />
+      <path d="M190 248 C 220 248, 220 186, 250 186" />
+      <path d="M380 150 C 405 150, 405 92, 430 92" marker-end="url(#arr)" />
+      <path d="M515 124 L515 150" marker-end="url(#arr)" />
+      <path d="M515 206 L515 232" marker-end="url(#arr)" />
+      <path d="M600 92 L660 88" marker-end="url(#arr)" />
+      <path d="M600 178 L660 178" marker-end="url(#arr)" />
+      <path d="M600 280 L660 268" marker-end="url(#arr)" />
+      <path d="M600 165 C 630 165, 630 100, 660 96" />
+    </g>
+  </svg>
+  <figcaption>Reference architecture used as the starting point for Insoftica products. Every layer is monitored; AI output passes through evaluation before it reaches a user.</figcaption>
+</figure>
+
+<style>
+  .arch svg {
+    width: 100%;
+    height: auto;
+    font-family: var(--font-sans);
+  }
+
+  .arch__label text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    fill: var(--slate-light);
+  }
+
+  .arch__node rect {
+    fill: var(--surface);
+    stroke: var(--line-strong);
+    stroke-width: 1.25;
+  }
+
+  .arch__node text {
+    font-size: 13.5px;
+    font-weight: 600;
+    fill: var(--ink);
+  }
+
+  .arch__node .arch__sub {
+    font-size: 11px;
+    font-weight: 400;
+    fill: var(--slate);
+  }
+
+  .arch__node--accent rect {
+    stroke: var(--indigo);
+    fill: var(--indigo-tint);
+  }
+
+  .arch__node--ai rect {
+    stroke: var(--indigo);
+    stroke-dasharray: 4 3;
+    fill: var(--surface);
+  }
+
+  .arch__node--muted rect {
+    fill: var(--canvas-2);
+    stroke: var(--line);
+  }
+
+  .arch__node--muted text {
+    font-size: 12px;
+    font-weight: 500;
+    fill: var(--slate);
+  }
+
+  .arch__lines path {
+    fill: none;
+    stroke: var(--indigo);
+    stroke-width: 1.5;
+    opacity: 0.8;
+  }
+
+  .arch__arrow {
+    fill: var(--indigo);
+  }
+
+  /* Dark variant */
+  .arch--dark .arch__node rect {
+    fill: rgba(255, 255, 255, 0.04);
+    stroke: rgba(255, 255, 255, 0.22);
+  }
+
+  .arch--dark .arch__node text {
+    fill: #fff;
+  }
+
+  .arch--dark .arch__node .arch__sub,
+  .arch--dark .arch__label text {
+    fill: rgba(255, 255, 255, 0.55);
+  }
+
+  .arch--dark .arch__node--accent rect {
+    fill: rgba(76, 79, 214, 0.25);
+    stroke: var(--indigo-light);
+  }
+
+  .arch--dark .arch__node--ai rect {
+    stroke: var(--indigo-light);
+    fill: rgba(255, 255, 255, 0.02);
+  }
+
+  .arch--dark .arch__node--muted rect {
+    fill: rgba(255, 255, 255, 0.03);
+    stroke: rgba(255, 255, 255, 0.12);
+  }
+
+  .arch--dark .arch__node--muted text {
+    fill: rgba(255, 255, 255, 0.65);
+  }
+
+  .arch--dark .arch__lines path {
+    stroke: var(--indigo-light);
+  }
+
+  .arch--dark .arch__arrow {
+    fill: var(--indigo-light);
+  }
+
+  .arch figcaption {
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: var(--slate);
+  }
+
+  .arch--dark figcaption {
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  /* Animation: nodes pop, lines draw, once visible */
+  .arch__node {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    transition-delay: calc(var(--d, 0) * 70ms);
+  }
+
+  .arch__lines path {
+    stroke-dasharray: 300;
+    stroke-dashoffset: 300;
+    transition: stroke-dashoffset 1.2s var(--ease) 0.6s;
+  }
+
+  .arch.is-visible .arch__node {
+    opacity: 1;
+    transform: none;
+  }
+
+  .arch.is-visible .arch__lines path {
+    stroke-dashoffset: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arch__node,
+    .arch__lines path {
+      opacity: 1;
+      transform: none;
+      stroke-dashoffset: 0;
+      transition: none;
+    }
+  }
+</style>

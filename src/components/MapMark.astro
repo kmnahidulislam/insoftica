@@ -1,0 +1,110 @@
+---
+/**
+ * Stylised map tile for the registered office. Not a real map; a brand
+ * illustration of a London street grid with a marker.
+ */
+---
+
+<div class="map" aria-hidden="true">
+  <svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M20 0H0V20" fill="none" stroke="var(--line)" stroke-width="1" />
+      </pattern>
+    </defs>
+    <rect width="400" height="260" fill="var(--canvas-2)" />
+    <rect width="400" height="260" fill="url(#grid)" />
+    <!-- streets -->
+    <g stroke="var(--surface)" stroke-width="10" stroke-linecap="round" fill="none">
+      <path d="M-10 70 C 80 60, 160 90, 260 70 S 380 50, 410 60" />
+      <path d="M-10 180 C 90 170, 190 200, 290 180 S 390 160, 410 170" />
+      <path d="M60 -10 C 70 80, 50 160, 70 270" />
+      <path d="M220 -10 C 230 90, 210 170, 230 270" />
+      <path d="M330 -10 C 320 90, 340 170, 330 270" />
+    </g>
+    <g stroke="var(--line-strong)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7">
+      <path d="M-10 120 C 100 115, 200 130, 410 120" />
+      <path d="M140 -10 C 150 90, 130 170, 150 270" />
+    </g>
+    <!-- blocks -->
+    <g fill="var(--line)" opacity="0.6">
+      <rect x="80" y="84" width="48" height="26" rx="3" />
+      <rect x="160" y="140" width="46" height="30" rx="3" />
+      <rect x="250" y="88" width="60" height="22" rx="3" />
+      <rect x="345" y="135" width="40" height="34" rx="3" />
+      <rect x="90" y="195" width="38" height="40" rx="3" />
+    </g>
+    <!-- marker -->
+    <g class="map__pin">
+      <circle cx="220" cy="124" r="22" fill="var(--indigo)" opacity="0.14" class="map__pulse" />
+      <path d="M220 90c-12 0-20 9-20 20 0 14 20 32 20 32s20-18 20-32c0-11-8-20-20-20z" fill="var(--indigo)" />
+      <circle cx="220" cy="110" r="7" fill="#fff" />
+    </g>
+  </svg>
+  <div class="map__badge">
+    <span class="module" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+    <span>EC1V 2NX</span>
+  </div>
+</div>
+
+<style>
+  .map {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    aspect-ratio: 400 / 260;
+  }
+
+  .map svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .map__pulse {
+    transform-origin: 220px 124px;
+    animation: pulse 2.4s ease-out infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(0.6);
+      opacity: 0.35;
+    }
+    100% {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
+
+  .map__badge {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .map__badge .module {
+    width: 16px;
+    height: 16px;
+    color: var(--indigo);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .map__pulse {
+      animation: none;
+      opacity: 0.2;
+    }
+  }
+</style>

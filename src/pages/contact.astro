@@ -2,7 +2,8 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import { site } from '../data/site';
+import MapMark from '../components/MapMark.astro';
+import { site, addressLines } from '../data/site';
 
 const topics = ['A project for my business', 'Partnership or collaboration', 'Product updates and launches', 'Press or general enquiry'];
 ---
@@ -79,12 +80,16 @@ const topics = ['A project for my business', 'Partnership or collaboration', 'Pr
           </div>
         </div>
         <div class="contact__block">
-          <span class="contact__icon"><Icon name="building" size={20} /></span>
+          <span class="contact__icon"><Icon name="map-pin" size={20} /></span>
           <div>
-            <h2>Company</h2>
-            <p><strong>{site.legalName}</strong><br />Registered in the {site.location}</p>
+            <h2>Registered office</h2>
+            <address>
+              <strong>{site.legalName}</strong><br />
+              {addressLines.map((l, i) => (<>{l}{i < addressLines.length - 1 && <br />}</>))}
+            </address>
           </div>
         </div>
+        <MapMark />
         <div class="contact__block">
           <span class="contact__icon"><Icon name="globe" size={20} /></span>
           <div>
@@ -188,6 +193,18 @@ const topics = ['A project for my business', 'Partnership or collaboration', 'Pr
   .contact__block a {
     color: var(--indigo);
     font-weight: 600;
+  }
+
+  .contact__block address {
+    font-style: normal;
+    color: var(--slate);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-top: 2px;
+  }
+
+  .contact__block address strong {
+    color: var(--ink);
   }
 
   .contact__block p {

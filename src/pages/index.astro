@@ -2,9 +2,27 @@
 import Base from '../layouts/Base.astro';
 import HeroVisual from '../components/HeroVisual.astro';
 import ContactCta from '../components/ContactCta.astro';
+import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
+import AiPipeline from '../components/AiPipeline.astro';
+import Faq from '../components/Faq.astro';
 import Icon from '../components/Icon.astro';
 import { site } from '../data/site';
 import { products, productAreas, statusLabel } from '../data/products';
+
+const ticker = [
+  'TypeScript',
+  'Node.js',
+  'React',
+  'PostgreSQL',
+  'Python',
+  'LLM APIs',
+  'Retrieval-augmented generation',
+  'Infrastructure as code',
+  'Containers',
+  'Edge caching',
+  'Automated testing',
+  'Observability',
+];
 
 const jobs = [
   {
@@ -18,53 +36,71 @@ const jobs = [
     icon: 'sparkle',
     title: 'AI applied to real work',
     text: 'Language models and machine learning used inside products where they save time or improve results, always with a person in control.',
-    href: '/technology',
+    href: '/technology#ai',
     link: 'How we use AI',
   },
   {
     icon: 'layers',
     title: 'Engineering for businesses',
-    text: 'Custom software, platforms and integrations built for organisations that need something more dependable than an off-the-shelf tool.',
+    text: 'Custom software, platforms and integrations for organisations that need something more dependable than an off-the-shelf tool.',
     href: '/solutions',
     link: 'Explore solutions',
   },
 ] as const;
 
-const practices = [
-  ['Typed, tested code', 'TypeScript end to end. Automated tests gate every release.'],
-  ['Cloud-native from day one', 'Containers, managed databases and infrastructure as code on UK and EU regions.'],
-  ['Performance as a feature', 'Fast first loads and quick interactions are measured, not assumed.'],
-  ['Security by default', 'Least-privilege access, encrypted data, dependency scanning, no exceptions for speed.'],
-  ['AI with guardrails', 'Model output is reviewed, logged and bounded. People make the final call.'],
-  ['Operated, not abandoned', 'Monitoring, on-call and steady improvement after launch.'],
+const models = [
+  {
+    title: 'Product build',
+    text: 'We take a defined product from idea to launch: discovery, design, engineering, infrastructure and the first months of operation.',
+    bullets: ['Fixed scope or phased', 'Weekly demos', 'You own the code and infrastructure'],
+  },
+  {
+    title: 'Team extension',
+    text: 'Senior engineers join your existing team for a period, working in your repositories and your process.',
+    bullets: ['Part-time or full-time', 'Minimum one month', 'Direct access, no account managers'],
+  },
+  {
+    title: 'Technical advisory',
+    text: 'Architecture reviews, AI feasibility assessments and second opinions before you commit budget.',
+    bullets: ['Written findings', 'One to three weeks', 'Vendor-neutral'],
+  },
 ];
 
-const steps = [
-  ['Understand', 'We start with the problem, the people who have it and what a good outcome looks like. If software is not the answer, we say so.'],
-  ['Design', 'Flows and interfaces are drawn, challenged and tested before anything is built. Clarity first, decoration later.'],
-  ['Build', 'Small releases, reviewed code, automated checks. Working software early, then refined in the open with the people using it.'],
-  ['Operate', 'Launch is the start. We monitor, support and improve products for as long as they are in use.'],
+const faq: [string, string][] = [
+  ['Does Insoftica have products I can use today?', 'Not yet. The first products are in development and are listed on the Products page with their status. We will only describe a product as available when you can actually sign up for it.'],
+  ['Where is data hosted?', 'By default in UK and EU cloud regions. For client projects we host where your data protection obligations require, and we document it.'],
+  ['Who owns the code you write for us?', 'You do. Source code, infrastructure definitions and documentation are handed over in full. We ask only to keep generic tooling we built before your project.'],
+  ['How do you price work?', 'Product builds are priced per phase with a written scope. Team extension is a monthly rate. Advisory work is a fixed fee. Every engagement starts with a written proposal.'],
+  ['Do you work with companies outside the UK?', 'Yes. We are registered in London and work with businesses internationally. Most collaboration happens over video and shared tooling.'],
 ];
 ---
 
 <Base title="Home" description={site.description} isHome>
   <!-- Hero -->
-  <section class="hero dots">
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
     <div class="container hero__inner">
       <div class="hero__copy">
-        <p class="eyebrow reveal">Technology company · United Kingdom</p>
-        <h1 class="display reveal" style="--reveal-delay:60ms">Software worth building.</h1>
+        <p class="eyebrow reveal">Technology company · London</p>
+        <h1 class="display reveal" style="--reveal-delay:60ms">
+          Software <span class="hl">worth</span> building.
+        </h1>
         <p class="lead reveal" style="--reveal-delay:120ms">
-          Insoftica is a technology company building its own software products and AI-powered tools, and
-          engineering platforms for businesses that need them built properly.
+          Insoftica builds its own software products and AI-powered tools, and engineers platforms for
+          businesses that need them built properly. Based in London, working internationally.
         </p>
         <div class="btn-row reveal" style="--reveal-delay:180ms">
           <a href="/contact" class="btn btn--primary">
-            Talk to us
+            Start a project
             <Icon name="arrow-right" size={16} />
           </a>
           <a href="/products" class="btn btn--ghost">What we're building</a>
         </div>
+        <ul role="list" class="hero__proof reveal" style="--reveal-delay:240ms">
+          <li><Icon name="check" size={14} /> Senior engineers on every project</li>
+          <li><Icon name="check" size={14} /> You own the code</li>
+          <li><Icon name="check" size={14} /> UK and EU data hosting</li>
+        </ul>
       </div>
       <div class="hero__visual">
         <HeroVisual />
@@ -72,8 +108,15 @@ const steps = [
     </div>
   </section>
 
+  <!-- Capability ticker -->
+  <div class="ticker" aria-label="Technologies we work with">
+    <div class="ticker__track">
+      {[...ticker, ...ticker].map((t) => (<span class="ticker__item"><i></i>{t}</span>))}
+    </div>
+  </div>
+
   <!-- Intro statement -->
-  <section class="section section--bordered intro">
+  <section class="section intro">
     <div class="container intro__inner">
       <div class="reveal">
         <p class="eyebrow">A product company at the start of its portfolio</p>
@@ -90,7 +133,7 @@ const steps = [
           how we build it, and how to reach us.
         </p>
         <dl class="facts">
-          <div><dt>Founded</dt><dd>{site.foundedYear}, United Kingdom</dd></div>
+          <div><dt>Founded</dt><dd>{site.foundedYear}, London</dd></div>
           <div><dt>Focus</dt><dd>Software, AI, digital products</dd></div>
           <div><dt>Markets</dt><dd>UK and international</dd></div>
         </dl>
@@ -99,7 +142,7 @@ const steps = [
   </section>
 
   <!-- Three jobs -->
-  <section class="section section--bordered jobs">
+  <section class="section section--alt jobs">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow reveal">What we do</p>
@@ -126,7 +169,7 @@ const steps = [
   </section>
 
   <!-- Products -->
-  <section class="section section--bordered products">
+  <section class="section products">
     <div class="container">
       <div class="products__head">
         <div class="section-head reveal">
@@ -176,16 +219,16 @@ const steps = [
     </div>
   </section>
 
-  <!-- Engineering band -->
-  <section class="section on-dark dots eng">
+  <!-- Engineering band with architecture -->
+  <section class="section on-dark dots eng" id="engineering">
     <div class="container">
       <div class="eng__head">
         <div class="section-head reveal">
           <p class="eyebrow">Engineering</p>
           <h2 class="h2">Built the way software should be built.</h2>
           <p class="lead">
-            The practices below are not aspirations. They are how every Insoftica product and project is run,
-            from the first commit.
+            This is the shape of a typical Insoftica product. Clients at the edge, a guarded API, services that
+            do the work, an AI layer that is checked before it speaks, and data that is backed up and restorable.
           </p>
         </div>
         <a href="/technology" class="btn btn--ghost reveal">
@@ -193,45 +236,64 @@ const steps = [
           <Icon name="arrow-right" size={16} />
         </a>
       </div>
-      <ul role="list" class="grid grid--3 eng__list">
-        {
-          practices.map(([t, d], i) => (
-            <li class="eng__item reveal" style={`--reveal-delay:${i * 60}ms`}>
-              <span class="module" aria-hidden="true">
-                <span /><span /><span /><span /><span /><span /><span /><span /><span />
-              </span>
-              <div>
-                <h3>{t}</h3>
-                <p>{d}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ul>
+      <div class="eng__diagram">
+        <ArchitectureDiagram tone="dark" />
+      </div>
     </div>
   </section>
 
-  <!-- Approach -->
-  <section class="section approach">
-    <div class="container approach__inner">
-      <div class="section-head reveal">
-        <p class="eyebrow">How we work</p>
-        <h2 class="h2">Four stages, repeated as often as the product needs.</h2>
-        <p class="lead">The same loop runs for our own products and for the work we do with businesses.</p>
+  <!-- AI pipeline -->
+  <section class="section" id="ai">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">Applied AI</p>
+        <h2 class="h2 reveal" style="--reveal-delay:60ms">Every AI feature passes through the same five stages.</h2>
+        <p class="lead reveal" style="--reveal-delay:120ms">
+          A model on its own is not a product. Retrieval keeps answers grounded, evaluation keeps quality
+          measurable, and review keeps a person responsible for the outcome.
+        </p>
       </div>
-      <ol class="steps" role="list">
+      <AiPipeline />
+    </div>
+  </section>
+
+  <!-- Engagement models -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">Working with businesses</p>
+        <h2 class="h2 reveal" style="--reveal-delay:60ms">Three ways to work with us.</h2>
+      </div>
+      <div class="grid grid--3">
         {
-          steps.map(([t, d], i) => (
-            <li class="step reveal" style={`--reveal-delay:${i * 80}ms`}>
-              <span class="step__num">0{i + 1}</span>
-              <div>
-                <h3 class="h3">{t}</h3>
-                <p>{d}</p>
-              </div>
-            </li>
+          models.map((m, i) => (
+            <div class="card model reveal" style={`--reveal-delay:${i * 80}ms`}>
+              <span class="model__num">0{i + 1}</span>
+              <h3 class="h3">{m.title}</h3>
+              <p>{m.text}</p>
+              <ul role="list" class="model__bullets">
+                {m.bullets.map((b) => (
+                  <li>
+                    <Icon name="check" size={14} />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))
         }
-      </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="container faq-wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Questions</p>
+        <h2 class="h2">Things people ask before they get in touch.</h2>
+      </div>
+      <Faq items={faq} />
     </div>
   </section>
 
@@ -241,11 +303,34 @@ const steps = [
 <style>
   /* Hero */
   .hero {
-    padding: clamp(56px, 8vw, 112px) 0 clamp(64px, 8vw, 112px);
+    position: relative;
+    padding: clamp(56px, 8vw, 104px) 0 clamp(56px, 7vw, 96px);
     overflow: hidden;
   }
 
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(var(--line-strong) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: radial-gradient(70% 70% at 70% 40%, #000 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(70% 70% at 70% 40%, #000 30%, transparent 100%);
+    opacity: 0.8;
+  }
+
+  .hero__bg::after {
+    content: '';
+    position: absolute;
+    right: -10%;
+    top: -20%;
+    width: 60%;
+    height: 90%;
+    background: radial-gradient(closest-side, rgba(76, 79, 214, 0.14), transparent);
+    filter: blur(20px);
+  }
+
   .hero__inner {
+    position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
     align-items: center;
@@ -261,21 +346,76 @@ const steps = [
   }
 
   .hero__copy .lead {
-    max-width: 48ch;
-    margin: 24px 0 36px;
+    max-width: 46ch;
+    margin: 24px 0 32px;
+  }
+
+  .hero__proof {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    margin-top: 28px;
+    font-size: 0.875rem;
+    color: var(--slate);
+  }
+
+  .hero__proof li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero__proof svg {
+    color: var(--signal);
   }
 
   .hero__visual {
     padding-top: 30px;
   }
 
-  @media (max-width: 960px) {
-    .hero__inner {
-      grid-template-columns: 1fr;
-    }
+  /* Ticker */
+  .ticker {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
 
-    .hero__visual {
-      padding: 36px 0 24px;
+  .ticker__track {
+    display: flex;
+    width: max-content;
+    animation: ticker 48s linear infinite;
+  }
+
+  .ticker:hover .ticker__track {
+    animation-play-state: paused;
+  }
+
+  .ticker__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 28px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--slate);
+    white-space: nowrap;
+  }
+
+  .ticker__item i {
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    background: var(--indigo);
+  }
+
+  @keyframes ticker {
+    to {
+      transform: translateX(-50%);
     }
   }
 
@@ -325,18 +465,6 @@ const steps = [
     letter-spacing: -0.01em;
   }
 
-  @media (max-width: 860px) {
-    .intro__inner {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media (max-width: 520px) {
-    .facts {
-      grid-template-columns: 1fr;
-    }
-  }
-
   /* Jobs */
   .job {
     display: flex;
@@ -353,6 +481,13 @@ const steps = [
     background: var(--indigo-tint);
     color: var(--indigo);
     margin-bottom: 22px;
+    transition: transform 0.25s var(--ease), background 0.25s;
+  }
+
+  .job:hover .job__icon {
+    transform: translateY(-2px) rotate(-4deg);
+    background: var(--indigo);
+    color: #fff;
   }
 
   .job p {
@@ -381,13 +516,6 @@ const steps = [
     margin-top: clamp(32px, 4vw, 48px);
   }
 
-  @media (max-width: 760px) {
-    .products__head {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  }
-
   /* Engineering */
   .eng__head {
     display: flex;
@@ -396,134 +524,107 @@ const steps = [
     gap: 24px;
   }
 
-  .eng__list {
-    --grid-gap: 0;
+  .eng__diagram {
+    margin-top: 8px;
+    padding: clamp(16px, 3vw, 32px);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: var(--radius-lg);
-    overflow: hidden;
     background: rgba(255, 255, 255, 0.02);
   }
 
-  .eng__item {
-    display: flex;
-    gap: 16px;
-    padding: 28px;
-    border-right: 1px solid rgba(255, 255, 255, 0.12);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    transition: background 0.2s;
+  /* Models */
+  .model {
+    position: relative;
   }
 
-  .eng__item:hover {
-    background: rgba(255, 255, 255, 0.04);
+  .model__num {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--indigo);
+    margin-bottom: 16px;
   }
 
-  .eng__item:nth-child(3n) {
-    border-right: 0;
-  }
-
-  .eng__item:nth-last-child(-n + 3) {
-    border-bottom: 0;
-  }
-
-  .eng__item .module {
-    color: var(--indigo-light);
-    margin-top: 2px;
-  }
-
-  .eng__item h3 {
-    font-size: 1.05rem;
-    margin-bottom: 6px;
-  }
-
-  .eng__item p {
-    color: rgba(255, 255, 255, 0.62);
-    font-size: 0.92rem;
-  }
-
-  @media (max-width: 960px) {
-    .eng__item:nth-child(3n) {
-      border-right: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    .eng__item:nth-child(2n) {
-      border-right: 0;
-    }
-
-    .eng__item:nth-last-child(-n + 3) {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    .eng__item:nth-last-child(-n + 2) {
-      border-bottom: 0;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .eng__head {
-      flex-direction: column;
-    }
-
-    .eng__item,
-    .eng__item:nth-child(2n),
-    .eng__item:nth-child(3n) {
-      border-right: 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    .eng__item:last-child {
-      border-bottom: 0;
-    }
-  }
-
-  /* Approach */
-  .approach__inner {
+  .model__bullets {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: clamp(32px, 6vw, 96px);
+    gap: 8px;
   }
 
-  .approach .section-head {
+  .model__bullets li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+
+  .model__bullets svg {
+    color: var(--indigo);
+    flex-shrink: 0;
+  }
+
+  /* FAQ */
+  .faq-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .faq-wrap .section-head {
     margin-bottom: 0;
     position: sticky;
     top: 100px;
   }
 
-  .steps {
-    display: grid;
-    gap: 0;
-    border-top: 1px solid var(--line);
-  }
-
-  .step {
-    display: grid;
-    grid-template-columns: 64px 1fr;
-    gap: 16px;
-    padding: 28px 0;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .step__num {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--indigo);
-    padding-top: 6px;
-  }
-
-  .step h3 {
-    margin-bottom: 8px;
-  }
-
-  .step p {
-    color: var(--slate);
-  }
-
-  @media (max-width: 860px) {
-    .approach__inner {
+  /* Responsive */
+  @media (max-width: 960px) {
+    .hero__inner {
       grid-template-columns: 1fr;
     }
 
-    .approach .section-head {
+    .hero__visual {
+      padding: 36px 0 24px;
+    }
+
+    .hero__bg {
+      mask-image: none;
+      -webkit-mask-image: none;
+      opacity: 0.4;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .intro__inner,
+    .faq-wrap {
+      grid-template-columns: 1fr;
+    }
+
+    .faq-wrap .section-head {
       position: static;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .products__head,
+    .eng__head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .facts {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker__track {
+      animation: none;
     }
   }
 </style>

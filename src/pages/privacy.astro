@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import { site } from '../data/site';
+import { site, addressLines } from '../data/site';
 const updated = '2 November 2026';
 ---
 
@@ -13,7 +13,7 @@ const updated = '2 November 2026';
       <h2>1. Who we are</h2>
       <p>
         {site.legalName} ("Insoftica", "we", "us") is a technology company registered in the United Kingdom. We are the data controller for personal data collected through
-        <a href={site.url}>{site.url.replace('https://', '')}</a>. You can contact us at <a href={`mailto:${site.email}`}>{site.email}</a>.
+        <a href={site.url}>{site.url.replace('https://', '')}</a>. Our registered office is {addressLines.join(', ')}. You can contact us at <a href={`mailto:${site.email}`}>{site.email}</a>.
       </p>
 
       <h2>2. What we collect</h2>
