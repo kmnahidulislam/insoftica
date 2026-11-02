@@ -1,0 +1,507 @@
+---
+/**
+ * Concept product interface, built in HTML/CSS so it stays crisp and light.
+ * It is labelled as illustrative: it represents the kind of product the
+ * company builds, not a released product.
+ */
+---
+
+<div class="visual" aria-hidden="true">
+  <div class="visual__label">Illustrative concept</div>
+
+  <div class="win">
+    <div class="win__bar">
+      <span class="win__dot"></span><span class="win__dot"></span><span class="win__dot"></span>
+      <span class="win__title">workspace / overview</span>
+    </div>
+
+    <div class="win__body">
+      <aside class="side">
+        <div class="side__brand"><span class="mini-mark"></span><i></i></div>
+        <div class="side__item is-active"><i style="width:60%"></i></div>
+        <div class="side__item"><i style="width:45%"></i></div>
+        <div class="side__item"><i style="width:70%"></i></div>
+        <div class="side__item"><i style="width:52%"></i></div>
+        <div class="side__spacer"></div>
+        <div class="side__item"><i style="width:40%"></i></div>
+      </aside>
+
+      <div class="main">
+        <div class="stats">
+          <div class="stat">
+            <small>Requests</small>
+            <strong>42,318</strong>
+            <em class="up">+12.4%</em>
+          </div>
+          <div class="stat">
+            <small>p95 latency</small>
+            <strong>184 ms</strong>
+            <em class="up">−9 ms</em>
+          </div>
+          <div class="stat">
+            <small>Uptime</small>
+            <strong>99.98%</strong>
+            <em>30 days</em>
+          </div>
+        </div>
+
+        <div class="chart">
+          <svg viewBox="0 0 320 90" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="fill" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#4c4fd6" stop-opacity="0.22" />
+                <stop offset="1" stop-color="#4c4fd6" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <path
+              class="chart__area"
+              d="M0 70 C 30 62, 50 66, 80 52 S 130 40, 160 44 S 210 24, 240 30 S 290 10, 320 16 L320 90 L0 90 Z"
+              fill="url(#fill)"
+            />
+            <path
+              class="chart__line"
+              d="M0 70 C 30 62, 50 66, 80 52 S 130 40, 160 44 S 210 24, 240 30 S 290 10, 320 16"
+              fill="none"
+              stroke="#4c4fd6"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </div>
+
+        <div class="assist">
+          <div class="assist__head">
+            <span class="assist__spark"></span>
+            <span>Assistant</span>
+            <span class="assist__tag">draft · review before sending</span>
+          </div>
+          <div class="assist__line"><i style="width:92%"></i></div>
+          <div class="assist__line"><i style="width:76%"></i></div>
+          <div class="assist__line"><i style="width:58%"></i></div>
+          <div class="assist__actions">
+            <span class="assist__btn is-primary"></span>
+            <span class="assist__btn"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="float float--a">
+    <span class="float__ok"></span>
+    <div>
+      <b>Deploy complete</b>
+      <small>eu-west-2 · 38s</small>
+    </div>
+  </div>
+
+  <div class="float float--b">
+    <div class="float__grid">
+      <span></span><span></span><span class="dot"></span><span class="gap"></span><span></span><span class="gap"></span><span></span><span></span><span></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .visual {
+    position: relative;
+    width: 100%;
+    max-width: 620px;
+    margin-inline: auto;
+  }
+
+  .visual__label {
+    position: absolute;
+    top: -30px;
+    right: 0;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+
+  .win {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    animation: rise 0.9s var(--ease) both;
+  }
+
+  .win__bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 14px;
+    border-bottom: 1px solid var(--line);
+    background: #fafafd;
+  }
+
+  .win__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--line-strong);
+  }
+
+  .win__title {
+    margin-left: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--slate-light);
+  }
+
+  .win__body {
+    display: grid;
+    grid-template-columns: 132px 1fr;
+    min-height: 340px;
+  }
+
+  .side {
+    border-right: 1px solid var(--line);
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: #fbfbfe;
+  }
+
+  .side__brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .mini-mark {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background: var(--indigo);
+  }
+
+  .side__brand i {
+    display: block;
+    width: 54px;
+    height: 7px;
+    border-radius: 4px;
+    background: var(--line-strong);
+  }
+
+  .side__item {
+    height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+  }
+
+  .side__item i {
+    display: block;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--line-strong);
+  }
+
+  .side__item.is-active {
+    background: var(--indigo-tint);
+  }
+
+  .side__item.is-active i {
+    background: var(--indigo);
+  }
+
+  .side__spacer {
+    flex: 1;
+  }
+
+  .main {
+    padding: 18px;
+    display: grid;
+    gap: 14px;
+    align-content: start;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .stat {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: grid;
+    gap: 2px;
+    animation: rise 0.8s var(--ease) both;
+    animation-delay: calc(0.15s + var(--i, 0) * 0.08s);
+  }
+
+  .stat:nth-child(2) {
+    --i: 1;
+  }
+
+  .stat:nth-child(3) {
+    --i: 2;
+  }
+
+  .stat small {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+
+  .stat strong {
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  .stat em {
+    font-style: normal;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--slate-light);
+  }
+
+  .stat em.up {
+    color: var(--signal);
+  }
+
+  .chart {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 0 0;
+    height: 96px;
+    overflow: hidden;
+  }
+
+  .chart svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .chart__line {
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: draw 1.6s var(--ease) 0.5s forwards;
+  }
+
+  .chart__area {
+    opacity: 0;
+    animation: fade 0.8s ease 1.4s forwards;
+  }
+
+  .assist {
+    border: 1px solid rgba(76, 79, 214, 0.28);
+    background: linear-gradient(180deg, #fbfbff, #fff);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: grid;
+    gap: 8px;
+    animation: rise 0.8s var(--ease) 0.6s both;
+  }
+
+  .assist__head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .assist__spark {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    background: var(--indigo);
+  }
+
+  .assist__tag {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 0.58rem;
+    letter-spacing: 0.04em;
+    color: var(--slate-light);
+  }
+
+  .assist__line i {
+    display: block;
+    height: 7px;
+    border-radius: 4px;
+    background: var(--line);
+  }
+
+  .assist__actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .assist__btn {
+    width: 52px;
+    height: 18px;
+    border-radius: 5px;
+    border: 1px solid var(--line-strong);
+  }
+
+  .assist__btn.is-primary {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .float {
+    position: absolute;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+  }
+
+  .float--a {
+    left: -28px;
+    bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    animation: rise 0.8s var(--ease) 1s both;
+  }
+
+  .float--a b {
+    display: block;
+    font-size: 0.78rem;
+    letter-spacing: -0.01em;
+  }
+
+  .float--a small {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--slate-light);
+  }
+
+  .float__ok {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--signal);
+    position: relative;
+  }
+
+  .float__ok::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 5px;
+    width: 6px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .float--b {
+    right: -22px;
+    top: 48px;
+    padding: 12px;
+    animation: rise 0.8s var(--ease) 0.8s both;
+  }
+
+  .float__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 10px);
+    gap: 3px;
+  }
+
+  .float__grid span {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: var(--indigo);
+    animation: pop 0.4s var(--ease) both;
+  }
+
+  .float__grid span:nth-child(1) { animation-delay: 1.0s; }
+  .float__grid span:nth-child(2) { animation-delay: 1.08s; }
+  .float__grid span:nth-child(3) { animation-delay: 1.16s; }
+  .float__grid span:nth-child(5) { animation-delay: 1.24s; }
+  .float__grid span:nth-child(7) { animation-delay: 1.32s; }
+  .float__grid span:nth-child(8) { animation-delay: 1.4s; }
+  .float__grid span:nth-child(9) { animation-delay: 1.48s; }
+
+  .float__grid .dot {
+    border-radius: 50%;
+  }
+
+  .float__grid .gap {
+    visibility: hidden;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes fade {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .win__body {
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+
+    .side {
+      display: none;
+    }
+
+    .float--a {
+      left: 8px;
+      bottom: -18px;
+    }
+
+    .float--b {
+      right: 8px;
+      top: -14px;
+    }
+
+    .visual__label {
+      right: auto;
+      left: 0;
+    }
+  }
+</style>

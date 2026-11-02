@@ -1,0 +1,256 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactCta from '../components/ContactCta.astro';
+
+const philosophy = [
+  ['Boring where it matters', 'Databases, hosting and build tooling are chosen for reliability and a long support horizon, not novelty. Innovation goes into the product, not the plumbing.'],
+  ['Small, frequent releases', 'Changes ship in small pieces behind automated checks. A release is routine, not an event.'],
+  ['Measured, not assumed', 'Performance budgets, error rates and user-facing latency are tracked from the first deployment. If it is not measured we do not claim it.'],
+  ['Written down', 'Architecture decisions, runbooks and onboarding notes live with the code. The next engineer should not need to ask.'],
+];
+
+const stack = [
+  {
+    area: 'Languages and frameworks',
+    items: ['TypeScript', 'Node.js', 'React and Next.js', 'Astro', 'Python for data and ML work'],
+  },
+  {
+    area: 'Data',
+    items: ['PostgreSQL', 'Redis', 'Object storage', 'Vector search where retrieval needs it'],
+  },
+  {
+    area: 'Infrastructure',
+    items: ['Containers', 'Infrastructure as code', 'UK and EU cloud regions', 'CDN and edge caching'],
+  },
+  {
+    area: 'AI and machine learning',
+    items: ['Large language model APIs', 'Retrieval-augmented generation', 'Evaluation harnesses', 'Human review workflows'],
+  },
+  {
+    area: 'Quality',
+    items: ['Automated testing', 'Continuous integration', 'Dependency and secret scanning', 'Accessibility checks'],
+  },
+  {
+    area: 'Operations',
+    items: ['Structured logging and tracing', 'Uptime and error monitoring', 'Backups with tested restores', 'Incident runbooks'],
+  },
+];
+
+const ai = [
+  ['Start with the job', 'We define the task, the inputs and what a correct output looks like before choosing a model.'],
+  ['Ground it in your data', 'Retrieval over your own documents and records, so answers cite something real rather than guessing.'],
+  ['Evaluate continuously', 'A test set of real examples is scored on every change, so quality is a number we watch, not an impression.'],
+  ['Keep a person in the loop', 'Outputs are reviewable, editable and logged. Where the stakes are high, nothing is sent or saved without a human decision.'],
+];
+---
+
+<Base
+  title="Technology"
+  description="How Insoftica builds software: engineering philosophy, the technology stack behind our products, and a practical, evaluated approach to applying AI."
+>
+  <PageHero
+    tone="dark"
+    eyebrow="Technology"
+    title="Engineering principles that outlast any particular tool."
+    lead="This page explains how we build, what we build with and how we approach AI. Tools change; the standards do not."
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">Engineering philosophy</p>
+        <h2 class="h2 reveal" style="--reveal-delay:60ms">Four habits behind every Insoftica product.</h2>
+      </div>
+      <div class="grid grid--2 phil">
+        {
+          philosophy.map(([t, d], i) => (
+            <div class="phil__item reveal" style={`--reveal-delay:${i * 70}ms`}>
+              <span class="module" aria-hidden="true">
+                <span /><span /><span /><span /><span /><span /><span /><span /><span />
+              </span>
+              <div>
+                <h3 class="h3">{t}</h3>
+                <p>{d}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bordered">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">The stack</p>
+        <h2 class="h2 reveal" style="--reveal-delay:60ms">What we build with.</h2>
+        <p class="lead reveal" style="--reveal-delay:120ms">
+          A deliberately small set of well-understood tools. We add to it when a product needs something, not when something is fashionable.
+        </p>
+      </div>
+      <div class="grid grid--3 stack">
+        {
+          stack.map((s, i) => (
+            <div class="stack__group reveal" style={`--reveal-delay:${i * 60}ms`}>
+              <h3>{s.area}</h3>
+              <ul role="list">
+                {s.items.map((it) => (
+                  <li>{it}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-dark dots">
+    <div class="container ai">
+      <div class="section-head reveal">
+        <p class="eyebrow">Applied AI</p>
+        <h2 class="h2">AI that does a job, and can show its work.</h2>
+        <p class="lead">
+          We treat language models as a powerful but fallible component. The engineering around them is what makes a product trustworthy.
+        </p>
+      </div>
+      <div class="rows reveal" style="--reveal-delay:80ms">
+        {
+          ai.map(([t, d], i) => (
+            <div class="row">
+              <span class="row__num">0{i + 1}</span>
+              <span class="row__title">{t}</span>
+              <span class="row__text">{d}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container sec">
+      <div class="section-head reveal">
+        <p class="eyebrow">Security and privacy</p>
+        <h2 class="h2">Defaults, not add-ons.</h2>
+      </div>
+      <div class="grid grid--2 sec__grid reveal" style="--reveal-delay:80ms">
+        <div class="card">
+          <h3 class="h3">In the code</h3>
+          <p>Least-privilege access, secrets kept out of repositories, dependencies scanned on every build, input validated at the boundary, and encryption in transit and at rest.</p>
+        </div>
+        <div class="card">
+          <h3 class="h3">In the organisation</h3>
+          <p>Data kept in UK and EU regions by default, access reviewed regularly, backups restored and tested on a schedule, and a written plan for when something goes wrong.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ContactCta title="Talk to an engineer." text="If you want to understand how we would approach a specific technical problem, ask. You will get a straight answer." />
+</Base>
+
+<style>
+  .phil {
+    --grid-gap: 32px 48px;
+  }
+
+  .phil__item {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  .phil__item .module {
+    color: var(--indigo);
+    margin-top: 4px;
+  }
+
+  .phil__item h3 {
+    margin-bottom: 8px;
+  }
+
+  .phil__item p {
+    color: var(--slate);
+  }
+
+  .stack {
+    --grid-gap: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .stack__group {
+    padding: 28px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .stack__group:nth-child(3n) {
+    border-right: 0;
+  }
+
+  .stack__group:nth-last-child(-n + 3) {
+    border-bottom: 0;
+  }
+
+  .stack__group h3 {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--indigo);
+    margin-bottom: 16px;
+  }
+
+  .stack__group li {
+    padding: 7px 0;
+    border-top: 1px solid var(--line);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .ai .section-head {
+    margin-bottom: 40px;
+  }
+
+  .sec .section-head {
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 960px) {
+    .stack__group:nth-child(3n) {
+      border-right: 1px solid var(--line);
+    }
+
+    .stack__group:nth-child(2n) {
+      border-right: 0;
+    }
+
+    .stack__group:nth-last-child(-n + 3) {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stack__group:nth-last-child(-n + 2) {
+      border-bottom: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .stack__group,
+    .stack__group:nth-child(2n),
+    .stack__group:nth-child(3n) {
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stack__group:last-child {
+      border-bottom: 0;
+    }
+  }
+</style>

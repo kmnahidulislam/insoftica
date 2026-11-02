@@ -1,8 +1,13 @@
-# OS files
+# Build output
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+
+# OS / editor
 .DS_Store
 Thumbs.db
-
-# Editor files
 .vscode/
 .idea/
 

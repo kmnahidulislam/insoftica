@@ -1,0 +1,191 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { nav } from '../data/site';
+
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header class="header" data-header>
+  <div class="container header__inner">
+    <a href="/" class="header__brand" aria-label="Insoftica home">
+      <Logo height={20} />
+    </a>
+
+    <nav class="header__nav" aria-label="Primary">
+      <ul role="list">
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={current.startsWith(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header__cta">
+      <a href="/contact" class="btn btn--ink btn--sm">Talk to us</a>
+    </div>
+
+    <button class="header__toggle" aria-expanded="false" aria-controls="mobile-nav" data-nav-toggle>
+      <span class="sr-only">Menu</span>
+      <Icon name="menu" class="icon-open" />
+      <Icon name="x" class="icon-close" />
+    </button>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav" data-mobile-nav>
+    <div class="container">
+      <ul role="list">
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+        <li>
+          <a href="/contact">Contact</a>
+        </li>
+      </ul>
+      <a href="/contact" class="btn btn--primary">Talk to us</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(246, 246, 250, 0.85);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .header.is-scrolled {
+    border-color: var(--line);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: 68px;
+  }
+
+  .header__brand {
+    display: inline-flex;
+  }
+
+  .header__nav ul {
+    display: flex;
+    gap: 4px;
+  }
+
+  .header__nav a {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.925rem;
+    font-weight: 600;
+    color: var(--slate);
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .header__nav a:hover,
+  .header__nav a[aria-current='page'] {
+    color: var(--ink);
+    background: rgba(14, 15, 42, 0.05);
+  }
+
+  .header__toggle {
+    display: none;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+  }
+
+  .header__toggle :global(.icon-close) {
+    display: none;
+  }
+
+  .header__toggle[aria-expanded='true'] :global(.icon-open) {
+    display: none;
+  }
+
+  .header__toggle[aria-expanded='true'] :global(.icon-close) {
+    display: block;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .mobile-nav {
+    display: none;
+    border-top: 1px solid var(--line);
+    background: var(--canvas);
+    padding: 16px 0 28px;
+  }
+
+  .mobile-nav.is-open {
+    display: block;
+  }
+
+  .mobile-nav ul {
+    margin-bottom: 20px;
+  }
+
+  .mobile-nav li a {
+    display: block;
+    padding: 14px 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .mobile-nav .btn {
+    width: 100%;
+  }
+
+  @media (max-width: 860px) {
+    .header__nav,
+    .header__cta {
+      display: none;
+    }
+
+    .header__toggle {
+      display: inline-flex;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector('[data-header]');
+  const toggle = document.querySelector('[data-nav-toggle]');
+  const panel = document.querySelector('[data-mobile-nav]');
+
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    panel?.classList.toggle('is-open', !open);
+  });
+</script>

@@ -1,0 +1,69 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+const updated = '2 November 2026';
+---
+
+<Base title="Terms of Service" description="The terms that apply to your use of the Insoftica website.">
+  <PageHero eyebrow="Legal" title="Terms of Service" lead={`Last updated ${updated}. These terms govern your use of this website. Separate terms will apply to any Insoftica product or service you sign up for.`} />
+
+  <section class="section">
+    <div class="container prose legal">
+      <h2>1. About these terms</h2>
+      <p>
+        This website is operated by {site.legalName} ("Insoftica", "we", "us"), a company registered in the United Kingdom. By using the site you agree to these terms. If you do not agree, please do not use the site.
+      </p>
+
+      <h2>2. Using the website</h2>
+      <p>You may browse the site and contact us through it for lawful purposes. You must not:</p>
+      <ul>
+        <li>attempt to gain unauthorised access to the site, its hosting or any connected system;</li>
+        <li>introduce malicious code or use automated tools to scrape, overload or disrupt the site;</li>
+        <li>use the contact form to send unsolicited marketing or anything unlawful.</li>
+      </ul>
+
+      <h2>3. Content and intellectual property</h2>
+      <p>
+        The Insoftica name, logo, wordmark and all content on this site, including text, graphics, concept interface designs and code, are owned by or licensed to Insoftica and protected by copyright and trade mark law. You may view and print pages for personal or internal business reference. Any other use requires our written permission.
+      </p>
+
+      <h2>4. Information on this site</h2>
+      <p>
+        We try to keep the site accurate and current, but it is provided for general information only. Descriptions of products in development and concept interfaces are illustrative and may change or never be released. Nothing on this site is an offer capable of acceptance, professional advice, or a guarantee of any outcome.
+      </p>
+
+      <h2>5. Products and services</h2>
+      <p>
+        Any software product, subscription or service provided by Insoftica will be governed by its own terms, which will be made available before you use it. Where those terms conflict with these, those terms apply to the product or service.
+      </p>
+
+      <h2>6. Third-party links</h2>
+      <p>The site may link to other websites. We are not responsible for their content or privacy practices.</p>
+
+      <h2>7. Liability</h2>
+      <p>
+        To the extent permitted by law, we exclude all liability for loss or damage arising from your use of, or inability to use, this website or its content. Nothing in these terms limits liability for death or personal injury caused by negligence, fraud, or any other liability that cannot be excluded under the law of England and Wales.
+      </p>
+
+      <h2>8. Privacy</h2>
+      <p>Our <a href="/privacy">Privacy Policy</a> explains how we handle personal data collected through this site.</p>
+
+      <h2>9. Changes</h2>
+      <p>We may update these terms from time to time. The date at the top shows when they last changed. Continued use of the site after a change means you accept the updated terms.</p>
+
+      <h2>10. Governing law</h2>
+      <p>These terms are governed by the law of England and Wales, and the courts of England and Wales have exclusive jurisdiction over any dispute relating to them.</p>
+
+      <h2>11. Contact</h2>
+      <p>Questions about these terms: <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal p,
+  .legal li {
+    color: var(--slate);
+  }
+</style>

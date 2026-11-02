@@ -1,0 +1,148 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactCta from '../components/ContactCta.astro';
+import Icon from '../components/Icon.astro';
+import { products, productAreas, statusLabel } from '../data/products';
+
+const stages = [
+  ['In development', 'Being designed and built. Not yet usable by the public.', 'tag--amber'],
+  ['Early access', 'Usable by a small group of invited users while we refine it.', 'tag--indigo'],
+  ['Available', 'Publicly released and supported.', 'tag--signal'],
+];
+---
+
+<Base
+  title="Products"
+  description="The Insoftica product portfolio: software products and AI-powered tools built and operated by Insoftica. See what is in development and the areas we are working in."
+>
+  <PageHero
+    eyebrow="Products"
+    title={products.length ? 'Products from Insoftica.' : 'The first products are in development.'}
+    lead="This is where Insoftica products live. We only list a product once it can be described truthfully, and we mark clearly whether it is in development, in early access or available."
+  />
+
+  {
+    products.length > 0 && (
+      <section class="section">
+        <div class="container grid grid--3">
+          {products.map((p, i) => (
+            <article class="card reveal" style={`--reveal-delay:${i * 80}ms`}>
+              <span
+                class:list={[
+                  'tag',
+                  {
+                    'tag--amber': p.status === 'in-development',
+                    'tag--signal': p.status === 'available',
+                    'tag--indigo': p.status === 'early-access',
+                  },
+                ]}
+              >
+                {statusLabel[p.status]}
+              </span>
+              <h2 class="h3">{p.name}</h2>
+              <p>{p.summary}</p>
+              {p.url && (
+                <a href={p.url} class="link-arrow" style="margin-top:18px">
+                  Visit {p.name}
+                  <Icon name="arrow-up-right" size={16} />
+                </a>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class:list={['section', { 'section--bordered': products.length > 0 }]}>
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">Product areas</p>
+        <h2 class="h2 reveal" style="--reveal-delay:60ms">Where we are putting our effort.</h2>
+        <p class="lead reveal" style="--reveal-delay:120ms">
+          These are directions, not product announcements. Each has active design and engineering work behind it.
+        </p>
+      </div>
+      <div class="grid grid--3">
+        {
+          productAreas.map((a, i) => (
+            <div class="card reveal" style={`--reveal-delay:${i * 80}ms`}>
+              <span class="tag tag--amber">In development</span>
+              <h3 class="h3">{a.title}</h3>
+              <p>{a.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bordered">
+    <div class="container stages">
+      <div class="section-head reveal">
+        <p class="eyebrow">How we label products</p>
+        <h2 class="h2">What each status means.</h2>
+        <p class="lead">So that nobody has to guess whether something is real yet.</p>
+      </div>
+      <ul role="list" class="stages__list reveal" style="--reveal-delay:80ms">
+        {
+          stages.map(([label, text, cls]) => (
+            <li>
+              <span class:list={['tag', cls]}>{label}</span>
+              <p>{text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <ContactCta
+    title="Hear about launches first."
+    text="Tell us which product area interests you and we will let you know when there is something you can use."
+  />
+</Base>
+
+<style>
+  .stages {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .stages .section-head {
+    margin-bottom: 0;
+  }
+
+  .stages__list li {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 20px;
+    align-items: start;
+    padding: 22px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .stages__list li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .stages__list p {
+    color: var(--slate);
+  }
+
+  @media (max-width: 860px) {
+    .stages {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stages__list li {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+  }
+</style>

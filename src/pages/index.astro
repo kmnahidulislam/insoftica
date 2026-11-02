@@ -1,0 +1,529 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroVisual from '../components/HeroVisual.astro';
+import ContactCta from '../components/ContactCta.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+import { products, productAreas, statusLabel } from '../data/products';
+
+const jobs = [
+  {
+    icon: 'box',
+    title: 'Products we build',
+    text: 'Our own web applications, SaaS platforms and tools, designed for an international audience and operated by us for the long term.',
+    href: '/products',
+    link: 'See what we are building',
+  },
+  {
+    icon: 'sparkle',
+    title: 'AI applied to real work',
+    text: 'Language models and machine learning used inside products where they save time or improve results, always with a person in control.',
+    href: '/technology',
+    link: 'How we use AI',
+  },
+  {
+    icon: 'layers',
+    title: 'Engineering for businesses',
+    text: 'Custom software, platforms and integrations built for organisations that need something more dependable than an off-the-shelf tool.',
+    href: '/solutions',
+    link: 'Explore solutions',
+  },
+] as const;
+
+const practices = [
+  ['Typed, tested code', 'TypeScript end to end. Automated tests gate every release.'],
+  ['Cloud-native from day one', 'Containers, managed databases and infrastructure as code on UK and EU regions.'],
+  ['Performance as a feature', 'Fast first loads and quick interactions are measured, not assumed.'],
+  ['Security by default', 'Least-privilege access, encrypted data, dependency scanning, no exceptions for speed.'],
+  ['AI with guardrails', 'Model output is reviewed, logged and bounded. People make the final call.'],
+  ['Operated, not abandoned', 'Monitoring, on-call and steady improvement after launch.'],
+];
+
+const steps = [
+  ['Understand', 'We start with the problem, the people who have it and what a good outcome looks like. If software is not the answer, we say so.'],
+  ['Design', 'Flows and interfaces are drawn, challenged and tested before anything is built. Clarity first, decoration later.'],
+  ['Build', 'Small releases, reviewed code, automated checks. Working software early, then refined in the open with the people using it.'],
+  ['Operate', 'Launch is the start. We monitor, support and improve products for as long as they are in use.'],
+];
+---
+
+<Base title="Home" description={site.description} isHome>
+  <!-- Hero -->
+  <section class="hero dots">
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow reveal">Technology company · United Kingdom</p>
+        <h1 class="display reveal" style="--reveal-delay:60ms">Software worth building.</h1>
+        <p class="lead reveal" style="--reveal-delay:120ms">
+          Insoftica is a technology company building its own software products and AI-powered tools, and
+          engineering platforms for businesses that need them built properly.
+        </p>
+        <div class="btn-row reveal" style="--reveal-delay:180ms">
+          <a href="/contact" class="btn btn--primary">
+            Talk to us
+            <Icon name="arrow-right" size={16} />
+          </a>
+          <a href="/products" class="btn btn--ghost">What we're building</a>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <HeroVisual />
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro statement -->
+  <section class="section section--bordered intro">
+    <div class="container intro__inner">
+      <div class="reveal">
+        <p class="eyebrow">A product company at the start of its portfolio</p>
+        <h2 class="h2">We build and operate software of our own, and apply the same engineering to work for other businesses.</h2>
+      </div>
+      <div class="intro__text reveal" style="--reveal-delay:100ms">
+        <p>
+          Most companies that write software do it for clients. Insoftica is organised around products: web
+          applications, platforms and AI-powered tools that we design, build, run and improve ourselves. That
+          is where the company is headed, and it shapes how we work with everyone else.
+        </p>
+        <p>
+          The portfolio is new and we are honest about that. What you will find here is what we are building,
+          how we build it, and how to reach us.
+        </p>
+        <dl class="facts">
+          <div><dt>Founded</dt><dd>{site.foundedYear}, United Kingdom</dd></div>
+          <div><dt>Focus</dt><dd>Software, AI, digital products</dd></div>
+          <div><dt>Markets</dt><dd>UK and international</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three jobs -->
+  <section class="section section--bordered jobs">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">What we do</p>
+        <h2 class="h2 reveal" style="--reveal-delay:60ms">Three kinds of work, one engineering standard.</h2>
+      </div>
+      <div class="grid grid--3">
+        {
+          jobs.map((j, i) => (
+            <a href={j.href} class="card job reveal" style={`--reveal-delay:${i * 80}ms`}>
+              <span class="job__icon">
+                <Icon name={j.icon} size={22} />
+              </span>
+              <h3 class="h3">{j.title}</h3>
+              <p>{j.text}</p>
+              <span class="link-arrow">
+                {j.link}
+                <Icon name="arrow-right" size={16} />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section class="section section--bordered products">
+    <div class="container">
+      <div class="products__head">
+        <div class="section-head reveal">
+          <p class="eyebrow">Products</p>
+          <h2 class="h2">
+            {products.length ? 'Products from Insoftica.' : 'The first products are in development.'}
+          </h2>
+          <p class="lead">
+            {
+              products.length
+                ? 'Built, operated and improved by us.'
+                : 'We publish products here only when they can be described truthfully. Until then, these are the areas we are working in.'
+            }
+          </p>
+        </div>
+        <a href="/products" class="link-arrow reveal">
+          Products page
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+
+      {
+        products.length ? (
+          <div class="grid grid--3">
+            {products.map((p, i) => (
+              <article class="card reveal" style={`--reveal-delay:${i * 80}ms`}>
+                <span class:list={['tag', { 'tag--amber': p.status === 'in-development', 'tag--signal': p.status === 'available', 'tag--indigo': p.status === 'early-access' }]}>
+                  {statusLabel[p.status]}
+                </span>
+                <h3 class="h3">{p.name}</h3>
+                <p>{p.summary}</p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div class="rows">
+            {productAreas.map((a, i) => (
+              <div class="row reveal" style={`--reveal-delay:${i * 60}ms`}>
+                <span class="row__num">0{i + 1}</span>
+                <span class="row__title">{a.title}</span>
+                <span class="row__text">{a.text}</span>
+              </div>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- Engineering band -->
+  <section class="section on-dark dots eng">
+    <div class="container">
+      <div class="eng__head">
+        <div class="section-head reveal">
+          <p class="eyebrow">Engineering</p>
+          <h2 class="h2">Built the way software should be built.</h2>
+          <p class="lead">
+            The practices below are not aspirations. They are how every Insoftica product and project is run,
+            from the first commit.
+          </p>
+        </div>
+        <a href="/technology" class="btn btn--ghost reveal">
+          Our technology
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+      <ul role="list" class="grid grid--3 eng__list">
+        {
+          practices.map(([t, d], i) => (
+            <li class="eng__item reveal" style={`--reveal-delay:${i * 60}ms`}>
+              <span class="module" aria-hidden="true">
+                <span /><span /><span /><span /><span /><span /><span /><span /><span />
+              </span>
+              <div>
+                <h3>{t}</h3>
+                <p>{d}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Approach -->
+  <section class="section approach">
+    <div class="container approach__inner">
+      <div class="section-head reveal">
+        <p class="eyebrow">How we work</p>
+        <h2 class="h2">Four stages, repeated as often as the product needs.</h2>
+        <p class="lead">The same loop runs for our own products and for the work we do with businesses.</p>
+      </div>
+      <ol class="steps" role="list">
+        {
+          steps.map(([t, d], i) => (
+            <li class="step reveal" style={`--reveal-delay:${i * 80}ms`}>
+              <span class="step__num">0{i + 1}</span>
+              <div>
+                <h3 class="h3">{t}</h3>
+                <p>{d}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <ContactCta />
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    padding: clamp(56px, 8vw, 112px) 0 clamp(64px, 8vw, 112px);
+    overflow: hidden;
+  }
+
+  .hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(40px, 6vw, 88px);
+  }
+
+  .hero__copy .eyebrow {
+    margin-bottom: 24px;
+  }
+
+  .hero__copy h1 {
+    max-width: 11ch;
+  }
+
+  .hero__copy .lead {
+    max-width: 48ch;
+    margin: 24px 0 36px;
+  }
+
+  .hero__visual {
+    padding-top: 30px;
+  }
+
+  @media (max-width: 960px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__visual {
+      padding: 36px 0 24px;
+    }
+  }
+
+  /* Intro */
+  .intro__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .intro .eyebrow {
+    margin-bottom: 18px;
+  }
+
+  .intro__text {
+    color: var(--slate);
+    font-size: 1.05rem;
+  }
+
+  .intro__text p + p {
+    margin-top: 1em;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+
+  .facts dt {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+    margin-bottom: 4px;
+  }
+
+  .facts dd {
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 860px) {
+    .intro__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .facts {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Jobs */
+  .job {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .job__icon {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: var(--indigo-tint);
+    color: var(--indigo);
+    margin-bottom: 22px;
+  }
+
+  .job p {
+    flex: 1;
+    margin-bottom: 22px;
+  }
+
+  /* Products */
+  .products__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .products__head .section-head {
+    margin-bottom: 0;
+  }
+
+  .products__head .link-arrow {
+    margin-bottom: 8px;
+    white-space: nowrap;
+  }
+
+  .products .rows {
+    margin-top: clamp(32px, 4vw, 48px);
+  }
+
+  @media (max-width: 760px) {
+    .products__head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  /* Engineering */
+  .eng__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .eng__list {
+    --grid-gap: 0;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .eng__item {
+    display: flex;
+    gap: 16px;
+    padding: 28px;
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    transition: background 0.2s;
+  }
+
+  .eng__item:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .eng__item:nth-child(3n) {
+    border-right: 0;
+  }
+
+  .eng__item:nth-last-child(-n + 3) {
+    border-bottom: 0;
+  }
+
+  .eng__item .module {
+    color: var(--indigo-light);
+    margin-top: 2px;
+  }
+
+  .eng__item h3 {
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+  }
+
+  .eng__item p {
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.92rem;
+  }
+
+  @media (max-width: 960px) {
+    .eng__item:nth-child(3n) {
+      border-right: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .eng__item:nth-child(2n) {
+      border-right: 0;
+    }
+
+    .eng__item:nth-last-child(-n + 3) {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .eng__item:nth-last-child(-n + 2) {
+      border-bottom: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .eng__head {
+      flex-direction: column;
+    }
+
+    .eng__item,
+    .eng__item:nth-child(2n),
+    .eng__item:nth-child(3n) {
+      border-right: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .eng__item:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  /* Approach */
+  .approach__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(32px, 6vw, 96px);
+  }
+
+  .approach .section-head {
+    margin-bottom: 0;
+    position: sticky;
+    top: 100px;
+  }
+
+  .steps {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 16px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .step__num {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--indigo);
+    padding-top: 6px;
+  }
+
+  .step h3 {
+    margin-bottom: 8px;
+  }
+
+  .step p {
+    color: var(--slate);
+  }
+
+  @media (max-width: 860px) {
+    .approach__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .approach .section-head {
+      position: static;
+    }
+  }
+</style>

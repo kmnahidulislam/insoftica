@@ -1,0 +1,154 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { site } from '../data/site';
+
+const principles = [
+  ['Useful before impressive', 'A product earns its place by solving a real problem well. Novelty is not a feature.'],
+  ['Engineered to last', 'We build for the years after launch: readable code, boring infrastructure, automated tests, clear ownership.'],
+  ['AI where it earns its place', 'Language models and machine learning go into a product when they make it measurably better, not because they are available.'],
+  ['The user stays in control', 'Automated and AI-generated output is shown, explained and reversible. People make the final decision.'],
+  ['Clear about what is real', 'We describe what exists. Concepts are labelled as concepts. Products are announced when they can be used.'],
+];
+---
+
+<Base
+  title="About"
+  description="Insoftica Ltd is a UK technology company building software products and AI-powered tools for an international audience. Learn about our mission, principles and how we work."
+>
+  <PageHero
+    eyebrow="About Insoftica"
+    title="A technology company organised around products."
+    lead="Insoftica Ltd was founded in the United Kingdom to build and operate software products and AI-powered tools, and to bring the same engineering to businesses that need platforms built properly."
+  />
+
+  <section class="section">
+    <div class="container about__grid">
+      <div class="reveal">
+        <p class="eyebrow">Why Insoftica exists</p>
+      </div>
+      <div class="prose reveal" style="--reveal-delay:80ms">
+        <p>
+          A lot of software is built quickly for someone else and then left behind. We started Insoftica to do
+          the opposite: to build digital products we are responsible for, operate them well and keep improving
+          them for the people who use them.
+        </p>
+        <p>
+          That focus shapes everything else. The engineering practices we use on our own products are the ones
+          we bring to work for other businesses. The AI capabilities we develop for ourselves become part of what
+          we can build for them. Over time, the aim is a portfolio of Insoftica products used in the UK and
+          internationally, and a company recognised for the quality of what it ships.
+        </p>
+        <p>
+          We are at the beginning of that work. This site describes where we are, not where we would like you to
+          think we are.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bordered mv">
+    <div class="container grid grid--2">
+      <div class="card reveal">
+        <p class="eyebrow">Mission</p>
+        <h2 class="h3 mv__title">To build software products and AI-powered tools that are genuinely useful, well engineered and a pleasure to use.</h2>
+      </div>
+      <div class="card reveal" style="--reveal-delay:80ms">
+        <p class="eyebrow">Vision</p>
+        <h2 class="h3 mv__title">A portfolio of Insoftica products used by people and businesses around the world, and a company known for the quality of what it builds.</h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bordered">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">Principles</p>
+        <h2 class="h2 reveal" style="--reveal-delay:60ms">Five things we hold ourselves to.</h2>
+      </div>
+      <div class="rows">
+        {
+          principles.map(([t, d], i) => (
+            <div class="row reveal" style={`--reveal-delay:${i * 60}ms`}>
+              <span class="row__num">0{i + 1}</span>
+              <span class="row__title">{t}</span>
+              <span class="row__text">{d}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bordered">
+    <div class="container about__grid">
+      <div class="reveal">
+        <p class="eyebrow">Company</p>
+      </div>
+      <div class="reveal" style="--reveal-delay:80ms">
+        <dl class="details">
+          <div><dt>Legal name</dt><dd>{site.legalName}</dd></div>
+          <div><dt>Registered in</dt><dd>{site.location}</dd></div>
+          <div><dt>Founded</dt><dd>{site.foundedYear}</dd></div>
+          <div><dt>Focus</dt><dd>Software products, AI-powered tools, digital platforms</dd></div>
+          <div><dt>Markets</dt><dd>United Kingdom and international</dd></div>
+          <div><dt>Email</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <ContactCta title="Want to know more?" text="We are happy to talk about the company, the products in development or how we might work together." />
+</Base>
+
+<style>
+  .about__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: clamp(24px, 5vw, 80px);
+  }
+
+  .prose p {
+    font-size: 1.1rem;
+    color: var(--slate);
+  }
+
+  .mv__title {
+    margin-top: 16px;
+    font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+    line-height: 1.35;
+    font-weight: 600;
+  }
+
+  .details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 40px;
+  }
+
+  .details dt {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+    margin-bottom: 6px;
+  }
+
+  .details dd {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .details a {
+    color: var(--indigo);
+  }
+
+  @media (max-width: 760px) {
+    .about__grid,
+    .details {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,235 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactCta from '../components/ContactCta.astro';
+import Icon from '../components/Icon.astro';
+
+const solutions = [
+  {
+    icon: 'code',
+    title: 'Custom software engineering',
+    text: 'Applications built around how your organisation actually works, when off-the-shelf tools stop fitting. Web-based, maintainable and documented.',
+    points: ['Internal tools and back-office systems', 'Customer portals and dashboards', 'Replacing spreadsheets and manual processes'],
+  },
+  {
+    icon: 'sparkle',
+    title: 'AI-powered solutions',
+    text: 'Language models and machine learning applied to a specific job in your business, with outputs people can check and a clear measure of whether it is working.',
+    points: ['Assistants for drafting, summarising and search', 'Document and data extraction', 'Classification and routing of requests'],
+  },
+  {
+    icon: 'monitor',
+    title: 'Web applications',
+    text: 'Fast, accessible web applications with a clean interface, built on a modern stack and hosted on infrastructure we can monitor and scale.',
+    points: ['Multi-user applications with roles and permissions', 'Public-facing sites and portals', 'Progressive web apps for mobile use'],
+  },
+  {
+    icon: 'layers',
+    title: 'SaaS platform development',
+    text: 'Subscription products from the ground up: tenancy, billing, onboarding, admin tooling and the operational side that is easy to underestimate.',
+    points: ['Multi-tenant architecture', 'Subscription billing and plans', 'Usage metering, audit logs and admin'],
+  },
+  {
+    icon: 'plug',
+    title: 'API and systems integration',
+    text: 'Connecting the systems you already run so data moves without copy-and-paste: payment providers, CRMs, accounting tools, internal databases.',
+    points: ['REST and webhook integrations', 'Data pipelines and synchronisation', 'Public APIs for your own customers'],
+  },
+  {
+    icon: 'gauge',
+    title: 'Modernisation and performance',
+    text: 'Bringing an existing application up to current standards: faster, more secure, easier to change, without a risky rewrite.',
+    points: ['Performance audits and fixes', 'Incremental migration of legacy code', 'Security and dependency hygiene'],
+  },
+] as const;
+
+const fit = [
+  ['A specific problem', 'You can describe what is slow, manual or missing today, and what better would look like.'],
+  ['A person who owns it', 'Someone on your side who can make decisions and test what we build.'],
+  ['A long view', 'You want software that is still working and improving in three years, not a one-off build.'],
+];
+---
+
+<Base
+  title="Solutions"
+  description="Software engineering and AI-powered solutions from Insoftica: custom software, web applications, SaaS platforms, API integrations and modernisation for businesses in the UK and internationally."
+>
+  <PageHero
+    eyebrow="Solutions for businesses"
+    title="The same engineering we use on our own products, applied to yours."
+    lead="Insoftica is a product company first, and that is exactly why businesses work with us: the code, infrastructure and AI practices behind our products are the ones we bring to your project."
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--2 sol__grid">
+        {
+          solutions.map((s, i) => (
+            <article class="card sol reveal" style={`--reveal-delay:${(i % 2) * 80}ms`}>
+              <span class="sol__icon">
+                <Icon name={s.icon} size={22} />
+              </span>
+              <h2 class="h3">{s.title}</h2>
+              <p>{s.text}</p>
+              <ul role="list" class="sol__points">
+                {s.points.map((p) => (
+                  <li>
+                    <Icon name="check" size={14} />
+                    {p}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-dark dots">
+    <div class="container fit">
+      <div class="section-head reveal">
+        <p class="eyebrow">Working together</p>
+        <h2 class="h2">What a good fit looks like.</h2>
+        <p class="lead">We take on a small number of projects so each one gets senior attention. These three things make a project work.</p>
+      </div>
+      <div class="rows reveal" style="--reveal-delay:80ms">
+        {
+          fit.map(([t, d], i) => (
+            <div class="row">
+              <span class="row__num">0{i + 1}</span>
+              <span class="row__title">{t}</span>
+              <span class="row__text">{d}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container how">
+      <div class="section-head reveal">
+        <p class="eyebrow">How an engagement runs</p>
+        <h2 class="h2">Short, clear and in writing.</h2>
+      </div>
+      <ol role="list" class="how__steps reveal" style="--reveal-delay:80ms">
+        <li>
+          <strong>A conversation.</strong>
+          <span>Tell us about the problem. We will say honestly whether we are the right people for it.</span>
+        </li>
+        <li>
+          <strong>A written proposal.</strong>
+          <span>Scope, approach, timeline and cost, in plain English. No surprises later.</span>
+        </li>
+        <li>
+          <strong>Working software early.</strong>
+          <span>Something usable within the first weeks, then regular releases you can see and test.</span>
+        </li>
+        <li>
+          <strong>Handover or ongoing care.</strong>
+          <span>Full source, documentation and infrastructure access are yours. We can keep operating it if you prefer.</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <ContactCta title="Have a project in mind?" text="Describe it in a few lines. We reply to every enquiry, usually within two working days." />
+</Base>
+
+<style>
+  .sol__grid {
+    --grid-gap: 20px;
+  }
+
+  .sol__icon {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: var(--indigo-tint);
+    color: var(--indigo);
+    margin-bottom: 22px;
+  }
+
+  .sol__points {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 8px;
+  }
+
+  .sol__points li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.925rem;
+    color: var(--ink);
+  }
+
+  .sol__points svg {
+    color: var(--indigo);
+    flex-shrink: 0;
+  }
+
+  .fit .section-head {
+    margin-bottom: 40px;
+  }
+
+  .how {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: clamp(32px, 6vw, 96px);
+  }
+
+  .how .section-head {
+    margin-bottom: 0;
+  }
+
+  .how__steps {
+    counter-reset: step;
+    display: grid;
+    gap: 0;
+  }
+
+  .how__steps li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 8px 16px;
+    padding: 22px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .how__steps li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .how__steps li::before {
+    content: '0' counter(step);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--indigo);
+    padding-top: 3px;
+    grid-row: span 2;
+  }
+
+  .how__steps strong {
+    font-size: 1.05rem;
+    letter-spacing: -0.015em;
+  }
+
+  .how__steps span {
+    grid-column: 2;
+    color: var(--slate);
+  }
+
+  @media (max-width: 860px) {
+    .how {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,262 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const topics = ['A project for my business', 'Partnership or collaboration', 'Product updates and launches', 'Press or general enquiry'];
+---
+
+<Base
+  title="Contact"
+  description="Contact Insoftica Ltd. Talk to us about a software or AI project, a partnership, or to hear when our first products launch. We reply to every message."
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Tell us what you're working on."
+    lead="Whether it is a project, a partnership or simply curiosity about what we are building, we read and answer every message, usually within two working days."
+  />
+
+  <section class="section">
+    <div class="container contact">
+      <form
+        class="contact__form reveal"
+        method="POST"
+        action={site.formEndpoint || undefined}
+        data-contact-form
+        data-endpoint={site.formEndpoint}
+        data-mailto={site.email}
+        novalidate
+      >
+        <div class="grid grid--2 contact__fields">
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="company">Company <span class="hint">(optional)</span></label>
+            <input id="company" name="company" type="text" autocomplete="organization" />
+          </div>
+          <div class="field">
+            <label for="topic">What is this about?</label>
+            <select id="topic" name="topic">
+              {topics.map((t) => <option>{t}</option>)}
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required placeholder="A few lines is plenty. What is the problem, and what would a good outcome look like?"></textarea>
+        </div>
+        <!-- Honeypot for bots; hidden from people and screen readers -->
+        <div class="hp" aria-hidden="true">
+          <label for="website">Website</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+        <p class="contact__privacy">
+          We use what you send only to reply to you. See our <a href="/privacy">privacy policy</a>.
+        </p>
+        <div class="contact__actions">
+          <button type="submit" class="btn btn--primary">
+            Send message
+            <Icon name="arrow-right" size={16} />
+          </button>
+          <p class="contact__status" data-status role="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <aside class="contact__aside reveal" style="--reveal-delay:100ms">
+        <div class="contact__block">
+          <span class="contact__icon"><Icon name="mail" size={20} /></span>
+          <div>
+            <h2>Email</h2>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+            <p>Direct, and the fastest way to reach us.</p>
+          </div>
+        </div>
+        <div class="contact__block">
+          <span class="contact__icon"><Icon name="building" size={20} /></span>
+          <div>
+            <h2>Company</h2>
+            <p><strong>{site.legalName}</strong><br />Registered in the {site.location}</p>
+          </div>
+        </div>
+        <div class="contact__block">
+          <span class="contact__icon"><Icon name="globe" size={20} /></span>
+          <div>
+            <h2>Where we work</h2>
+            <p>With customers in the UK and internationally. Most conversations happen over video and email.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .contact__form {
+    display: grid;
+    gap: 22px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: clamp(24px, 4vw, 40px);
+  }
+
+  .contact__fields {
+    --grid-gap: 22px;
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .contact__privacy {
+    font-size: 0.85rem;
+    color: var(--slate-light);
+  }
+
+  .contact__privacy a {
+    color: var(--indigo);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .contact__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .contact__status {
+    font-size: 0.9rem;
+    color: var(--slate);
+  }
+
+  .contact__status.is-error {
+    color: #b42318;
+  }
+
+  .contact__status.is-ok {
+    color: var(--signal);
+  }
+
+  .contact__aside {
+    display: grid;
+    gap: 32px;
+    padding-top: 8px;
+  }
+
+  .contact__block {
+    display: flex;
+    gap: 16px;
+  }
+
+  .contact__icon {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--indigo-tint);
+    color: var(--indigo);
+  }
+
+  .contact__block h2 {
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  .contact__block a {
+    color: var(--indigo);
+    font-weight: 600;
+  }
+
+  .contact__block p {
+    color: var(--slate);
+    font-size: 0.95rem;
+    margin-top: 2px;
+  }
+
+  @media (max-width: 860px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const status = document.querySelector<HTMLElement>('[data-status]');
+
+  const say = (msg: string, kind: 'ok' | 'error' | '' = '') => {
+    if (!status) return;
+    status.textContent = msg;
+    status.className = `contact__status${kind ? ` is-${kind}` : ''}`;
+  };
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const data = new FormData(form);
+    if (data.get('website')) return; // honeypot filled: silently drop
+
+    const endpoint = form.dataset.endpoint;
+    const mailto = form.dataset.mailto;
+
+    if (endpoint) {
+      say('Sending…');
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: data,
+        });
+        if (res.ok) {
+          form.reset();
+          say('Thanks. Your message has been sent and we will reply by email.', 'ok');
+        } else {
+          say(`Something went wrong. Please email us directly at ${mailto}.`, 'error');
+        }
+      } catch {
+        say(`Could not send. Please email us directly at ${mailto}.`, 'error');
+      }
+      return;
+    }
+
+    // No endpoint configured: hand the message to the visitor's mail client.
+    const subject = `${data.get('topic')} — from ${data.get('name')}`;
+    const body = [
+      `Name: ${data.get('name')}`,
+      `Email: ${data.get('email')}`,
+      data.get('company') ? `Company: ${data.get('company')}` : '',
+      '',
+      String(data.get('message') ?? ''),
+    ]
+      .filter((line) => line !== '')
+      .join('\n');
+    window.location.href = `mailto:${mailto}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    say('Opening your email app with the message ready to send.', 'ok');
+  });
+</script>
