@@ -1,22 +1,13 @@
 ---
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
-import { nav, site } from '../data/site';
+import { nav } from '../data/site';
 
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isCurrent = (href: string) => (href === '/' ? current === '/' : current.startsWith(href.split('#')[0]));
 ---
 
 <header class="header" data-header>
-  <div class="topbar">
-    <div class="container topbar__inner">
-      <span class="topbar__item"><Icon name="map-pin" size={13} /> London, United Kingdom · working internationally</span>
-      <span class="topbar__item topbar__item--right">
-        <a href={`mailto:${site.email}`}><Icon name="mail" size={13} /> {site.email}</a>
-        <a href="/products"><span class="topbar__dot"></span> First products in development</a>
-      </span>
-    </div>
-  </div>
   <div class="container header__inner">
     <a href="/" class="header__brand" aria-label="Insoftica home">
       <Logo height={20} />
@@ -124,58 +115,6 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
   .header.is-scrolled {
     border-color: var(--line);
     background: rgba(250, 250, 248, 0.92);
-  }
-
-  .topbar {
-    background: var(--ink);
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 0.78rem;
-  }
-
-  .topbar__inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    height: 34px;
-  }
-
-  .topbar__item {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-  }
-
-  .topbar__item--right {
-    gap: 20px;
-  }
-
-  .topbar__item a {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: inherit;
-    transition: color 0.15s;
-  }
-
-  .topbar__item a:hover {
-    color: #fff;
-  }
-
-  .topbar__dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--signal);
-    box-shadow: 0 0 0 0 rgba(15, 159, 122, 0.6);
-    animation: ping 2s ease-out infinite;
-  }
-
-  @keyframes ping {
-    to {
-      box-shadow: 0 0 0 7px rgba(15, 159, 122, 0);
-    }
   }
 
   .header__inner {
@@ -366,8 +305,8 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
     border-top: 1px solid var(--line);
     background: var(--canvas);
     padding: 12px 0 28px;
-    max-height: calc(100vh - 104px);
-    max-height: calc(100dvh - 104px);
+    max-height: calc(100vh - 70px);
+    max-height: calc(100dvh - 70px);
     overflow-y: auto;
   }
 
@@ -414,25 +353,8 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
 
   @media (max-width: 960px) {
     .header__nav,
-    .header__cta,
-    .topbar__item--right a:last-child {
+    .header__cta {
       display: none;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .topbar {
-      overflow: hidden;
-    }
-
-    .topbar__item--right {
-      display: none;
-    }
-
-    .topbar__item {
-      white-space: normal;
-      font-size: 0.74rem;
-      line-height: 1.2;
     }
 
     .header__toggle {

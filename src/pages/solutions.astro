@@ -4,6 +4,13 @@ import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
 
+const clients = [
+  ['box', 'Founders with a product to build', 'You have the idea, the market and the first customers lined up. You need a team that can take it from brief to launch and stay to run it.'],
+  ['building', 'Growing businesses outgrowing their tools', 'Spreadsheets, shared inboxes and off-the-shelf apps have stopped fitting. You need software shaped around how the business actually works.'],
+  ['layers', 'Established companies adding AI', 'You have data, processes and a clear job for AI to do. You want it done carefully, with evaluation and review, not a demo that never ships.'],
+  ['code', 'Technical teams that need senior capacity', 'You have engineers, but not enough of them, or not for this. Ours work in your repositories and your process for as long as needed.'],
+] as const;
+
 const faq: [string, string][] = [
   ['How long does a typical project take?', 'A focused web application usually takes eight to sixteen weeks to first release. Larger platforms are delivered in phases of similar length so there is always something usable.'],
   ['Can you work with our existing codebase?', 'Yes. We start with a short review to understand it, then work incrementally. We avoid rewrites unless the case for one is clear and written down.'],
@@ -110,6 +117,28 @@ const fit = [
     </div>
   </section>
 
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">Who we work with</p>
+        <h2 class="h2 reveal" style="--reveal-delay:60ms">Four situations we are set up for.</h2>
+      </div>
+      <div class="grid grid--2 clients">
+        {
+          clients.map(([icon, t, d], i) => (
+            <div class="client reveal" style={`--reveal-delay:${i * 70}ms`}>
+              <span class="client__icon"><Icon name={icon} size={20} /></span>
+              <div>
+                <h3 class="h3">{t}</h3>
+                <p>{d}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
   <section class="section on-dark dots">
     <div class="container fit">
       <div class="section-head reveal">
@@ -205,6 +234,37 @@ const fit = [
   .sol__points svg {
     color: var(--indigo);
     flex-shrink: 0;
+  }
+
+  .clients {
+    --grid-gap: 28px 48px;
+  }
+
+  .client {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  .client__icon {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--indigo);
+  }
+
+  .client h3 {
+    margin-bottom: 6px;
+  }
+
+  .client p {
+    color: var(--slate);
   }
 
   .fit .section-head {
