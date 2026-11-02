@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import ContactCta from '../components/ContactCta.astro';
 import Icon from '../components/Icon.astro';
 import { products, productAreas, statusLabel } from '../data/products';
 
@@ -9,6 +8,28 @@ const stages = [
   ['In development', 'Being designed and built. Not yet usable by the public.', 'tag--amber'],
   ['Early access', 'Usable by a small group of invited users while we refine it.', 'tag--indigo'],
   ['Available', 'Publicly released and supported.', 'tag--signal'],
+];
+
+const road = [
+  ['Research', 'Talk to the people who have the problem. Write down what a good outcome looks like and what we will not build.'],
+  ['Prototype', 'A working slice of the product in front of real users within weeks. Throw away what does not land.'],
+  ['Early access', 'Invited users on the real system. Weekly releases, direct feedback, honest status on this page.'],
+  ['Launch', 'Public availability with pricing, documentation, support and the operations behind it.'],
+];
+
+const earlyAccess = [
+  'Direct line to the engineers building it',
+  'Weekly releases and a changelog',
+  'Your feedback shapes the roadmap',
+  'Preferential pricing at launch',
+  'No lock-in: export your data at any time',
+];
+
+const standards = [
+  ['Data', 'Hosted in UK and EU regions. Exportable in open formats. Deleted on request.'],
+  ['Security', 'Encrypted in transit and at rest. Least-privilege access. Dependency scanning on every release.'],
+  ['Reliability', 'Monitored around the clock. Backups restored and tested on a schedule. Public status when live.'],
+  ['Support', 'A real person replies. Documentation written by the people who built the product.'],
 ];
 ---
 
@@ -20,14 +41,24 @@ const stages = [
     eyebrow="Products"
     title={products.length ? 'Products from Insoftica.' : 'The first products are in development.'}
     lead="This is where Insoftica products live. We only list a product once it can be described truthfully, and we mark clearly whether it is in development, in early access or available."
-  />
+  >
+    <div class="panel">
+      <p class="panel__title">Portfolio status</p>
+      <dl>
+        <div><dt>Product areas</dt><dd>{productAreas.length} active</dd></div>
+        <div><dt>In development</dt><dd>{products.filter((p) => p.status === 'in-development').length || 'First product'}</dd></div>
+        <div><dt>Early access</dt><dd>{products.filter((p) => p.status === 'early-access').length || 'Opening soon'}</dd></div>
+        <div><dt>Available</dt><dd>{products.filter((p) => p.status === 'available').length || 'None yet'}</dd></div>
+      </dl>
+    </div>
+  </PageHero>
 
   {
     products.length > 0 && (
       <section class="section">
         <div class="container grid grid--3">
           {products.map((p, i) => (
-            <article class="card reveal" style={`--reveal-delay:${i * 80}ms`}>
+            <article class="card card--lift reveal" style={`--reveal-delay:${i * 80}ms`}>
               <span
                 class:list={[
                   'tag',
@@ -55,7 +86,7 @@ const stages = [
     )
   }
 
-  <section class:list={['section', { 'section--bordered': products.length > 0 }]}>
+  <section class:list={['section', { 'section--alt': products.length > 0 }]}>
     <div class="container">
       <div class="section-head">
         <p class="eyebrow reveal">Product areas</p>
@@ -67,7 +98,7 @@ const stages = [
       <div class="grid grid--3">
         {
           productAreas.map((a, i) => (
-            <div class="card reveal" style={`--reveal-delay:${i * 80}ms`}>
+            <div class="card card--lift reveal" style={`--reveal-delay:${i * 80}ms`}>
               <span class="tag tag--amber">In development</span>
               <h3 class="h3">{a.title}</h3>
               <p>{a.text}</p>
@@ -78,7 +109,76 @@ const stages = [
     </div>
   </section>
 
-  <section class="section section--bordered" id="status" style="scroll-margin-top:80px">
+  <section class="section section--alt">
+    <div class="container road">
+      <div class="section-head reveal">
+        <p class="eyebrow">Road to first release</p>
+        <h2 class="h2">How a product gets from idea to your hands.</h2>
+        <p class="lead">The same four steps for every product. Status on this page moves as each one is passed.</p>
+      </div>
+      <ol role="list" class="road__steps">
+        {
+          road.map(([t, d], i) => (
+            <li class="road__step reveal" style={`--reveal-delay:${i * 90}ms`}>
+              <span class="road__num">0{i + 1}</span>
+              <h3 class="h3">{t}</h3>
+              <p>{d}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container ea">
+      <div class="reveal">
+        <p class="eyebrow">Early access</p>
+        <h2 class="h2">What early-access users get.</h2>
+        <p class="lead" style="margin:16px 0 24px">
+          The first users of any Insoftica product get more than a preview. They get a say.
+        </p>
+        <a href="/contact" class="btn btn--primary">
+          Ask about early access
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+      <ul role="list" class="ea__list reveal" style="--reveal-delay:80ms">
+        {
+          earlyAccess.map((e) => (
+            <li>
+              <span class="ea__check"><Icon name="check" size={14} /></span>
+              {e}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">Every product, the same standards</p>
+        <h2 class="h2 reveal" style="--reveal-delay:60ms">What you can expect from anything with our name on it.</h2>
+      </div>
+      <div class="grid grid--4">
+        {
+          standards.map(([t, d], i) => (
+            <div class="card card--lift reveal" style={`--reveal-delay:${i * 70}ms`}>
+              <span class="module" aria-hidden="true" style="color:var(--indigo);margin-bottom:16px">
+                <span /><span /><span /><span /><span /><span /><span /><span /><span />
+              </span>
+              <h3 class="h4">{t}</h3>
+              <p style="margin-top:8px">{d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="status" style="scroll-margin-top:110px">
     <div class="container stages">
       <div class="section-head reveal">
         <p class="eyebrow">How we label products</p>
@@ -97,14 +197,84 @@ const stages = [
       </ul>
     </div>
   </section>
-
-  <ContactCta
-    title="Hear about launches first."
-    text="Tell us which product area interests you and we will let you know when there is something you can use."
-  />
 </Base>
 
 <style>
+  .road .section-head {
+    margin-bottom: 36px;
+  }
+
+  .road__steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    overflow: hidden;
+  }
+
+  .road__step {
+    padding: 28px;
+    border-right: 1px solid var(--line);
+    position: relative;
+  }
+
+  .road__step:last-child {
+    border-right: 0;
+  }
+
+  .road__num {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--indigo);
+    margin-bottom: 14px;
+  }
+
+  .road__step h3 {
+    margin-bottom: 8px;
+  }
+
+  .road__step p {
+    color: var(--slate);
+    font-size: 0.925rem;
+  }
+
+  .ea {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: center;
+  }
+
+  .ea__list {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .ea__list li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+    font-weight: 600;
+  }
+
+  .ea__check {
+    display: inline-flex;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--indigo-tint);
+    color: var(--indigo);
+  }
+
   .stages {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -133,9 +303,39 @@ const stages = [
     color: var(--slate);
   }
 
+  @media (max-width: 960px) {
+    .road__steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .road__step:nth-child(2n) {
+      border-right: 0;
+    }
+
+    .road__step:nth-child(-n + 2) {
+      border-bottom: 1px solid var(--line);
+    }
+  }
+
   @media (max-width: 860px) {
+    .ea,
     .stages {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .road__steps {
+      grid-template-columns: 1fr;
+    }
+
+    .road__step {
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .road__step:last-child {
+      border-bottom: 0;
     }
   }
 

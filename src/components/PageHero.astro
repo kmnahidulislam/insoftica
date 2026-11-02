@@ -1,6 +1,7 @@
 ---
 /**
- * Standard header for inner pages. `tone="dark"` renders on Ink.
+ * Header for inner pages. Copy on the left; an optional panel on the right
+ * (facts, a list, an illustration) passed through the default slot.
  */
 interface Props {
   eyebrow: string;
@@ -9,36 +10,97 @@ interface Props {
   tone?: 'light' | 'dark';
 }
 const { eyebrow, title, lead, tone = 'light' } = Astro.props;
+const hasAside = Astro.slots.has('default');
 ---
 
-<section class:list={['page-hero', { 'on-dark': tone === 'dark', dots: tone === 'dark' }]}>
-  <div class="container">
-    <p class="eyebrow reveal">{eyebrow}</p>
-    <h1 class="h1 reveal" style="--reveal-delay:60ms">{title}</h1>
-    {lead && <p class="lead reveal" style="--reveal-delay:120ms">{lead}</p>}
+<section class:list={['page-hero', { 'on-dark': tone === 'dark', 'has-aside': hasAside }]}>
+  <div class="page-hero__bg" aria-hidden="true"></div>
+  <div class="container page-hero__inner">
+    <div class="page-hero__copy">
+      <p class="eyebrow reveal">{eyebrow}</p>
+      <h1 class="h1 reveal" style="--reveal-delay:60ms">{title}</h1>
+      {lead && <p class="lead reveal" style="--reveal-delay:120ms">{lead}</p>}
+    </div>
+    {
+      hasAside && (
+        <div class="page-hero__aside reveal" style="--reveal-delay:180ms">
+          <slot />
+        </div>
+      )
+    }
   </div>
 </section>
 
 <style>
   .page-hero {
-    padding: clamp(64px, 9vw, 120px) 0 clamp(48px, 6vw, 80px);
+    position: relative;
+    padding: clamp(44px, 6vw, 80px) 0 clamp(40px, 5vw, 64px);
     border-bottom: 1px solid var(--line);
+    overflow: hidden;
   }
 
   .page-hero.on-dark {
     border-color: rgba(255, 255, 255, 0.1);
   }
 
+  .page-hero__bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(60% 80% at 85% 50%, #000 20%, transparent 100%);
+    -webkit-mask-image: radial-gradient(60% 80% at 85% 50%, #000 20%, transparent 100%);
+    opacity: 0.7;
+    animation: grid-drift 24s linear infinite;
+  }
+
+  .on-dark .page-hero__bg {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  }
+
+  @keyframes grid-drift {
+    to {
+      background-position: 48px 48px, 48px 48px;
+    }
+  }
+
+  .page-hero__inner {
+    position: relative;
+    display: grid;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+
+  .has-aside .page-hero__inner {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr);
+  }
+
   .page-hero .eyebrow {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
 
   .page-hero h1 {
-    max-width: 22ch;
+    max-width: 20ch;
   }
 
   .page-hero .lead {
-    max-width: 58ch;
-    margin-top: 22px;
+    max-width: 56ch;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 900px) {
+    .has-aside .page-hero__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-hero__bg {
+      animation: none;
+    }
   }
 </style>

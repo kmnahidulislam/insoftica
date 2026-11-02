@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import ContactCta from '../components/ContactCta.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
 
@@ -72,14 +71,25 @@ const fit = [
     eyebrow="Solutions for businesses"
     title="The same engineering we use on our own products, applied to yours."
     lead="Insoftica is a product company first, and that is exactly why businesses work with us: the code, infrastructure and AI practices behind our products are the ones we bring to your project."
-  />
+  >
+    <div class="panel">
+      <p class="panel__title">Every engagement includes</p>
+      <ul role="list">
+        <li><Icon name="check" size={16} /> Senior engineers from the first call to handover</li>
+        <li><Icon name="check" size={16} /> A written proposal with scope, timeline and cost</li>
+        <li><Icon name="check" size={16} /> Working software in the first weeks, then weekly releases</li>
+        <li><Icon name="check" size={16} /> Full ownership of code, infrastructure and documentation</li>
+        <li><Icon name="check" size={16} /> Data hosted in UK and EU regions by default</li>
+      </ul>
+    </div>
+  </PageHero>
 
   <section class="section">
     <div class="container">
       <div class="grid grid--2 sol__grid">
         {
           solutions.map((s, i) => (
-            <article id={s.id} class="card sol reveal" style={`--reveal-delay:${(i % 2) * 80}ms`}>
+            <article id={s.id} class="card card--lift sol reveal" style={`--reveal-delay:${(i % 2) * 80}ms`}>
               <span class="sol__icon">
                 <Icon name={s.icon} size={22} />
               </span>
@@ -157,8 +167,6 @@ const fit = [
       <Faq items={faq} />
     </div>
   </section>
-
-  <ContactCta title="Have a project in mind?" text="Describe it in a few lines. We reply to every enquiry, usually within two working days." />
 </Base>
 
 <style>

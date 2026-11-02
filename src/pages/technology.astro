@@ -1,9 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import ContactCta from '../components/ContactCta.astro';
 import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
 import AiPipeline from '../components/AiPipeline.astro';
+import Icon from '../components/Icon.astro';
 
 const philosophy = [
   ['Boring where it matters', 'Databases, hosting and build tooling are chosen for reliability and a long support horizon, not novelty. Innovation goes into the product, not the plumbing.'],
@@ -13,31 +13,22 @@ const philosophy = [
 ];
 
 const stack = [
-  {
-    area: 'Languages and frameworks',
-    items: ['TypeScript', 'Node.js', 'React and Next.js', 'Astro', 'Python for data and ML work'],
-  },
-  {
-    area: 'Data',
-    items: ['PostgreSQL', 'Redis', 'Object storage', 'Vector search where retrieval needs it'],
-  },
-  {
-    area: 'Infrastructure',
-    items: ['Containers', 'Infrastructure as code', 'UK and EU cloud regions', 'CDN and edge caching'],
-  },
-  {
-    area: 'AI and machine learning',
-    items: ['Large language model APIs', 'Retrieval-augmented generation', 'Evaluation harnesses', 'Human review workflows'],
-  },
-  {
-    area: 'Quality',
-    items: ['Automated testing', 'Continuous integration', 'Dependency and secret scanning', 'Accessibility checks'],
-  },
-  {
-    area: 'Operations',
-    items: ['Structured logging and tracing', 'Uptime and error monitoring', 'Backups with tested restores', 'Incident runbooks'],
-  },
+  { area: 'Languages and frameworks', items: ['TypeScript', 'Node.js', 'React and Next.js', 'Astro', 'Python for data and ML work'] },
+  { area: 'Data', items: ['PostgreSQL', 'Redis', 'Object storage', 'Vector search where retrieval needs it'] },
+  { area: 'Infrastructure', items: ['Containers', 'Infrastructure as code', 'UK and EU cloud regions', 'CDN and edge caching'] },
+  { area: 'AI and machine learning', items: ['Large language model APIs', 'Retrieval-augmented generation', 'Evaluation harnesses', 'Human review workflows'] },
+  { area: 'Quality', items: ['Automated testing', 'Continuous integration', 'Dependency and secret scanning', 'Accessibility checks'] },
+  { area: 'Operations', items: ['Structured logging and tracing', 'Uptime and error monitoring', 'Backups with tested restores', 'Incident runbooks'] },
 ];
+
+const practices = [
+  ['code', 'Code review on everything', 'No change reaches production without a second pair of eyes. Reviews look for clarity as much as correctness.'],
+  ['check', 'Continuous integration', 'Lint, type-check, unit and integration tests on every push. A red build blocks the merge.'],
+  ['layers', 'Feature flags and staged rollouts', 'New behaviour ships dark, turns on for a few users first, and can be switched off in seconds.'],
+  ['shield', 'Dependency hygiene', 'Automated updates and scanning. Known vulnerabilities are patched within days, not quarters.'],
+  ['gauge', 'Performance budgets', 'Page weight, Core Web Vitals and API latency have numbers attached. Regressions fail the build.'],
+  ['globe', 'Post-incident reviews', 'When something breaks we write down what happened, why, and what changed. Blameless, and shared.'],
+] as const;
 
 const ai = [
   ['Start with the job', 'We define the task, the inputs and what a correct output looks like before choosing a model.'],
@@ -49,14 +40,25 @@ const ai = [
 
 <Base
   title="Technology"
-  description="How Insoftica builds software: engineering philosophy, the technology stack behind our products, and a practical, evaluated approach to applying AI."
+  description="How Insoftica builds software: engineering philosophy, the technology stack behind our products, delivery practices, and a practical, evaluated approach to applying AI."
 >
   <PageHero
     tone="dark"
     eyebrow="Technology"
     title="Engineering principles that outlast any particular tool."
     lead="This page explains how we build, what we build with and how we approach AI. Tools change; the standards do not."
-  />
+  >
+    <div class="panel">
+      <p class="panel__title">Targets we build to</p>
+      <dl>
+        <div><dt>Largest Contentful Paint</dt><dd>under 2.0 s</dd></div>
+        <div><dt>API latency, p95</dt><dd>under 300 ms</dd></div>
+        <div><dt>Availability target</dt><dd>99.9 %</dd></div>
+        <div><dt>Backup restore test</dt><dd>monthly</dd></div>
+        <div><dt>Security patch window</dt><dd>days, not weeks</dd></div>
+      </dl>
+    </div>
+  </PageHero>
 
   <section class="section">
     <div class="container">
@@ -95,7 +97,27 @@ const ai = [
     </div>
   </section>
 
-  <section class="section section--bordered">
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">Delivery practices</p>
+        <h2 class="h2 reveal" style="--reveal-delay:60ms">How work actually gets to production.</h2>
+      </div>
+      <div class="grid grid--3">
+        {
+          practices.map(([icon, t, d], i) => (
+            <div class="card card--lift practice reveal" style={`--reveal-delay:${i * 70}ms`}>
+              <span class="practice__icon"><Icon name={icon} size={20} /></span>
+              <h3 class="h4">{t}</h3>
+              <p>{d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow reveal">The stack</p>
@@ -121,7 +143,7 @@ const ai = [
     </div>
   </section>
 
-  <section class="section on-dark dots" id="ai">
+  <section class="section on-dark dots" id="ai" style="scroll-margin-top:110px">
     <div class="container ai">
       <div class="section-head reveal">
         <p class="eyebrow">Applied AI</p>
@@ -153,25 +175,23 @@ const ai = [
         <p class="eyebrow">Security and privacy</p>
         <h2 class="h2">Defaults, not add-ons.</h2>
       </div>
-      <div class="grid grid--2 sec__grid reveal" style="--reveal-delay:80ms">
-        <div class="card">
+      <div class="grid grid--2 reveal" style="--reveal-delay:80ms">
+        <div class="card card--lift">
           <h3 class="h3">In the code</h3>
           <p>Least-privilege access, secrets kept out of repositories, dependencies scanned on every build, input validated at the boundary, and encryption in transit and at rest.</p>
         </div>
-        <div class="card">
+        <div class="card card--lift">
           <h3 class="h3">In the organisation</h3>
           <p>Data kept in UK and EU regions by default, access reviewed regularly, backups restored and tested on a schedule, and a written plan for when something goes wrong.</p>
         </div>
       </div>
     </div>
   </section>
-
-  <ContactCta title="Talk to an engineer." text="If you want to understand how we would approach a specific technical problem, ask. You will get a straight answer." />
 </Base>
 
 <style>
   .phil {
-    --grid-gap: 32px 48px;
+    --grid-gap: 28px 48px;
   }
 
   .phil__item {
@@ -191,6 +211,29 @@ const ai = [
 
   .phil__item p {
     color: var(--slate);
+  }
+
+  .arch-wrap {
+    padding: clamp(16px, 3vw, 32px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .practice__icon {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--indigo-tint);
+    color: var(--indigo);
+    margin-bottom: 16px;
+  }
+
+  .practice p {
+    margin-top: 8px;
   }
 
   .stack {
@@ -239,13 +282,6 @@ const ai = [
 
   .ai__pipe {
     margin-bottom: 56px;
-  }
-
-  .arch-wrap {
-    padding: clamp(16px, 3vw, 32px);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
   }
 
   .sec .section-head {

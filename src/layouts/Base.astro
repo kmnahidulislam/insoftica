@@ -117,6 +117,30 @@ const jsonLd = [
       } else {
         items.forEach((el) => el.classList.add('is-visible'));
       }
+
+      // Count-up for [data-count] numbers, once visible.
+      const counters = document.querySelectorAll<HTMLElement>('[data-count]');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (counters.length && !reduce && 'IntersectionObserver' in window) {
+        const cio = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            const el = e.target as HTMLElement;
+            const target = Number(el.dataset.count);
+            const start = performance.now();
+            const dur = 1100;
+            const tick = (now: number) => {
+              const t = Math.min(1, (now - start) / dur);
+              const eased = 1 - Math.pow(1 - t, 3);
+              el.textContent = String(Math.round(target * eased));
+              if (t < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+            cio.unobserve(el);
+          }
+        }, { threshold: 0.5 });
+        counters.forEach((el) => cio.observe(el));
+      }
     </script>
   </body>
 </html>

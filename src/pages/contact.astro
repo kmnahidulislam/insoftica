@@ -5,18 +5,34 @@ import Icon from '../components/Icon.astro';
 import MapMark from '../components/MapMark.astro';
 import { site, addressLines } from '../data/site';
 
-const topics = ['A project for my business', 'Partnership or collaboration', 'Product updates and launches', 'Press or general enquiry'];
+const topics = ['A project for my business', 'Partnership or collaboration', 'Early access to a product', 'Press or general enquiry'];
+
+const next = [
+  ['We read it', 'A person, not a ticketing system. Usually the same day.'],
+  ['We reply', 'Within two working days, with questions or a suggested call.'],
+  ['We talk', 'Thirty minutes on video to understand the problem. No pitch.'],
+  ['You decide', 'If it makes sense, a written proposal follows. If not, we say so.'],
+];
 ---
 
 <Base
   title="Contact"
-  description="Contact Insoftica Ltd. Talk to us about a software or AI project, a partnership, or to hear when our first products launch. We reply to every message."
+  description="Contact Insoftica Ltd in London. Talk to us about a software or AI project, a partnership, or early access to our products. We reply to every message."
 >
   <PageHero
     eyebrow="Contact"
     title="Tell us what you're working on."
     lead="Whether it is a project, a partnership or simply curiosity about what we are building, we read and answer every message, usually within two working days."
-  />
+  >
+    <div class="panel">
+      <p class="panel__title">Direct</p>
+      <ul role="list">
+        <li><Icon name="mail" size={16} /><span><a href={`mailto:${site.email}`} class="panel__link">{site.email}</a><br /><span class="muted" style="font-size:0.85rem">Fastest way to reach us</span></span></li>
+        <li><Icon name="map-pin" size={16} /><span>{site.legalName}<br /><span class="muted" style="font-size:0.85rem">{addressLines.join(', ')}</span></span></li>
+        <li><Icon name="globe" size={16} /><span>UK and international<br /><span class="muted" style="font-size:0.85rem">Video and email, any time zone</span></span></li>
+      </ul>
+    </div>
+  </PageHero>
 
   <section class="section">
     <div class="container contact">
@@ -71,14 +87,7 @@ const topics = ['A project for my business', 'Partnership or collaboration', 'Pr
       </form>
 
       <aside class="contact__aside reveal" style="--reveal-delay:100ms">
-        <div class="contact__block">
-          <span class="contact__icon"><Icon name="mail" size={20} /></span>
-          <div>
-            <h2>Email</h2>
-            <a href={`mailto:${site.email}`}>{site.email}</a>
-            <p>Direct, and the fastest way to reach us.</p>
-          </div>
-        </div>
+        <MapMark />
         <div class="contact__block">
           <span class="contact__icon"><Icon name="map-pin" size={20} /></span>
           <div>
@@ -89,24 +98,48 @@ const topics = ['A project for my business', 'Partnership or collaboration', 'Pr
             </address>
           </div>
         </div>
-        <MapMark />
         <div class="contact__block">
-          <span class="contact__icon"><Icon name="globe" size={20} /></span>
+          <span class="contact__icon"><Icon name="building" size={20} /></span>
           <div>
-            <h2>Where we work</h2>
-            <p>With customers in the UK and internationally. Most conversations happen over video and email.</p>
+            <h2>Meetings</h2>
+            <p>By appointment. Most first conversations happen on video, whichever time zone you are in.</p>
           </div>
         </div>
       </aside>
     </div>
   </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">What happens next</p>
+        <h2 class="h2 reveal" style="--reveal-delay:60ms">After you press send.</h2>
+      </div>
+      <ol role="list" class="grid grid--4 next">
+        {
+          next.map(([t, d], i) => (
+            <li class="card card--lift reveal" style={`--reveal-delay:${i * 80}ms`}>
+              <span class="next__num">0{i + 1}</span>
+              <h3 class="h4">{t}</h3>
+              <p>{d}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
 </Base>
 
 <style>
+  .panel__link {
+    color: var(--indigo);
+    font-weight: 600;
+  }
+
   .contact {
     display: grid;
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-    gap: clamp(32px, 6vw, 96px);
+    gap: clamp(32px, 5vw, 72px);
     align-items: start;
   }
 
@@ -164,8 +197,7 @@ const topics = ['A project for my business', 'Partnership or collaboration', 'Pr
 
   .contact__aside {
     display: grid;
-    gap: 32px;
-    padding-top: 8px;
+    gap: 28px;
   }
 
   .contact__block {
@@ -190,17 +222,11 @@ const topics = ['A project for my business', 'Partnership or collaboration', 'Pr
     margin-bottom: 4px;
   }
 
-  .contact__block a {
-    color: var(--indigo);
-    font-weight: 600;
-  }
-
   .contact__block address {
     font-style: normal;
     color: var(--slate);
     font-size: 0.95rem;
     line-height: 1.55;
-    margin-top: 2px;
   }
 
   .contact__block address strong {
@@ -210,7 +236,18 @@ const topics = ['A project for my business', 'Partnership or collaboration', 'Pr
   .contact__block p {
     color: var(--slate);
     font-size: 0.95rem;
-    margin-top: 2px;
+  }
+
+  .next__num {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--indigo);
+    margin-bottom: 14px;
+  }
+
+  .next p {
+    margin-top: 6px;
   }
 
   @media (max-width: 860px) {
@@ -245,11 +282,7 @@ const topics = ['A project for my business', 'Partnership or collaboration', 'Pr
     if (endpoint) {
       say('Sending…');
       try {
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: { Accept: 'application/json' },
-          body: data,
-        });
+        const res = await fetch(endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: data });
         if (res.ok) {
           form.reset();
           say('Thanks. Your message has been sent and we will reply by email.', 'ok');

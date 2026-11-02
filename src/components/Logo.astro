@@ -1,7 +1,6 @@
 ---
 /**
- * Brand lock-up: the module mark plus the wordmark.
- * `tone` picks the wordmark colour for light or dark surfaces.
+ * Brand wordmark. `tone` picks the colour for light or dark surfaces.
  */
 interface Props {
   tone?: 'light' | 'dark';
@@ -13,36 +12,11 @@ const wordmark = tone === 'dark' ? '/brand/insoftica-2.png' : '/brand/insoftica-
 const width = Math.round(height * (tone === 'dark' ? 1360 / 273 : 1596 / 286));
 ---
 
-<span class={`logo ${className}`} style={`--h:${height}px`}>
-  <svg class="logo__mark" viewBox="0 0 360 360" aria-hidden="true">
-    <rect width="360" height="360" rx="76" fill="#4c4fd6" />
-    <g fill="#fff">
-      <rect x="88" y="88" width="51" height="51" rx="6" />
-      <rect x="154" y="88" width="51" height="51" rx="6" />
-      <circle cx="246" cy="113.5" r="25.5" />
-      <rect x="154" y="154" width="51" height="51" rx="6" />
-      <rect x="88" y="221" width="51" height="51" rx="6" />
-      <rect x="154" y="221" width="51" height="51" rx="6" />
-      <rect x="221" y="221" width="51" height="51" rx="6" />
-    </g>
-  </svg>
-  <img class="logo__word" src={wordmark} width={width} height={height} alt="Insoftica" />
-</span>
+<img class={`logo ${className}`} src={wordmark} width={width} height={height} alt="Insoftica" style={`height:${height}px`} />
 
 <style>
   .logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .logo__mark {
-    width: calc(var(--h) * 1.35);
-    height: calc(var(--h) * 1.35);
-  }
-
-  .logo__word {
-    height: var(--h);
+    display: block;
     width: auto;
   }
 </style>
