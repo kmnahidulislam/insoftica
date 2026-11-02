@@ -1,0 +1,79 @@
+---
+/**
+ * A styled code block with a window header. Highlighting is done with a
+ * handful of spans at author time so no runtime library is needed.
+ */
+interface Props {
+  title: string;
+  lang?: string;
+}
+const { title, lang = 'ts' } = Astro.props;
+---
+
+<figure class="code">
+  <figcaption class="code__bar">
+    <span class="code__dots"><i></i><i></i><i></i></span>
+    <span class="code__title">{title}</span>
+    <span class="code__lang">{lang}</span>
+  </figcaption>
+  <pre class="code__body"><code><slot /></code></pre>
+</figure>
+
+<style>
+  .code {
+    min-width: 0;
+    max-width: 100%;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #0b0d1f;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .code__bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .code__dots {
+    display: inline-flex;
+    gap: 5px;
+  }
+
+  .code__dots i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .code__lang {
+    margin-left: auto;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .code__body {
+    margin: 0;
+    padding: 18px 20px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: #e6e7f2;
+    tab-size: 2;
+  }
+
+  .code__body :global(.k) { color: #9da1ff; }
+  .code__body :global(.s) { color: #8fd3a8; }
+  .code__body :global(.c) { color: rgba(255, 255, 255, 0.4); font-style: italic; }
+  .code__body :global(.f) { color: #f2c66d; }
+  .code__body :global(.n) { color: #ff9b6a; }
+</style>

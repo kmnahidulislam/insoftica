@@ -22,7 +22,6 @@ export const site = {
    */
   formEndpoint: '',
   social: {
-    github: 'https://github.com/kmnahidulislam/insoftica',
     linkedin: '',
   },
 };

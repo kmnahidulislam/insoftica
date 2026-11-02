@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
+import MapMark from '../components/MapMark.astro';
 import { site, addressLines } from '../data/site';
 
 const principles = [
@@ -168,6 +169,7 @@ const facts = [
       <div class="reveal">
         <p class="eyebrow">Company details</p>
         <h2 class="h2">The formal part.</h2>
+        <div style="margin-top:24px"><MapMark /></div>
       </div>
       <div class="reveal" style="--reveal-delay:80ms">
         <dl class="details">

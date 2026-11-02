@@ -3,6 +3,15 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
+import Illus from '../components/Illus.astro';
+import CodeSample from '../components/CodeSample.astro';
+import { site } from '../data/site';
+
+const spotlights = [
+  { illus: 'search', eyebrow: 'AI-powered solutions', title: 'Assistants that cite their sources.', text: 'We connect a language model to your own documents and records, so every answer points at where it came from. Staff check the citation, not the whole document, and the model never sees data it is not allowed to.', points: ['Retrieval over your data, with permissions respected', 'Evaluation set scored on every change', 'Review step before anything is sent or saved'] },
+  { illus: 'billing', eyebrow: 'SaaS platforms', title: 'Billing that survives contact with real customers.', text: 'Plans, trials, upgrades mid-cycle, usage metering, failed payments, VAT across borders. We build subscription products with the operational side designed in, not bolted on.', points: ['Multi-tenant from the first line of code', 'Usage metering and invoices that reconcile', 'Admin tools for your support team'] },
+  { illus: 'automation', eyebrow: 'Workflow automation', title: 'Remove the repetitive steps, keep the audit trail.', text: 'Rules, queues and scheduled jobs that take over the copy-and-paste work between systems, with every action logged so a person can always see what happened and why.', points: ['Triggers from webhooks, schedules or user actions', 'Retries and dead-letter handling built in', 'A log that explains every automated decision'] },
+] as const;
 
 const clients = [
   ['box', 'Founders with a product to build', 'You have the idea, the market and the first customers lined up. You need a team that can take it from brief to launch and stay to run it.'],
@@ -73,6 +82,21 @@ const fit = [
 <Base
   title="Solutions"
   description="Software engineering and AI-powered solutions from Insoftica: custom software, web applications, SaaS platforms, API integrations and modernisation for businesses in the UK and internationally."
+  faq={faq}
+  schema={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      serviceType: 'Software development and AI solutions',
+      provider: { '@type': 'Organization', name: site.legalName, url: site.url },
+      areaServed: ['GB', 'Worldwide'],
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Insoftica solutions',
+        itemListElement: solutions.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.title, description: s.text } })),
+      },
+    },
+  ]}
 >
   <PageHero
     eyebrow="Solutions for businesses"
@@ -113,6 +137,68 @@ const fit = [
             </article>
           ))
         }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">In practice</p>
+        <h2 class="h2 reveal" style="--reveal-delay:60ms">Three of the problems we solve most often.</h2>
+      </div>
+      <div class="spots">
+        {
+          spotlights.map((sp, i) => (
+            <div class="spot reveal" style={`--reveal-delay:${i * 80}ms`}>
+              <div class="spot__art"><Illus name={sp.illus} /></div>
+              <div class="spot__copy">
+                <p class="eyebrow">{sp.eyebrow}</p>
+                <h3 class="h2">{sp.title}</h3>
+                <p class="spot__text">{sp.text}</p>
+                <ul role="list" class="spot__points">
+                  {sp.points.map((pt) => (
+                    <li><Icon name="check" size={14} /> {pt}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section api">
+    <div class="container api__inner">
+      <div class="reveal">
+        <p class="eyebrow">API and integration</p>
+        <h2 class="h2">Every system we build has a clean API.</h2>
+        <p class="lead" style="margin-top:16px">Typed, versioned, documented and authenticated. Your other tools, and ours, talk to it the same way.</p>
+        <ul role="list" class="api__points">
+          <li><Icon name="check" size={14} /> REST endpoints with OpenAPI documentation</li>
+          <li><Icon name="check" size={14} /> Webhooks with signatures and retries</li>
+          <li><Icon name="check" size={14} /> Per-client keys, rate limits and audit logs</li>
+        </ul>
+      </div>
+      <div class="reveal" style="--reveal-delay:100ms">
+        <CodeSample title="create-invoice.ts" lang="ts">
+<span class="c">// Example of the kind of client we generate for every API</span>
+<span class="k">import</span> {'{'} InsofticaClient {'}'} <span class="k">from</span> <span class="s">'@your-company/api'</span>;
+
+<span class="k">const</span> api = <span class="k">new</span> <span class="f">InsofticaClient</span>({'{'} apiKey: process.env.<span class="n">API_KEY</span> {'}'});
+
+<span class="k">const</span> invoice = <span class="k">await</span> api.invoices.<span class="f">create</span>({'{'}
+  customerId: <span class="s">'cus_8f2k'</span>,
+  currency: <span class="s">'GBP'</span>,
+  lines: [{'{'} description: <span class="s">'Pro plan, November'</span>, amount: <span class="n">4900</span> {'}'}],
+{'}'});
+
+<span class="c">// Webhook arrives when it is paid; signature is verified for you</span>
+api.webhooks.<span class="f">on</span>(<span class="s">'invoice.paid'</span>, <span class="k">async</span> (event) =&gt; {'{'}
+  <span class="k">await</span> ledger.<span class="f">record</span>(event.data);
+{'}'});
+        </CodeSample>
       </div>
     </div>
   </section>
@@ -236,6 +322,83 @@ const fit = [
     flex-shrink: 0;
   }
 
+  .spots {
+    display: grid;
+    gap: 24px;
+  }
+
+  .spot {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: clamp(24px, 5vw, 72px);
+    padding: clamp(24px, 3.5vw, 40px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .spot:nth-child(even) .spot__art {
+    order: 2;
+  }
+
+  .spot__art {
+    padding: 12px 20px;
+    border-radius: 14px;
+    background: var(--canvas-2);
+  }
+
+  .spot__copy .eyebrow {
+    margin-bottom: 14px;
+  }
+
+  .spot__copy h3 {
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+  }
+
+  .spot__text {
+    margin-top: 14px;
+    color: var(--slate);
+  }
+
+  .spot__points {
+    margin-top: 18px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .spot__points li,
+  .api__points li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .spot__points svg,
+  .api__points svg {
+    color: var(--indigo);
+    flex-shrink: 0;
+  }
+
+  .api__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+
+  .api__inner > * {
+    min-width: 0;
+  }
+
+  .api__points {
+    margin-top: 22px;
+    display: grid;
+    gap: 10px;
+  }
+
   .clients {
     --grid-gap: 28px 48px;
   }
@@ -335,8 +498,14 @@ const fit = [
   }
 
   @media (max-width: 860px) {
+    .spot,
+    .api__inner,
     .faq-wrap {
       grid-template-columns: 1fr;
+    }
+
+    .spot:nth-child(even) .spot__art {
+      order: 0;
     }
 
     .how {

@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
+import Illus from '../components/Illus.astro';
 import { products, productAreas, statusLabel } from '../data/products';
 
 const stages = [
@@ -143,7 +144,9 @@ const standards = [
           <Icon name="arrow-right" size={16} />
         </a>
       </div>
-      <ul role="list" class="ea__list reveal" style="--reveal-delay:80ms">
+      <div class="reveal" style="--reveal-delay:80ms">
+      <div class="ea__art"><Illus name="dashboard" /><span class="ea__label">Illustrative concept</span></div>
+      <ul role="list" class="ea__list">
         {
           earlyAccess.map((e) => (
             <li>
@@ -153,6 +156,7 @@ const standards = [
           ))
         }
       </ul>
+      </div>
     </div>
   </section>
 
@@ -246,6 +250,26 @@ const standards = [
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: clamp(32px, 6vw, 96px);
     align-items: center;
+  }
+
+  .ea__art {
+    position: relative;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .ea__label {
+    position: absolute;
+    right: 14px;
+    top: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate-light);
   }
 
   .ea__list {

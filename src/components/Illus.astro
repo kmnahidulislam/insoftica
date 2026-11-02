@@ -1,0 +1,228 @@
+---
+/**
+ * Small product-style illustrations drawn in SVG. Each one depicts a real
+ * capability rather than a decorative blob, and inherits the brand tokens.
+ */
+interface Props {
+  name: 'dashboard' | 'integrations' | 'security' | 'support' | 'pipeline' | 'automation' | 'search' | 'mobile' | 'billing';
+  class?: string;
+}
+const { name, class: className = '' } = Astro.props;
+---
+
+<div class:list={['illus', `illus--${name}`, className]} aria-hidden="true" data-diagram>
+  {
+    name === 'dashboard' && (
+      <svg viewBox="0 0 320 200">
+        <rect x="8" y="8" width="304" height="184" rx="12" class="i-panel" />
+        <rect x="8" y="8" width="304" height="28" rx="12" class="i-bar" />
+        <circle cx="24" cy="22" r="4" class="i-dot" />
+        <circle cx="38" cy="22" r="4" class="i-dot" />
+        <circle cx="52" cy="22" r="4" class="i-dot" />
+        <rect x="24" y="52" width="80" height="44" rx="8" class="i-card" />
+        <rect x="120" y="52" width="80" height="44" rx="8" class="i-card" />
+        <rect x="216" y="52" width="80" height="44" rx="8" class="i-card i-card--accent" />
+        <rect x="34" y="62" width="36" height="6" rx="3" class="i-line" />
+        <rect x="34" y="76" width="52" height="10" rx="3" class="i-strong" />
+        <rect x="130" y="62" width="36" height="6" rx="3" class="i-line" />
+        <rect x="130" y="76" width="44" height="10" rx="3" class="i-strong" />
+        <rect x="226" y="62" width="36" height="6" rx="3" class="i-line-light" />
+        <rect x="226" y="76" width="56" height="10" rx="3" class="i-white" />
+        <rect x="24" y="112" width="272" height="64" rx="8" class="i-card" />
+        <polyline points="36,160 70,150 100,154 130,138 160,142 190,126 220,130 250,116 284,120" class="i-chart" />
+        <polyline points="36,160 70,150 100,154 130,138 160,142 190,126 220,130 250,116 284,120 284,172 36,172" class="i-chart-fill" />
+      </svg>
+    )
+  }
+  {
+    name === 'integrations' && (
+      <svg viewBox="0 0 320 200">
+        <g class="i-links">
+          <path d="M160 100 L60 50" /><path d="M160 100 L260 50" /><path d="M160 100 L60 150" /><path d="M160 100 L260 150" /><path d="M160 100 L160 28" /><path d="M160 100 L160 172" />
+        </g>
+        <g class="i-nodes">
+          <rect x="36" y="32" width="48" height="36" rx="8" /><rect x="236" y="32" width="48" height="36" rx="8" /><rect x="36" y="132" width="48" height="36" rx="8" /><rect x="236" y="132" width="48" height="36" rx="8" /><rect x="136" y="10" width="48" height="36" rx="8" /><rect x="136" y="154" width="48" height="36" rx="8" />
+        </g>
+        <g class="i-glyph">
+          <rect x="50" y="44" width="20" height="12" rx="2" /><circle cx="260" cy="50" r="7" /><path d="M48 150h24M60 142v16" /><rect x="250" y="142" width="20" height="16" rx="3" /><path d="M150 28h20M150 22h12" /><circle cx="160" cy="172" r="7" />
+        </g>
+        <circle cx="160" cy="100" r="30" class="i-hub" />
+        <g class="i-hub-mark">
+          <rect x="148" y="88" width="7" height="7" rx="1.5" /><rect x="157" y="88" width="7" height="7" rx="1.5" /><circle cx="169" cy="91.5" r="3.5" /><rect x="157" y="97" width="7" height="7" rx="1.5" /><rect x="148" y="106" width="7" height="7" rx="1.5" /><rect x="157" y="106" width="7" height="7" rx="1.5" /><rect x="166" y="106" width="7" height="7" rx="1.5" />
+        </g>
+        <circle cx="160" cy="100" r="40" class="i-pulse" />
+      </svg>
+    )
+  }
+  {
+    name === 'security' && (
+      <svg viewBox="0 0 320 200">
+        <path d="M160 18 L236 44 V102 C236 146 198 176 160 186 C122 176 84 146 84 102 V44 Z" class="i-shield" />
+        <path d="M160 40 L216 60 V102 C216 136 188 160 160 168 C132 160 104 136 104 102 V60 Z" class="i-shield-inner" />
+        <path d="M136 102 l16 16 32-34" class="i-tick" />
+        <g class="i-badges">
+          <rect x="16" y="26" width="64" height="24" rx="12" /><rect x="240" y="26" width="64" height="24" rx="12" /><rect x="16" y="150" width="64" height="24" rx="12" /><rect x="240" y="150" width="64" height="24" rx="12" />
+        </g>
+        <g class="i-badge-text">
+          <text x="48" y="42" text-anchor="middle">TLS 1.3</text><text x="272" y="42" text-anchor="middle">AES-256</text><text x="48" y="166" text-anchor="middle">UK / EU</text><text x="272" y="166" text-anchor="middle">RBAC</text>
+        </g>
+      </svg>
+    )
+  }
+  {
+    name === 'support' && (
+      <svg viewBox="0 0 320 200">
+        <rect x="24" y="40" width="180" height="56" rx="14" class="i-bubble" />
+        <rect x="40" y="56" width="110" height="7" rx="3.5" class="i-line" />
+        <rect x="40" y="72" width="80" height="7" rx="3.5" class="i-line" />
+        <rect x="116" y="112" width="180" height="56" rx="14" class="i-bubble i-bubble--accent" />
+        <rect x="132" y="128" width="130" height="7" rx="3.5" class="i-line-light" />
+        <rect x="132" y="144" width="90" height="7" rx="3.5" class="i-line-light" />
+        <circle cx="60" cy="150" r="22" class="i-avatar" />
+        <path d="M50 148c3-10 7-13 10-13s7 3 10 13" class="i-avatar-glyph" /><circle cx="60" cy="144" r="4" class="i-avatar-glyph" />
+        <circle cx="262" cy="64" r="22" class="i-avatar i-avatar--accent" />
+        <rect x="252" y="56" width="20" height="16" rx="3" class="i-avatar-glyph-light" />
+      </svg>
+    )
+  }
+  {
+    name === 'pipeline' && (
+      <svg viewBox="0 0 320 200">
+        <g class="i-links"><path d="M72 100h40" /><path d="M152 100h40" /><path d="M232 100h40" /></g>
+        <g class="i-nodes"><rect x="24" y="76" width="48" height="48" rx="10" /><rect x="112" y="76" width="40" height="48" rx="10" /><rect x="192" y="76" width="40" height="48" rx="10" /><rect x="272" y="76" width="40" height="48" rx="10" /></g>
+        <g class="i-glyph"><path d="M36 92h24M36 100h16M36 108h20" /><circle cx="132" cy="100" r="8" /><path d="M204 100h16M212 92v16" /><path d="M284 102l6 6 12-14" /></g>
+        <g class="i-stage-labels"><text x="48" y="150" text-anchor="middle">Input</text><text x="132" y="150" text-anchor="middle">Retrieve</text><text x="212" y="150" text-anchor="middle">Model</text><text x="292" y="150" text-anchor="middle">Review</text></g>
+        <circle cx="48" cy="40" r="6" class="i-dot-accent" /><circle cx="132" cy="40" r="6" class="i-dot-accent" style="animation-delay:.3s" /><circle cx="212" cy="40" r="6" class="i-dot-accent" style="animation-delay:.6s" /><circle cx="292" cy="40" r="6" class="i-dot-accent" style="animation-delay:.9s" />
+      </svg>
+    )
+  }
+  {
+    name === 'automation' && (
+      <svg viewBox="0 0 320 200">
+        <rect x="24" y="24" width="272" height="152" rx="12" class="i-panel" />
+        <g class="i-nodes"><rect x="48" y="48" width="88" height="32" rx="8" /><rect x="48" y="96" width="88" height="32" rx="8" /><rect x="48" y="144" width="88" height="20" rx="8" /><rect x="184" y="72" width="88" height="56" rx="8" /></g>
+        <g class="i-links"><path d="M136 64 C160 64, 160 100, 184 100" /><path d="M136 112 C160 112, 160 100, 184 100" /></g>
+        <g class="i-glyph"><rect x="60" y="59" width="40" height="8" rx="4" /><rect x="60" y="107" width="54" height="8" rx="4" /><rect x="60" y="150" width="30" height="8" rx="4" /><rect x="198" y="86" width="52" height="8" rx="4" /><rect x="198" y="102" width="36" height="8" rx="4" /></g>
+        <circle cx="272" cy="72" r="10" class="i-dot-accent" />
+      </svg>
+    )
+  }
+  {
+    name === 'search' && (
+      <svg viewBox="0 0 320 200">
+        <rect x="40" y="36" width="240" height="40" rx="20" class="i-card" />
+        <circle cx="66" cy="56" r="8" class="i-glyph-stroke" /><path d="M72 62l8 8" class="i-glyph-stroke" />
+        <rect x="88" y="52" width="120" height="8" rx="4" class="i-strong" />
+        <rect x="40" y="92" width="240" height="24" rx="8" class="i-card i-card--accent" /><rect x="52" y="100" width="150" height="8" rx="4" class="i-white" />
+        <rect x="40" y="124" width="240" height="24" rx="8" class="i-card" /><rect x="52" y="132" width="120" height="8" rx="4" class="i-line" />
+        <rect x="40" y="156" width="240" height="24" rx="8" class="i-card" /><rect x="52" y="164" width="170" height="8" rx="4" class="i-line" />
+        <text x="266" y="109" text-anchor="end" class="i-cite">[1]</text><text x="266" y="141" text-anchor="end" class="i-cite-muted">[2]</text><text x="266" y="173" text-anchor="end" class="i-cite-muted">[3]</text>
+      </svg>
+    )
+  }
+  {
+    name === 'mobile' && (
+      <svg viewBox="0 0 320 200">
+        <rect x="112" y="8" width="96" height="184" rx="18" class="i-panel" />
+        <rect x="140" y="18" width="40" height="6" rx="3" class="i-line" />
+        <rect x="124" y="36" width="72" height="44" rx="8" class="i-card i-card--accent" />
+        <rect x="124" y="90" width="72" height="20" rx="6" class="i-card" /><rect x="124" y="118" width="72" height="20" rx="6" class="i-card" /><rect x="124" y="146" width="72" height="20" rx="6" class="i-card" />
+        <rect x="24" y="60" width="72" height="80" rx="10" class="i-panel" /><rect x="34" y="72" width="52" height="8" rx="4" class="i-strong" /><rect x="34" y="88" width="40" height="6" rx="3" class="i-line" /><rect x="34" y="100" width="48" height="6" rx="3" class="i-line" />
+        <rect x="224" y="60" width="72" height="80" rx="10" class="i-panel" /><rect x="234" y="72" width="52" height="8" rx="4" class="i-strong" /><rect x="234" y="88" width="40" height="6" rx="3" class="i-line" /><rect x="234" y="100" width="48" height="6" rx="3" class="i-line" />
+        <g class="i-links"><path d="M96 100h16" /><path d="M208 100h16" /></g>
+      </svg>
+    )
+  }
+  {
+    name === 'billing' && (
+      <svg viewBox="0 0 320 200">
+        <rect x="24" y="40" width="168" height="120" rx="12" class="i-panel" />
+        <rect x="40" y="56" width="60" height="8" rx="4" class="i-strong" />
+        <rect x="40" y="76" width="136" height="1" class="i-rule" />
+        <rect x="40" y="88" width="80" height="7" rx="3.5" class="i-line" /><rect x="150" y="88" width="26" height="7" rx="3.5" class="i-line" />
+        <rect x="40" y="106" width="64" height="7" rx="3.5" class="i-line" /><rect x="150" y="106" width="26" height="7" rx="3.5" class="i-line" />
+        <rect x="40" y="124" width="72" height="7" rx="3.5" class="i-line" /><rect x="150" y="124" width="26" height="7" rx="3.5" class="i-line" />
+        <rect x="40" y="140" width="136" height="1" class="i-rule" />
+        <rect x="208" y="72" width="88" height="56" rx="10" class="i-card i-card--accent" />
+        <rect x="220" y="84" width="36" height="6" rx="3" class="i-line-light" /><rect x="220" y="98" width="56" height="12" rx="3" class="i-white" />
+        <circle cx="280" cy="150" r="14" class="i-ok" /><path d="M273 150l5 5 9-10" class="i-tick-small" />
+      </svg>
+    )
+  }
+</div>
+
+<style>
+  .illus {
+    --i-ink: var(--ink);
+    --i-accent: var(--indigo);
+    --i-line: var(--line-strong);
+    --i-soft: var(--line);
+    --i-surface: var(--surface);
+    --i-tint: var(--indigo-tint);
+  }
+
+  .illus svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    font-family: var(--font-mono);
+  }
+
+  .i-panel { fill: var(--i-surface); stroke: var(--i-line); stroke-width: 1.5; }
+  .i-bar { fill: var(--i-tint); }
+  .i-dot { fill: var(--i-line); }
+  .i-card { fill: var(--i-surface); stroke: var(--i-soft); stroke-width: 1.5; }
+  .i-card--accent { fill: var(--i-accent); stroke: var(--i-accent); }
+  .i-line { fill: var(--i-soft); }
+  .i-line-light { fill: rgba(255, 255, 255, 0.45); }
+  .i-white { fill: #fff; }
+  .i-strong { fill: var(--i-ink); }
+  .i-rule { fill: var(--i-soft); }
+  .i-chart { fill: none; stroke: var(--i-accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 400; stroke-dashoffset: 400; transition: stroke-dashoffset 1.4s var(--ease) 0.2s; }
+  .i-chart-fill { fill: var(--i-accent); opacity: 0; transition: opacity 0.8s ease 1.2s; }
+  .illus.is-visible .i-chart { stroke-dashoffset: 0; }
+  .illus.is-visible .i-chart-fill { opacity: 0.12; }
+  .i-links path { fill: none; stroke: var(--i-line); stroke-width: 1.75; stroke-dasharray: 4 4; }
+  .i-nodes rect { fill: var(--i-surface); stroke: var(--i-line); stroke-width: 1.5; }
+  .i-glyph * { fill: none; stroke: var(--i-accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .i-glyph rect { fill: var(--i-tint); stroke: none; }
+  .i-glyph-stroke { fill: none; stroke: var(--i-ink); stroke-width: 2; stroke-linecap: round; }
+  .i-hub { fill: var(--i-accent); }
+  .i-hub-mark * { fill: #fff; }
+  .i-pulse { fill: none; stroke: var(--i-accent); stroke-width: 1.5; opacity: 0; transform-origin: 160px 100px; animation: i-pulse 2.6s ease-out infinite; }
+  @keyframes i-pulse { 0% { transform: scale(0.75); opacity: 0.5; } 100% { transform: scale(1.6); opacity: 0; } }
+  .i-shield { fill: var(--i-tint); stroke: var(--i-accent); stroke-width: 2; }
+  .i-shield-inner { fill: var(--i-accent); }
+  .i-tick { fill: none; stroke: #fff; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 80; stroke-dashoffset: 80; transition: stroke-dashoffset 0.6s var(--ease) 0.5s; }
+  .illus.is-visible .i-tick { stroke-dashoffset: 0; }
+  .i-badges rect { fill: var(--i-surface); stroke: var(--i-line); stroke-width: 1.5; }
+  .i-badge-text text { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; fill: var(--i-ink); }
+  .i-bubble { fill: var(--i-surface); stroke: var(--i-line); stroke-width: 1.5; }
+  .i-bubble--accent { fill: var(--i-accent); stroke: var(--i-accent); }
+  .i-avatar { fill: var(--i-tint); stroke: var(--i-line); stroke-width: 1.5; }
+  .i-avatar--accent { fill: var(--i-ink); stroke: var(--i-ink); }
+  .i-avatar-glyph { fill: none; stroke: var(--i-accent); stroke-width: 2; }
+  .i-avatar-glyph-light { fill: none; stroke: #fff; stroke-width: 2; }
+  .i-stage-labels text { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; fill: var(--slate); }
+  .i-dot-accent { fill: var(--i-accent); animation: i-blink 1.8s ease-in-out infinite; }
+  @keyframes i-blink { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+  .i-cite { font-size: 10px; fill: #fff; }
+  .i-cite-muted { font-size: 10px; fill: var(--slate-light); }
+  .i-ok { fill: var(--signal); }
+  .i-tick-small { fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  .on-dark .illus {
+    --i-ink: #fff;
+    --i-accent: var(--indigo-light);
+    --i-line: rgba(255, 255, 255, 0.25);
+    --i-soft: rgba(255, 255, 255, 0.14);
+    --i-surface: rgba(255, 255, 255, 0.04);
+    --i-tint: rgba(157, 161, 255, 0.18);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .i-chart, .i-tick { stroke-dashoffset: 0; transition: none; }
+    .i-chart-fill { opacity: 0.12; transition: none; }
+    .i-pulse, .i-dot-accent { animation: none; }
+  }
+</style>
