@@ -4,6 +4,7 @@ import HeroVisual from '../components/HeroVisual.astro';
 import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
 import AiPipeline from '../components/AiPipeline.astro';
 import Faq from '../components/Faq.astro';
+import WorkLoop from '../components/WorkLoop.astro';
 import Icon from '../components/Icon.astro';
 import { site } from '../data/site';
 import { products, productAreas, statusLabel } from '../data/products';
@@ -65,6 +66,13 @@ const models = [
   },
 ];
 
+const steps = [
+  ['Understand', 'We start with the problem, the people who have it and what a good outcome looks like. If software is not the answer, we say so.'],
+  ['Design', 'Flows and interfaces are drawn, challenged and tested before anything is built. Clarity first, decoration later.'],
+  ['Build', 'Small releases, reviewed code, automated checks. Working software early, then refined with the people using it.'],
+  ['Operate', 'Launch is the start. We monitor, support and improve products for as long as they are in use.'],
+];
+
 const faq: [string, string][] = [
   ['Does Insoftica have products I can use today?', 'Not yet. The first products are in development and are listed on the Products page with their status. We will only describe a product as available when you can actually sign up for it.'],
   ['Where is data hosted?', 'By default in UK and EU cloud regions. For client projects we host where your data protection obligations require, and we document it.'],
@@ -80,7 +88,6 @@ const faq: [string, string][] = [
     <div class="hero__bg" aria-hidden="true"></div>
     <div class="container hero__inner">
       <div class="hero__copy">
-        <p class="eyebrow reveal">Technology company · London</p>
         <h1 class="display reveal" style="--reveal-delay:60ms">
           Software <span class="hl">worth</span> building.
         </h1>
@@ -95,11 +102,6 @@ const faq: [string, string][] = [
           </a>
           <a href="/products" class="btn btn--ghost">What we're building</a>
         </div>
-        <ul role="list" class="hero__proof reveal" style="--reveal-delay:240ms">
-          <li><Icon name="check" size={14} /> Senior engineers on every project</li>
-          <li><Icon name="check" size={14} /> You own the code</li>
-          <li><Icon name="check" size={14} /> UK and EU data hosting</li>
-        </ul>
       </div>
       <div class="hero__visual">
         <HeroVisual />
@@ -256,6 +258,35 @@ const faq: [string, string][] = [
     </div>
   </section>
 
+  <!-- How we work -->
+  <section class="section work">
+    <div class="container work__inner">
+      <div class="work__art reveal">
+        <WorkLoop />
+      </div>
+      <div>
+        <div class="section-head reveal">
+          <p class="eyebrow">How we work</p>
+          <h2 class="h2">Four stages, repeated as often as the product needs.</h2>
+          <p class="lead">The same loop runs for our own products and for the work we do with businesses.</p>
+        </div>
+        <ol role="list" class="work__steps">
+          {
+            steps.map(([t, d], i) => (
+              <li class="work__step reveal" style={`--reveal-delay:${i * 80}ms`}>
+                <span class="work__num">0{i + 1}</span>
+                <div>
+                  <h3 class="h4">{t}</h3>
+                  <p>{d}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
   <!-- Engagement models -->
   <section class="section section--alt">
     <div class="container">
@@ -345,25 +376,6 @@ const faq: [string, string][] = [
   .hero__copy .lead {
     max-width: 46ch;
     margin: 24px 0 32px;
-  }
-
-  .hero__proof {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 22px;
-    margin-top: 28px;
-    font-size: 0.875rem;
-    color: var(--slate);
-  }
-
-  .hero__proof li {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .hero__proof svg {
-    color: var(--signal);
   }
 
   .hero__visual {
@@ -563,6 +575,55 @@ const faq: [string, string][] = [
     flex-shrink: 0;
   }
 
+  /* Work loop */
+  .work__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: center;
+  }
+
+  .work__art {
+    padding: clamp(16px, 3vw, 32px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .work .section-head {
+    margin-bottom: 28px;
+  }
+
+  .work__steps {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .work__step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 12px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .work__num {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--indigo);
+    padding-top: 4px;
+  }
+
+  .work__step h3 {
+    margin-bottom: 4px;
+  }
+
+  .work__step p {
+    color: var(--slate);
+    font-size: 0.95rem;
+  }
+
   /* FAQ */
   .faq-wrap {
     display: grid;
@@ -595,6 +656,7 @@ const faq: [string, string][] = [
   }
 
   @media (max-width: 860px) {
+    .work__inner,
     .intro__inner,
     .faq-wrap {
       grid-template-columns: 1fr;

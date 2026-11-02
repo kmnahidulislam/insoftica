@@ -1,0 +1,163 @@
+---
+/**
+ * The four-stage loop we run on every product and project, drawn as an SVG
+ * ring. Segments light up in sequence once scrolled into view.
+ */
+const stages = [
+  { key: 'understand', label: 'Understand', angle: -90 },
+  { key: 'design', label: 'Design', angle: 0 },
+  { key: 'build', label: 'Build', angle: 90 },
+  { key: 'operate', label: 'Operate', angle: 180 },
+];
+const R = 150;
+const cx = 200;
+const cy = 200;
+const pos = (deg: number, r = R) => {
+  const a = (deg * Math.PI) / 180;
+  return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
+};
+// Arc from stage i to i+1 (quarter circle, shortened so it does not touch the nodes)
+const arc = (fromDeg: number) => {
+  const s = pos(fromDeg + 16);
+  const e = pos(fromDeg + 74);
+  return `M${s.x.toFixed(1)} ${s.y.toFixed(1)} A${R} ${R} 0 0 1 ${e.x.toFixed(1)} ${e.y.toFixed(1)}`;
+};
+---
+
+<figure class="loop" data-diagram>
+  <svg viewBox="0 0 400 400" role="img" aria-labelledby="loop-title">
+    <title id="loop-title">The Insoftica loop: understand, design, build, operate, then repeat</title>
+    <defs>
+      <marker id="loop-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" class="loop__arrow" />
+      </marker>
+    </defs>
+
+    <circle cx={cx} cy={cy} r={R} class="loop__track" />
+
+    {stages.map((s, i) => <path d={arc(s.angle)} class="loop__arc" style={`--d:${i}`} marker-end="url(#loop-arr)" />)}
+
+    {
+      stages.map((s, i) => {
+        const p = pos(s.angle);
+        return (
+          <g class="loop__node" style={`--d:${i}`} transform={`translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`}>
+            <circle r="34" class="loop__node-bg" />
+            <g class="loop__icon">
+              {s.key === 'understand' && <><circle cx="-2" cy="-2" r="8" /><path d="m4 4 7 7" /></>}
+              {s.key === 'design' && <><rect x="-10" y="-10" width="20" height="20" rx="3" /><path d="M-10 -2h20M-2 -10v20" /></>}
+              {s.key === 'build' && <><path d="m-9 -5 6 5-6 5M-1 7h10" /></>}
+              {s.key === 'operate' && <><path d="M-10 4c3-10 8-14 10-14s7 4 10 14" /><circle cx="0" cy="6" r="3" /></>}
+            </g>
+            <text y="56" text-anchor="middle" class="loop__label">
+              {s.label}
+            </text>
+          </g>
+        );
+      })
+    }
+
+    <g class="loop__centre">
+      <text x={cx} y={cy - 6} text-anchor="middle" class="loop__centre-big">Repeat</text>
+      <text x={cx} y={cy + 14} text-anchor="middle" class="loop__centre-small">as often as the product needs</text>
+    </g>
+  </svg>
+</figure>
+
+<style>
+  .loop svg {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    margin-inline: auto;
+    display: block;
+    font-family: var(--font-sans);
+  }
+
+  .loop__track {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 2;
+  }
+
+  .loop__arc {
+    fill: none;
+    stroke: var(--indigo);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    transition: stroke-dashoffset 0.7s var(--ease);
+    transition-delay: calc(0.3s + var(--d) * 0.35s);
+  }
+
+  .loop__arrow {
+    fill: var(--indigo);
+  }
+
+  .loop__node {
+    opacity: 0;
+    transition: opacity 0.4s var(--ease);
+    transition-delay: calc(var(--d) * 0.35s);
+  }
+
+  .loop__node-bg {
+    fill: var(--surface);
+    stroke: var(--line-strong);
+    stroke-width: 1.5;
+  }
+
+  .loop__node:nth-of-type(1) .loop__node-bg {
+    fill: var(--indigo);
+    stroke: var(--indigo);
+  }
+
+  .loop__icon {
+    fill: none;
+    stroke: var(--indigo);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .loop__node:nth-of-type(1) .loop__icon {
+    stroke: #fff;
+  }
+
+  .loop__label {
+    font-size: 14px;
+    font-weight: 700;
+    fill: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .loop__centre-big {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    fill: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .loop__centre-small {
+    font-size: 11px;
+    fill: var(--slate);
+  }
+
+  .loop.is-visible .loop__arc {
+    stroke-dashoffset: 0;
+  }
+
+  .loop.is-visible .loop__node {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .loop__arc,
+    .loop__node {
+      stroke-dashoffset: 0;
+      opacity: 1;
+      transition: none;
+    }
+  }
+</style>
