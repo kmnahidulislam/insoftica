@@ -9,6 +9,7 @@ import type { APIRoute } from 'astro';
 import { WorkerMailer } from 'worker-mailer';
 import { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CONTACT_TO, CONTACT_FROM } from 'astro:env/server';
 import { site } from '../../data/site';
+import { buildContactEmail } from '../../lib/contact-email';
 
 export const prerender = false;
 
@@ -31,9 +32,6 @@ const clean = (value: FormDataEntryValue | null, max: number) =>
     .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '')
     .trim()
     .slice(0, max);
-
-const escapeHtml = (s: string) =>
-  s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string);
 
 const respond = (request: Request, ok: boolean, message: string, status: number) => {
   const wantsJson = (request.headers.get('accept') ?? '').includes('application/json');
@@ -83,14 +81,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return respond(request, false, 'The contact form is not configured yet.', 500);
   }
 
-  const lines = [
-    `Name: ${name}`,
-    `Email: ${email}`,
-    company ? `Company: ${company}` : '',
-    `Topic: ${topic || 'Not specified'}`,
-    '',
-    message,
-  ].filter((l) => l !== '');
+  const mail = buildContactEmail({ name, email, company, topic, message, receivedAt: new Date() });
 
   try {
     await WorkerMailer.send(
@@ -109,9 +100,9 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         from: { name: `${site.name} website`, email: from },
         to: { email: to },
         reply: { name: name.replace(/"/g, ''), email },
-        subject: `[Website] ${topic || 'Message'} from ${name}`,
-        text: lines.join('\n'),
-        html: `<p>${lines.map(escapeHtml).join('<br>')}</p>`.replace('<br><br>', '</p><p style="white-space:pre-wrap">'),
+        subject: mail.subject,
+        text: mail.text,
+        html: mail.html,
       }
     );
   } catch (err) {
