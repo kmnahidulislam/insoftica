@@ -48,18 +48,7 @@ export interface NavItem {
 export const nav: NavItem[] = [
   { label: 'Home', href: '/' },
   { label: 'Products', href: '/products' },
-  {
-    label: 'Solutions',
-    href: '/solutions',
-    children: [
-      { label: 'Custom software', desc: 'Applications built around how you work', href: '/solutions#custom-software', icon: 'code' },
-      { label: 'AI-powered solutions', desc: 'Models applied to a specific job, with review', href: '/solutions#ai', icon: 'sparkle' },
-      { label: 'Web applications', desc: 'Fast, accessible, built to scale', href: '/solutions#web', icon: 'monitor' },
-      { label: 'SaaS platforms', desc: 'Tenancy, billing, onboarding, admin', href: '/solutions#saas', icon: 'layers' },
-      { label: 'API & integration', desc: 'Connect the systems you already run', href: '/solutions#integration', icon: 'plug' },
-      { label: 'Modernisation', desc: 'Faster and safer without a rewrite', href: '/solutions#modernisation', icon: 'gauge' },
-    ],
-  },
+  { label: 'Solutions', href: '/solutions' },
   { label: 'Technology', href: '/technology' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
