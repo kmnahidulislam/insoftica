@@ -1,49 +1,94 @@
 ---
 /**
- * Stylised map tile for the registered office. Not a real map; a brand
- * illustration of a London street grid with a marker.
+ * Stylised map tile for the registered office. A brand illustration of the
+ * streets around City Road, drawn as SVG. Not a real map and not to scale.
  */
+import { site } from '../data/site';
 ---
 
-<div class="map" aria-hidden="true">
-  <svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice">
+<div class="map" aria-hidden="true" data-diagram>
+  <svg viewBox="0 0 480 300" preserveAspectRatio="xMidYMid slice">
     <defs>
-      <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-        <path d="M20 0H0V20" fill="none" stroke="var(--line)" stroke-width="1" />
-      </pattern>
+      <clipPath id="map-clip"><rect width="480" height="300" rx="0" /></clipPath>
     </defs>
-    <rect width="400" height="260" fill="var(--canvas-2)" />
-    <rect width="400" height="260" fill="url(#grid)" />
-    <!-- streets -->
-    <g stroke="var(--surface)" stroke-width="10" stroke-linecap="round" fill="none">
-      <path d="M-10 70 C 80 60, 160 90, 260 70 S 380 50, 410 60" />
-      <path d="M-10 180 C 90 170, 190 200, 290 180 S 390 160, 410 170" />
-      <path d="M60 -10 C 70 80, 50 160, 70 270" />
-      <path d="M220 -10 C 230 90, 210 170, 230 270" />
-      <path d="M330 -10 C 320 90, 340 170, 330 270" />
-    </g>
-    <g stroke="var(--line-strong)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7">
-      <path d="M-10 120 C 100 115, 200 130, 410 120" />
-      <path d="M140 -10 C 150 90, 130 170, 150 270" />
-    </g>
-    <!-- blocks -->
-    <g fill="var(--line)" opacity="0.6">
-      <rect x="80" y="84" width="48" height="26" rx="3" />
-      <rect x="160" y="140" width="46" height="30" rx="3" />
-      <rect x="250" y="88" width="60" height="22" rx="3" />
-      <rect x="345" y="135" width="40" height="34" rx="3" />
-      <rect x="90" y="195" width="38" height="40" rx="3" />
-    </g>
-    <!-- marker -->
-    <g class="map__pin">
-      <circle cx="220" cy="124" r="22" fill="var(--indigo)" opacity="0.14" class="map__pulse" />
-      <path d="M220 90c-12 0-20 9-20 20 0 14 20 32 20 32s20-18 20-32c0-11-8-20-20-20z" fill="var(--indigo)" />
-      <circle cx="220" cy="110" r="7" fill="#fff" />
+    <g clip-path="url(#map-clip)">
+      <rect width="480" height="300" class="m-base" />
+
+      <!-- water -->
+      <path class="m-water" d="M-10 262 C 90 250, 160 274, 250 262 S 400 250, 490 266 L 490 310 L -10 310 Z" />
+
+      <!-- parks -->
+      <rect class="m-park" x="32" y="40" width="96" height="70" rx="8" />
+      <rect class="m-park" x="356" y="188" width="88" height="54" rx="8" />
+      <g class="m-tree">
+        <circle cx="56" cy="62" r="5" /><circle cx="76" cy="86" r="6" /><circle cx="104" cy="58" r="4.5" /><circle cx="96" cy="92" r="5" />
+        <circle cx="380" cy="206" r="5" /><circle cx="420" cy="224" r="6" /><circle cx="404" cy="202" r="4" />
+      </g>
+
+      <!-- city blocks -->
+      <g class="m-block">
+        <rect x="150" y="34" width="70" height="40" rx="4" />
+        <rect x="232" y="34" width="52" height="40" rx="4" />
+        <rect x="300" y="30" width="84" height="46" rx="4" />
+        <rect x="400" y="40" width="48" height="36" rx="4" />
+        <rect x="150" y="92" width="48" height="44" rx="4" />
+        <rect x="212" y="92" width="72" height="44" rx="4" />
+        <rect x="300" y="96" width="40" height="40" rx="4" />
+        <rect x="356" y="96" width="92" height="40" rx="4" />
+        <rect x="32" y="128" width="42" height="54" rx="4" />
+        <rect x="88" y="128" width="40" height="54" rx="4" />
+        <rect x="150" y="156" width="134" height="30" rx="4" />
+        <rect x="300" y="156" width="52" height="30" rx="4" />
+        <rect x="368" y="156" width="80" height="20" rx="4" />
+        <rect x="32" y="200" width="96" height="40" rx="4" />
+        <rect x="150" y="204" width="56" height="36" rx="4" />
+        <rect x="222" y="204" width="62" height="36" rx="4" />
+        <rect x="300" y="204" width="40" height="36" rx="4" />
+      </g>
+
+      <!-- minor roads (gaps are the roads; these are lane marks) -->
+      <g class="m-lane">
+        <path d="M139 0 V 300" />
+        <path d="M292 0 V 250" />
+        <path d="M0 83 H 480" />
+        <path d="M0 146 H 480" />
+        <path d="M140 194 H 480" />
+        <path d="M0 192 H 128" />
+        <path d="M348 0 V 150" />
+      </g>
+
+      <!-- major road: City Road, diagonal -->
+      <path class="m-road m-road--major" d="M-20 236 C 100 190, 220 150, 320 118 S 470 60, 500 46" />
+      <path class="m-road-centre" d="M-20 236 C 100 190, 220 150, 320 118 S 470 60, 500 46" />
+
+      <!-- road labels -->
+      <text class="m-label">
+        <textPath href="#city-road" startOffset="31%">CITY ROAD</textPath>
+      </text>
+      <path id="city-road" d="M-20 226 C 100 180, 220 140, 320 108 S 470 50, 500 36" fill="none" />
+      <text class="m-label m-label--v" transform="translate(133 60) rotate(-90)">SHEPHERDESS WALK</text>
+      <text class="m-label" x="372" y="153">OLD STREET</text>
+
+      <!-- station mark -->
+      <g transform="translate(322 56)">
+        <circle r="8" class="m-station" />
+        <rect x="-5" y="-1.5" width="10" height="3" rx="1.5" class="m-station-bar" />
+      </g>
+
+      <!-- marker -->
+      <g class="m-pin" transform="translate(262 150)">
+        <circle r="26" class="m-pulse" />
+        <circle r="26" class="m-pulse m-pulse--late" />
+        <path d="M0 -30c-11 0-19 8-19 19 0 13 19 31 19 31s19-18 19-31c0-11-8-19-19-19z" class="m-pin-body" />
+        <circle cy="-11" r="6.5" class="m-pin-dot" />
+      </g>
     </g>
   </svg>
-  <div class="map__badge">
-    <span class="module" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
-    <span>EC1V 2NX</span>
+
+  <div class="map__card">
+    <span class="map__card-k">Registered office</span>
+    <span class="map__card-v">{site.address.line1}</span>
+    <span class="map__card-s">{site.address.city} {site.address.postcode}</span>
   </div>
 </div>
 
@@ -53,52 +98,71 @@
     border-radius: var(--radius-lg);
     overflow: hidden;
     border: 1px solid var(--line);
-    aspect-ratio: 400 / 260;
+    aspect-ratio: 480 / 300;
+    background: var(--canvas-2);
   }
 
   .map svg {
     width: 100%;
     height: 100%;
+    display: block;
+    font-family: var(--font-mono);
   }
 
-  .map__pulse {
-    transform-origin: 220px 124px;
-    animation: pulse 2.4s ease-out infinite;
+  .m-base { fill: #f0efe9; }
+  .m-water { fill: #dfe6f5; }
+  .m-park { fill: #e3ecdc; }
+  .m-tree circle { fill: #cadbbc; }
+  .m-block { fill: #e6e4dd; stroke: #dedbd2; stroke-width: 1; }
+  .m-lane { fill: none; stroke: #fff; stroke-width: 6; stroke-linecap: round; }
+  .m-road { fill: none; stroke: #fff; stroke-width: 14; stroke-linecap: round; }
+  .m-road-centre { fill: none; stroke: #ece9df; stroke-width: 1.5; stroke-dasharray: 8 8; }
+  .m-label { font-size: 8px; letter-spacing: 0.16em; fill: #8d8f9f; font-weight: 500; }
+  .m-station { fill: var(--surface); stroke: var(--indigo); stroke-width: 2; }
+  .m-station-bar { fill: var(--indigo); }
+  .m-pin-body { fill: var(--indigo); filter: drop-shadow(0 6px 10px rgba(14, 15, 42, 0.25)); }
+  .m-pin-dot { fill: #fff; }
+  .m-pulse { fill: var(--indigo); opacity: 0; transform-origin: 0 0; animation: m-pulse 2.8s ease-out infinite; }
+  .m-pulse--late { animation-delay: 1.4s; }
+
+  @keyframes m-pulse {
+    0% { transform: scale(0.3); opacity: 0.3; }
+    100% { transform: scale(1.6); opacity: 0; }
   }
 
-  @keyframes pulse {
-    0% {
-      transform: scale(0.6);
-      opacity: 0.35;
-    }
-    100% {
-      transform: scale(1.8);
-      opacity: 0;
-    }
-  }
+  .m-pin { opacity: 0; translate: 0 -12px; transition: opacity 0.6s var(--ease) 0.3s, translate 0.6s var(--ease) 0.3s; }
+  .map.is-visible .m-pin { opacity: 1; translate: 0 0; }
 
-  .map__badge {
+  .map__card {
     position: absolute;
     left: 14px;
     bottom: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border-radius: 10px;
+    display: grid;
+    gap: 2px;
+    padding: 10px 14px;
+    border-radius: 12px;
     background: var(--surface);
     border: 1px solid var(--line);
+    box-shadow: var(--shadow-md);
+  }
+
+  .map__card-k {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+
+  .map__card-v {
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: -0.01em;
     color: var(--ink);
-    box-shadow: var(--shadow-sm);
   }
 
-  .map__badge .module {
-    width: 16px;
-    height: 16px;
-    color: var(--indigo);
+  .map__card-s {
+    font-size: 0.8rem;
+    color: var(--slate);
   }
-
 </style>
