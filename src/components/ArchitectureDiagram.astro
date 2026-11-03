@@ -10,6 +10,7 @@ const { tone = 'light' } = Astro.props;
 ---
 
 <figure class:list={['arch', `arch--${tone}`]} data-diagram>
+  <div class="arch__scroll">
   <svg viewBox="0 0 880 420" role="img" aria-labelledby="arch-title arch-desc">
     <title id="arch-title">Reference architecture for an Insoftica product</title>
     <desc id="arch-desc">Web and mobile clients connect through an edge layer to an API, which talks to application services, an AI layer with retrieval and evaluation, and a managed PostgreSQL database with object storage. Monitoring spans every layer.</desc>
@@ -104,14 +105,49 @@ const { tone = 'light' } = Astro.props;
       <path d="M600 165 C 630 165, 630 100, 660 96" />
     </g>
   </svg>
+  </div>
+  <p class="arch__hint" aria-hidden="true">Swipe to see the whole diagram</p>
   <figcaption>Reference architecture used as the starting point for Insoftica products. Every layer is monitored; AI output passes through evaluation before it reaches a user.</figcaption>
 </figure>
 
 <style>
+  .arch__scroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
   .arch svg {
     width: 100%;
     height: auto;
     font-family: var(--font-sans);
+  }
+
+  .arch__hint {
+    display: none;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+
+  @media (max-width: 720px) {
+    .arch svg {
+      min-width: 720px;
+    }
+
+    .arch__scroll {
+      margin-inline: -8px;
+      padding-inline: 8px;
+      mask-image: linear-gradient(to right, #000 92%, transparent);
+    }
+
+    .arch__hint {
+      display: block;
+    }
   }
 
   .arch__label text {
@@ -220,7 +256,8 @@ const { tone = 'light' } = Astro.props;
     color: var(--slate);
   }
 
-  .arch--dark figcaption {
+  .arch--dark figcaption,
+  .arch--dark .arch__hint {
     color: rgba(255, 255, 255, 0.55);
   }
 
