@@ -20,7 +20,7 @@ export const site = {
    * https://formspree.io/f/xxxxxxx). When empty, the contact form composes an
    * email to `email` in the visitor's mail client instead.
    */
-  formEndpoint: '',
+  formEndpoint: '/api/contact',
   social: {
     linkedin: 'https://www.linkedin.com/company/insofticaltd/',
   },

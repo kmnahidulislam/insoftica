@@ -52,4 +52,19 @@ The form posts to `site.formEndpoint` (in `src/data/site.ts`). Set it to a Forms
 
 ## Deployment
 
-`npm run build` writes a fully static site to `dist/`. Upload that folder to any static host (Cloudflare Pages, Netlify, Vercel, or a plain web server) and point `www.insoftica.com` at it. No GitHub Actions workflow is used.
+`npm run build` prerenders every page to static HTML in `dist/client/` and produces a small Node server in `dist/server/` that serves those pages and handles the contact form (`POST /api/contact`). Run it with `npm start`; it listens on `PORT` (default 4321).
+
+On Render: create a **Web Service** from this repository with Build Command `npm install; npm run build` and Start Command `npm start`. No GitHub Actions workflow is used.
+
+### Contact form email
+
+The form sends through SMTP. Set these environment variables on the host (and in a local `.env`, which is git-ignored, for development). See `.env.example`.
+
+| Variable | Meaning |
+| --- | --- |
+| `SMTP_HOST`, `SMTP_PORT` | Mail server, e.g. `smtp.mailgun.org` and `587` |
+| `SMTP_USER`, `SMTP_PASS` | SMTP login |
+| `CONTACT_TO` | Inbox that receives messages (defaults to the site email) |
+| `CONTACT_FROM` | Sender address; must be one the SMTP account may send as |
+
+The credentials are read only inside the server endpoint and are never included in the built pages. The endpoint also drops honeypot submissions and limits each IP to five messages per ten minutes.

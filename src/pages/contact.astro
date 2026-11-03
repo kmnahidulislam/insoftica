@@ -31,6 +31,7 @@ const next = [
   <section class="section">
     <div class="container contact">
       <form
+        id="contact-form"
         class="contact__form reveal"
         method="POST"
         action={site.formEndpoint || undefined}
@@ -261,6 +262,11 @@ const next = [
     status.className = `contact__status${kind ? ` is-${kind}` : ''}`;
   };
 
+  // Result of a submission made without JavaScript (the server redirects back here).
+  const params = new URLSearchParams(location.search);
+  if (params.has('sent')) say('Thanks. Your message has been sent and we will reply by email.', 'ok');
+  else if (params.has('error')) say(`Something went wrong. Please email us directly at ${form?.dataset.mailto}.`, 'error');
+
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!form.checkValidity()) {
@@ -274,17 +280,22 @@ const next = [
     const mailto = form.dataset.mailto;
 
     if (endpoint) {
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (button) button.disabled = true;
       say('Sending…');
       try {
         const res = await fetch(endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: data });
-        if (res.ok) {
+        const body = (await res.json().catch(() => null)) as { ok?: boolean; message?: string } | null;
+        if (res.ok && body?.ok) {
           form.reset();
-          say('Thanks. Your message has been sent and we will reply by email.', 'ok');
+          say(body.message || 'Thanks. Your message has been sent and we will reply by email.', 'ok');
         } else {
-          say(`Something went wrong. Please email us directly at ${mailto}.`, 'error');
+          say(`${body?.message || 'Something went wrong.'} You can also email us at ${mailto}.`, 'error');
         }
       } catch {
         say(`Could not send. Please email us directly at ${mailto}.`, 'error');
+      } finally {
+        if (button) button.disabled = false;
       }
       return;
     }
