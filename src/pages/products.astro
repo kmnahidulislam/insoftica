@@ -28,11 +28,11 @@ const earlyAccess = [
 ];
 
 const standards = [
-  ['Data', 'Hosted in the region that suits you. Exportable in open formats. Deleted on request.'],
-  ['Security', 'Encrypted in transit and at rest. Least-privilege access. Dependency scanning on every release.'],
-  ['Reliability', 'Monitored around the clock. Backups restored and tested on a schedule. Public status when live.'],
-  ['Support', 'A real person replies. Documentation written by the people who built the product.'],
-];
+  ['database', 'Data', 'Hosted in the region that suits you. Exportable in open formats. Deleted on request.'],
+  ['lock', 'Security', 'Encrypted in transit and at rest. Least-privilege access. Dependency scanning on every release.'],
+  ['activity', 'Reliability', 'Monitored around the clock. Backups restored and tested on a schedule. Public status when live.'],
+  ['life-buoy', 'Support', 'A real person replies. Documentation written by the people who built the product.'],
+] as const;
 ---
 
 <Base
@@ -161,11 +161,9 @@ const standards = [
       </div>
       <div class="grid grid--4">
         {
-          standards.map(([t, d], i) => (
+          standards.map(([icon, t, d], i) => (
             <div class="card card--lift reveal" style={`--reveal-delay:${i * 70}ms`}>
-              <span class="module" aria-hidden="true" style="color:var(--indigo);margin-bottom:16px">
-                <span /><span /><span /><span /><span /><span /><span /><span /><span />
-              </span>
+              <span class="std__icon" aria-hidden="true"><Icon name={icon} size={20} /></span>
               <h3 class="h4">{t}</h3>
               <p style="margin-top:8px">{d}</p>
             </div>
@@ -197,6 +195,18 @@ const standards = [
 </Base>
 
 <style>
+  .std__icon {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--indigo-tint);
+    color: var(--indigo);
+    margin-bottom: 16px;
+  }
+
   .road .section-head {
     margin-bottom: 36px;
   }

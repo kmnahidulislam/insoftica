@@ -9,11 +9,11 @@ import Illus from '../components/Illus.astro';
 import CodeSample from '../components/CodeSample.astro';
 
 const philosophy = [
-  ['Boring where it matters', 'Databases, hosting and build tooling are chosen for reliability and a long support horizon, not novelty. Innovation goes into the product, not the plumbing.'],
-  ['Small, frequent releases', 'Changes ship in small pieces behind automated checks. A release is routine, not an event.'],
-  ['Measured, not assumed', 'Performance budgets, error rates and user-facing latency are tracked from the first deployment. If it is not measured we do not claim it.'],
-  ['Written down', 'Architecture decisions, runbooks and onboarding notes live with the code. The next engineer should not need to ask.'],
-];
+  ['anchor', 'Boring where it matters', 'Databases, hosting and build tooling are chosen for reliability and a long support horizon, not novelty. Innovation goes into the product, not the plumbing.'],
+  ['repeat', 'Small, frequent releases', 'Changes ship in small pieces behind automated checks. A release is routine, not an event.'],
+  ['activity', 'Measured, not assumed', 'Performance budgets, error rates and user-facing latency are tracked from the first deployment. If it is not measured we do not claim it.'],
+  ['book', 'Written down', 'Architecture decisions, runbooks and onboarding notes live with the code. The next engineer should not need to ask.'],
+] as const;
 
 const stack = [
   { area: 'Languages and frameworks', items: ['TypeScript', 'Node.js', 'React and Next.js', 'Astro', 'Python for data and ML work'] },
@@ -30,7 +30,7 @@ const practices = [
   ['layers', 'Feature flags and staged rollouts', 'New behaviour ships dark, turns on for a few users first, and can be switched off in seconds.'],
   ['shield', 'Dependency hygiene', 'Automated updates and scanning. Known vulnerabilities are patched within days, not quarters.'],
   ['gauge', 'Performance budgets', 'Page weight, Core Web Vitals and API latency have numbers attached. Regressions fail the build.'],
-  ['globe', 'Post-incident reviews', 'When something breaks we write down what happened, why, and what changed. Blameless, and shared.'],
+  ['file-text', 'Post-incident reviews', 'When something breaks we write down what happened, why, and what changed. Blameless, and shared.'],
 ] as const;
 
 const ai = [
@@ -61,12 +61,11 @@ const ai = [
       </div>
       <div class="grid grid--2 phil">
         {
-          philosophy.map(([t, d], i) => (
+          philosophy.map(([icon, t, d], i) => (
             <div class="phil__item reveal" style={`--reveal-delay:${i * 70}ms`}>
-              <span class="module" aria-hidden="true">
-                <span /><span /><span /><span /><span /><span /><span /><span /><span />
-              </span>
+              <span class="phil__icon" aria-hidden="true"><Icon name={icon} size={22} /></span>
               <div>
+                <span class="phil__num">0{i + 1}</span>
                 <h3 class="h3">{t}</h3>
                 <p>{d}</p>
               </div>
@@ -168,6 +167,7 @@ const ai = [
         <p class="eyebrow">Evaluation in practice</p>
         <h2 class="h2">Quality is a number we watch on every change.</h2>
         <p class="lead" style="margin-top:16px">Each AI feature ships with a test set of real examples. Every change is scored against it before it can be released, so a regression is caught by a build, not by a customer.</p>
+        <p class="evals__note">The code shown is a simplified example of the pattern, not a product.</p>
       </div>
       <div class="reveal" style="--reveal-delay:100ms">
         <CodeSample title="evaluate.ts" lang="ts">
@@ -212,18 +212,43 @@ const ai = [
 
 <style>
   .phil {
-    --grid-gap: 28px 48px;
+    --grid-gap: 0;
+    border-top: 1px solid var(--line);
   }
 
   .phil__item {
     display: flex;
-    gap: 18px;
+    gap: 20px;
     align-items: flex-start;
+    padding: 32px 32px 32px 0;
+    border-bottom: 1px solid var(--line);
   }
 
-  .phil__item .module {
+  .phil__item:nth-child(2n) {
+    padding-left: 32px;
+    padding-right: 0;
+    border-left: 1px solid var(--line);
+  }
+
+  .phil__icon {
+    display: inline-flex;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: var(--indigo-tint);
     color: var(--indigo);
-    margin-top: 4px;
+  }
+
+  .phil__num {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--slate-light);
+    margin-bottom: 6px;
   }
 
   .phil__item h3 {
@@ -337,6 +362,21 @@ const ai = [
 
   .evals__inner > * {
     min-width: 0;
+  }
+
+  .evals__note {
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--slate-light);
+  }
+
+  @media (max-width: 720px) {
+    .phil__item,
+    .phil__item:nth-child(2n) {
+      padding: 24px 0;
+      border-left: 0;
+    }
   }
 
   @media (max-width: 960px) {

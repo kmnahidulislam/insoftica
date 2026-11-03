@@ -23,13 +23,16 @@ const links = [
           There's nothing at <code class="nf__path" data-path>this address</code>. It may have moved, or the link may be wrong.
           Nothing is broken on our side, and the pages below are a good place to continue.
         </p>
+        <p class="nf__suggest reveal" data-suggest hidden style="--reveal-delay:150ms">
+          Did you mean <a data-suggest-link href="/"></a>?
+        </p>
         <div class="btn-row reveal" style="--reveal-delay:180ms">
           <a href="/" class="btn btn--primary">
             Back to home
             <Icon name="arrow-right" size={16} />
           </a>
           <button type="button" class="btn btn--ghost" data-back hidden>Go back</button>
-          <a href={`mailto:${site.email}?subject=Broken%20link`} class="btn btn--ghost">Report a broken link</a>
+          <a href={`mailto:${site.email}?subject=Broken%20link`} class="btn btn--ghost" data-report>Report a broken link</a>
         </div>
 
         <ul class="nf__links reveal" role="list" style="--reveal-delay:240ms">
@@ -142,6 +145,19 @@ const links = [
   .nf .lead {
     max-width: 48ch;
     margin: 20px 0 32px;
+  }
+
+  .nf__suggest {
+    margin: -16px 0 28px;
+    font-size: 1.02rem;
+    color: var(--slate);
+  }
+
+  .nf__suggest a {
+    font-weight: 600;
+    color: var(--indigo);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .nf__path {
@@ -308,7 +324,46 @@ const links = [
   // Show the address that was requested, and offer "Go back" when there is history.
   const pathEl = document.querySelector<HTMLElement>('[data-path]');
   const path = location.pathname + location.search;
-  if (pathEl && path && path !== '/404' && path !== '/404.html') pathEl.textContent = decodeURIComponent(path);
+  const isReal = path && path !== '/404' && path !== '/404.html';
+  if (pathEl && isReal) pathEl.textContent = decodeURIComponent(path);
+
+  // Suggest the closest real page for a near-miss address such as /product or /contact-us.
+  const pages: [string, string][] = [
+    ['/', 'the home page'], ['/products', 'Products'], ['/solutions', 'Solutions'],
+    ['/technology', 'Technology'], ['/about', 'About'], ['/contact', 'Contact'],
+    ['/privacy', 'Privacy'], ['/terms', 'Terms'],
+  ];
+  const distance = (a: string, b: string) => {
+    const m = a.length, n = b.length;
+    const d = Array.from({ length: m + 1 }, (_, i) => [i, ...Array(n).fill(0)]);
+    for (let j = 1; j <= n; j++) d[0][j] = j;
+    for (let i = 1; i <= m; i++)
+      for (let j = 1; j <= n; j++)
+        d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    return d[m][n];
+  };
+  if (isReal) {
+    const slug = '/' + location.pathname.toLowerCase().replace(/\.html?$/, '').split('/').filter(Boolean)[0]?.replace(/[-_]?(us|page)$/, '') || '';
+    let best: [string, string] | null = null;
+    let bestScore = Infinity;
+    for (const page of pages) {
+      if (page[0] === '/') continue;
+      const score = distance(slug, page[0]);
+      const ok = score <= Math.max(2, Math.floor(page[0].length / 3)) || page[0].startsWith(slug.slice(0, 4)) && slug.length >= 4;
+      if (ok && score < bestScore) { best = page; bestScore = score; }
+    }
+    const box = document.querySelector<HTMLElement>('[data-suggest]');
+    const link = document.querySelector<HTMLAnchorElement>('[data-suggest-link]');
+    if (best && box && link) {
+      link.href = best[0];
+      link.textContent = best[1];
+      box.hidden = false;
+    }
+  }
+
+  // Put the broken address in the report email so it can be fixed.
+  const report = document.querySelector<HTMLAnchorElement>('[data-report]');
+  if (report && isReal) report.href += '&body=' + encodeURIComponent('This address shows a 404 page: ' + location.href);
 
   const back = document.querySelector<HTMLButtonElement>('[data-back]');
   if (back && history.length > 1 && document.referrer && new URL(document.referrer).origin === location.origin) {
