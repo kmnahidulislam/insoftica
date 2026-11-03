@@ -55,6 +55,9 @@ const year = new Date().getFullYear();
       <p>&copy; {year} {site.legalName}. Registered in England and Wales.</p>
       <div class="footer__meta">
         <a href={`mailto:${site.email}`} aria-label="Email Insoftica" class="footer__icon"><Icon name="mail" size={16} /></a>
+        {site.social.linkedin && (
+          <a href={site.social.linkedin} target="_blank" rel="noopener" aria-label="Insoftica on LinkedIn" class="footer__icon"><Icon name="linkedin" size={16} /></a>
+        )}
         <span class="footer__sep" aria-hidden="true"></span>
         <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>
@@ -161,7 +164,12 @@ const year = new Date().getFullYear();
   .footer__meta {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
+  }
+
+  .footer__meta a + .footer__sep,
+  .footer__sep + a {
+    margin-left: 4px;
   }
 
   .footer__meta a {

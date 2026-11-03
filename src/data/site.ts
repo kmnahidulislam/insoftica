@@ -22,7 +22,7 @@ export const site = {
    */
   formEndpoint: '',
   social: {
-    linkedin: '',
+    linkedin: 'https://www.linkedin.com/company/insofticaltd/',
   },
 };
 
