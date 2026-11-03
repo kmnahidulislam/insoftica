@@ -171,6 +171,60 @@ const stages = [
   @media (max-width: 480px) {
     .pipe__list {
       grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .pipe__stage {
+      position: relative;
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr);
+      column-gap: 16px;
+      align-items: start;
+      padding-bottom: 22px;
+    }
+
+    .pipe__stage::before {
+      content: '';
+      position: absolute;
+      left: 25px;
+      top: 52px;
+      bottom: 0;
+      border-left: 2px dashed var(--line-strong);
+    }
+
+    .pipe__stage:last-child {
+      padding-bottom: 0;
+    }
+
+    .pipe__stage:last-child::before {
+      display: none;
+    }
+
+    .pipe__node {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      margin-bottom: 0;
+      grid-row: span 2;
+    }
+
+    .pipe__node svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .pipe__num {
+      top: -8px;
+      right: -8px;
+      font-size: 0.6rem;
+    }
+
+    .pipe__stage h3 {
+      margin: 4px 0 2px;
+    }
+
+    .pipe__stage p {
+      margin: 0;
     }
   }
 
