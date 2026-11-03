@@ -1,0 +1,122 @@
+---
+/**
+ * Page preloader: a short branded loading screen shown while fonts and the
+ * first paint settle. Hidden by script as soon as the page has loaded (with a
+ * minimum display so it never flickers), and by CSS alone if script fails.
+ */
+---
+
+<div class="preloader" data-preloader aria-hidden="true">
+  <div class="preloader__inner">
+    <img class="preloader__logo" src="/brand/insoftica-blue.png" width="156" height="28" alt="" />
+    <span class="preloader__bar"><i></i></span>
+  </div>
+</div>
+
+<style>
+  .preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: grid;
+    place-items: center;
+    background: var(--canvas);
+    transition: opacity 0.45s var(--ease), visibility 0s linear 0.45s;
+    /* Fallback: if the script never runs, the screen still goes away. */
+    animation: preloader-out 0.45s var(--ease) 2.6s both;
+  }
+
+  .preloader.is-done {
+    opacity: 0;
+    visibility: hidden;
+    animation: none;
+  }
+
+  .preloader__inner {
+    display: grid;
+    gap: 18px;
+    justify-items: center;
+    animation: preloader-in 0.5s var(--ease) both;
+  }
+
+  .preloader__logo {
+    display: block;
+    width: 156px;
+    height: auto;
+  }
+
+  .preloader__bar {
+    position: relative;
+    width: 156px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .preloader__bar i {
+    position: absolute;
+    inset: 0;
+    border-radius: 2px;
+    background: var(--indigo);
+    transform-origin: left center;
+    animation: preloader-fill 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .preloader.is-done .preloader__bar i {
+    transform: scaleX(1);
+    animation: none;
+  }
+
+  @keyframes preloader-in {
+    from {
+      opacity: 0;
+      translate: 0 8px;
+    }
+  }
+
+  @keyframes preloader-fill {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(0.9);
+    }
+  }
+
+  @keyframes preloader-out {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+</style>
+
+<script>
+  const el = document.querySelector<HTMLElement>('[data-preloader]');
+  if (el) {
+    const shownAt = performance.now();
+    const minShow = 650;
+    const maxShow = 2200;
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      el.classList.add('is-done');
+      document.documentElement.classList.remove('is-loading');
+      document.dispatchEvent(new Event('preloader:done'));
+      setTimeout(() => el.remove(), 600);
+    };
+    const ready = () => {
+      const elapsed = performance.now() - shownAt;
+      setTimeout(finish, Math.max(0, minShow - elapsed));
+    };
+    document.documentElement.classList.add('is-loading');
+    if (document.readyState === 'complete') ready();
+    else window.addEventListener('load', ready, { once: true });
+    if ('fonts' in document) document.fonts.ready.then(ready).catch(() => {});
+    setTimeout(finish, maxShow);
+    // Back/forward cache restores the page with the overlay already gone.
+    window.addEventListener('pageshow', (e) => { if (e.persisted) finish(); });
+  }
+</script>

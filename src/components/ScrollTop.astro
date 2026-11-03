@@ -1,0 +1,87 @@
+---
+/**
+ * Floating "back to top" button. Appears once the page has been scrolled
+ * past the first screen and smooth-scrolls back to the top on click.
+ */
+---
+
+<button class="totop" type="button" aria-label="Back to top" data-totop>
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5" /><path d="m5 12 7-7 7 7" />
+  </svg>
+</button>
+
+<style>
+  .totop {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 60;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    opacity: 0;
+    translate: 0 12px;
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease), translate 0.3s var(--ease), background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .totop.is-shown {
+    opacity: 1;
+    translate: 0 0;
+    pointer-events: auto;
+  }
+
+  .totop:hover {
+    background: var(--indigo);
+    border-color: var(--indigo);
+    color: #fff;
+  }
+
+  .totop:focus-visible {
+    outline: 2px solid var(--indigo);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 720px) {
+    .totop {
+      right: 14px;
+      bottom: 14px;
+      width: 40px;
+      height: 40px;
+    }
+  }
+</style>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-totop]');
+  if (btn) {
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const y = window.scrollY || document.documentElement.scrollTop;
+      btn.classList.toggle('is-shown', y > window.innerHeight * 0.8);
+    };
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      setTimeout(update, 60);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const target = document.getElementById('main') || document.body;
+      target.focus?.({ preventScroll: true });
+    });
+  }
+</script>

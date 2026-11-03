@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Preloader from '../components/Preloader.astro';
+import ScrollTop from '../components/ScrollTop.astro';
 import { site } from '../data/site';
 
 interface Props {
@@ -132,12 +134,14 @@ const jsonLd = [
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
+    <Preloader />
     <a href="#main" class="skip-link">Skip to content</a>
     <Header />
     <main id="main">
       <slot />
     </main>
     <Footer />
+    <ScrollTop />
 
     <script>
       // Reveal-on-scroll and count-up.
@@ -171,7 +175,12 @@ const jsonLd = [
         return r.bottom > 0 && r.top < vh - margin;
       };
 
+      // While the preloader covers the page, hold the reveals back so they
+      // play once the page is actually visible.
+      let blocked = !!document.querySelector('[data-preloader]:not(.is-done)');
+
       const check = () => {
+        if (blocked) return;
         const vh = window.innerHeight || document.documentElement.clientHeight;
         for (const el of pending) {
           if (inView(el, vh * 0.06)) {
@@ -205,9 +214,14 @@ const jsonLd = [
       window.addEventListener('resize', onScroll);
       window.addEventListener('load', check);
       document.addEventListener('visibilitychange', check);
-      check();
-      setTimeout(check, 250);
-      setTimeout(check, 1000);
+      const start = () => {
+        blocked = false;
+        check();
+        setTimeout(check, 250);
+        setTimeout(check, 1000);
+      };
+      if (blocked) document.addEventListener('preloader:done', start, { once: true });
+      else start();
 
       if ('IntersectionObserver' in window) {
         const io = new IntersectionObserver(
