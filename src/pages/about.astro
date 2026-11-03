@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import HeroArt from '../components/HeroArt.astro';
 import Icon from '../components/Icon.astro';
 import MapMark from '../components/MapMark.astro';
 import { site, addressLines } from '../data/site';
@@ -43,16 +44,7 @@ const facts = [
     title="A technology company organised around products."
     lead="Insoftica Ltd was founded in London to build and operate software products and AI-powered tools, and to bring the same engineering to businesses that need platforms built properly."
   >
-    <div class="panel">
-      <p class="panel__title">At a glance</p>
-      <dl>
-        <div><dt>Legal name</dt><dd>{site.legalName}</dd></div>
-        <div><dt>Founded</dt><dd>{site.foundedYear}</dd></div>
-        <div><dt>Registered office</dt><dd>{site.address.city}, {site.address.postcode}</dd></div>
-        <div><dt>Focus</dt><dd>Software, AI, products</dd></div>
-        <div><dt>Markets</dt><dd>UK and international</dd></div>
-      </dl>
-    </div>
+    <HeroArt name="about" />
   </PageHero>
 
   <section class="section">

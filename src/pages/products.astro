@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import HeroArt from '../components/HeroArt.astro';
 import Icon from '../components/Icon.astro';
 import Illus from '../components/Illus.astro';
 import { products, productAreas, statusLabel } from '../data/products';
@@ -43,15 +44,7 @@ const standards = [
     title={products.length ? 'Products from Insoftica.' : 'The first products are in development.'}
     lead="This is where Insoftica products live. We only list a product once it can be described truthfully, and we mark clearly whether it is in development, in early access or available."
   >
-    <div class="panel">
-      <p class="panel__title">Portfolio status</p>
-      <dl>
-        <div><dt>Product areas</dt><dd>{productAreas.length} active</dd></div>
-        <div><dt>In development</dt><dd>{products.filter((p) => p.status === 'in-development').length || 'First product'}</dd></div>
-        <div><dt>Early access</dt><dd>{products.filter((p) => p.status === 'early-access').length || 'Opening soon'}</dd></div>
-        <div><dt>Available</dt><dd>{products.filter((p) => p.status === 'available').length || 'None yet'}</dd></div>
-      </dl>
-    </div>
+    <HeroArt name="products" />
   </PageHero>
 
   {

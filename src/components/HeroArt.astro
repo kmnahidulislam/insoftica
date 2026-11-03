@@ -1,0 +1,396 @@
+---
+/**
+ * Page-hero illustrations. One named scene per inner page, drawn as inline
+ * SVG so they stay crisp, pick up the brand palette and animate on reveal.
+ */
+interface Props {
+  name: 'technology' | 'about' | 'products' | 'solutions' | 'contact';
+  email?: string;
+}
+const { name, email = '' } = Astro.props;
+---
+
+<figure class:list={['art', `art--${name}`]} data-diagram aria-hidden="true">
+  {
+    name === 'technology' && (
+      <svg viewBox="0 0 560 400">
+        <g class="a-plate a-d1" transform="translate(70 230)">
+          <path class="a-iso a-iso--data" d="M0 40 L160 0 L320 40 L160 80 Z" />
+          <path class="a-iso-side" d="M0 40 L0 58 L160 98 L320 58 L320 40 L160 80 Z" />
+          <text class="a-iso-label" x="160" y="46">DATA · POSTGRES · OBJECT STORE</text>
+        </g>
+        <g class="a-plate a-d2" transform="translate(70 160)">
+          <path class="a-iso a-iso--svc" d="M0 40 L160 0 L320 40 L160 80 Z" />
+          <path class="a-iso-side" d="M0 40 L0 58 L160 98 L320 58 L320 40 L160 80 Z" />
+          <text class="a-iso-label" x="160" y="46">SERVICES · AI LAYER · QUEUES</text>
+        </g>
+        <g class="a-plate a-d3" transform="translate(70 90)">
+          <path class="a-iso a-iso--api" d="M0 40 L160 0 L320 40 L160 80 Z" />
+          <path class="a-iso-side" d="M0 40 L0 58 L160 98 L320 58 L320 40 L160 80 Z" />
+          <text class="a-iso-label a-iso-label--light" x="160" y="46">API GATEWAY · AUTH · RATE LIMITS</text>
+        </g>
+        <g class="a-plate a-d4" transform="translate(70 20)">
+          <path class="a-iso a-iso--edge" d="M0 40 L160 0 L320 40 L160 80 Z" />
+          <path class="a-iso-side" d="M0 40 L0 58 L160 98 L320 58 L320 40 L160 80 Z" />
+          <text class="a-iso-label" x="160" y="46">EDGE · CDN · WAF</text>
+        </g>
+        <line class="a-spine" x1="230" y1="20" x2="230" y2="330" />
+        <circle class="a-spine-dot" cx="230" r="4" />
+
+        <g class="a-chip a-d3" transform="translate(400 70)">
+          <rect width="140" height="44" rx="10" />
+          <text class="a-chip-k" x="14" y="18">LCP</text>
+          <text class="a-chip-v" x="14" y="35">under 2.0 s</text>
+        </g>
+        <g class="a-chip a-d4" transform="translate(410 150)">
+          <rect width="140" height="44" rx="10" />
+          <text class="a-chip-k" x="14" y="18">API P95</text>
+          <text class="a-chip-v" x="14" y="35">under 300 ms</text>
+        </g>
+        <g class="a-chip a-d5" transform="translate(400 230)">
+          <rect width="140" height="44" rx="10" />
+          <text class="a-chip-k" x="14" y="18">AVAILABILITY</text>
+          <text class="a-chip-v" x="14" y="35">99.9 % target</text>
+        </g>
+        <g class="a-chip a-chip--ok a-d6" transform="translate(410 310)">
+          <rect width="140" height="44" rx="10" />
+          <circle cx="18" cy="22" r="6" class="a-ok" />
+          <text class="a-chip-v" x="32" y="27">Backups tested</text>
+        </g>
+      </svg>
+    )
+  }
+
+  {
+    name === 'about' && (
+      <svg viewBox="0 0 560 400">
+        <g class="a-orbit">
+          <circle cx="280" cy="200" r="150" />
+          <circle cx="280" cy="200" r="100" />
+        </g>
+        <g class="a-ring">
+          <circle cx="280" cy="200" r="150" class="a-ring-track" />
+          <circle cx="280" cy="200" r="150" class="a-ring-dash" />
+        </g>
+        <g class="a-core a-d1">
+          <circle cx="280" cy="200" r="46" class="a-core-bg" />
+          <circle cx="280" cy="200" r="46" class="a-core-pulse" />
+          <text class="a-core-text" x="280" y="195">INSOFTICA</text>
+          <text class="a-core-sub" x="280" y="212">LTD · 2026</text>
+        </g>
+        <g class="a-node a-d2" transform="translate(280 50)">
+          <rect x="-70" y="-22" width="140" height="44" rx="22" />
+          <circle cx="-46" cy="0" r="10" class="a-node-ico" />
+          <path d="M-50 -3h8M-50 0h8M-50 3h8" class="a-node-glyph" />
+          <text x="-28" y="5">Own products</text>
+        </g>
+        <g class="a-node a-d3" transform="translate(410 275)">
+          <rect x="-70" y="-22" width="140" height="44" rx="22" />
+          <circle cx="-46" cy="0" r="10" class="a-node-ico" />
+          <path d="M-46 -4v8M-50 0h8" class="a-node-glyph" />
+          <text x="-28" y="5">AI-powered tools</text>
+        </g>
+        <g class="a-node a-d4" transform="translate(150 275)">
+          <rect x="-70" y="-22" width="140" height="44" rx="22" />
+          <circle cx="-46" cy="0" r="10" class="a-node-ico" />
+          <path d="M-50 -3h8v6h-8z" class="a-node-glyph" />
+          <text x="-28" y="5">Client platforms</text>
+        </g>
+        <g class="a-chip a-d5" transform="translate(20 20)">
+          <rect width="150" height="44" rx="10" />
+          <text class="a-chip-k" x="14" y="18">FOUNDED</text>
+          <text class="a-chip-v" x="14" y="35">2026, London</text>
+        </g>
+        <g class="a-chip a-d6" transform="translate(395 20)">
+          <rect width="145" height="44" rx="10" />
+          <text class="a-chip-k" x="14" y="18">MARKETS</text>
+          <text class="a-chip-v" x="14" y="35">International</text>
+        </g>
+        <g class="a-chip a-d6" transform="translate(205 346)">
+          <rect width="150" height="44" rx="10" />
+          <text class="a-chip-k" x="14" y="18">TEAM</text>
+          <text class="a-chip-v" x="14" y="35">Small and senior</text>
+        </g>
+      </svg>
+    )
+  }
+
+  {
+    name === 'products' && (
+      <svg viewBox="0 0 560 400">
+        <g class="a-card a-card--back a-d1" transform="translate(120 40)">
+          <rect width="320" height="200" rx="16" />
+          <rect x="20" y="20" width="110" height="22" rx="11" class="a-tag a-tag--ok" />
+          <text x="34" y="35" class="a-tag-text a-tag-text--light">AVAILABLE</text>
+        </g>
+        <g class="a-card a-card--mid a-d2" transform="translate(90 90)">
+          <rect width="320" height="200" rx="16" />
+          <rect x="20" y="20" width="120" height="22" rx="11" class="a-tag a-tag--indigo" />
+          <text x="34" y="35" class="a-tag-text a-tag-text--light">EARLY ACCESS</text>
+        </g>
+        <g class="a-card a-card--front a-d3" transform="translate(60 140)">
+          <rect width="320" height="220" rx="16" />
+          <rect x="20" y="20" width="130" height="22" rx="11" class="a-tag a-tag--amber" />
+          <text x="34" y="35" class="a-tag-text">IN DEVELOPMENT</text>
+          <rect x="20" y="62" width="180" height="12" rx="6" class="a-skel a-skel--strong" />
+          <rect x="20" y="84" width="240" height="8" rx="4" class="a-skel" />
+          <rect x="20" y="100" width="200" height="8" rx="4" class="a-skel" />
+          <rect x="20" y="136" width="280" height="10" rx="5" class="a-track" />
+          <rect x="20" y="136" width="280" height="10" rx="5" class="a-progress" />
+          <text x="20" y="168" class="a-chip-k">BUILD PROGRESS</text>
+          <text x="300" y="168" class="a-chip-k" text-anchor="end">WEEKLY RELEASES</text>
+          <g class="a-mini">
+            <rect x="20" y="184" width="60" height="20" rx="6" />
+            <rect x="88" y="184" width="60" height="20" rx="6" />
+            <rect x="156" y="184" width="60" height="20" rx="6" />
+          </g>
+        </g>
+        <g class="a-chip a-d4" transform="translate(400 300)">
+          <rect width="140" height="44" rx="10" />
+          <circle cx="18" cy="22" r="6" class="a-ok" />
+          <text class="a-chip-v" x="32" y="27">Honest status</text>
+        </g>
+        <g class="a-chip a-d5" transform="translate(410 240)">
+          <rect width="130" height="44" rx="10" />
+          <text class="a-chip-k" x="14" y="18">YOUR DATA</text>
+          <text class="a-chip-v" x="14" y="35">Exportable</text>
+        </g>
+      </svg>
+    )
+  }
+
+  {
+    name === 'solutions' && (
+      <svg viewBox="0 0 560 400">
+        <g class="a-window a-d1" transform="translate(40 40)">
+          <rect width="340" height="300" rx="16" class="a-window-bg" />
+          <rect width="340" height="40" rx="16" class="a-window-bar" />
+          <rect y="24" width="340" height="16" class="a-window-bar" />
+          <circle cx="22" cy="20" r="5" class="a-wdot" />
+          <circle cx="40" cy="20" r="5" class="a-wdot" />
+          <circle cx="58" cy="20" r="5" class="a-wdot" />
+          <rect x="24" y="64" width="90" height="212" rx="10" class="a-block a-b1" />
+          <rect x="128" y="64" width="188" height="88" rx="10" class="a-block a-block--accent a-b2" />
+          <rect x="128" y="166" width="88" height="110" rx="10" class="a-block a-b3" />
+          <rect x="228" y="166" width="88" height="110" rx="10" class="a-block a-b4" />
+          <g class="a-skel-set">
+            <rect x="36" y="80" width="60" height="8" rx="4" class="a-skel a-skel--strong" />
+            <rect x="36" y="100" width="44" height="6" rx="3" class="a-skel" />
+            <rect x="36" y="116" width="52" height="6" rx="3" class="a-skel" />
+            <rect x="36" y="132" width="40" height="6" rx="3" class="a-skel" />
+            <rect x="144" y="82" width="110" height="10" rx="5" class="a-skel a-skel--light" />
+            <rect x="144" y="104" width="150" height="6" rx="3" class="a-skel a-skel--light" />
+            <rect x="144" y="120" width="120" height="6" rx="3" class="a-skel a-skel--light" />
+          </g>
+          <polyline class="a-spark" points="144,250 162,236 180,242 198,220 216,228 234,206 252,214 270,196 288,204 306,186" />
+        </g>
+        <g class="a-check a-d3" transform="translate(330 120)">
+          <rect width="210" height="180" rx="14" />
+          <text class="a-chip-k" x="18" y="26">EVERY ENGAGEMENT</text>
+          <g transform="translate(18 44)">
+            <circle cx="10" cy="10" r="10" class="a-ok" />
+            <path d="M5.5 10.5l3 3 6-6" class="a-tick-s a-t1" />
+            <text x="30" y="14" class="a-check-text">Senior engineers</text>
+          </g>
+          <g transform="translate(18 76)">
+            <circle cx="10" cy="10" r="10" class="a-ok" />
+            <path d="M5.5 10.5l3 3 6-6" class="a-tick-s a-t2" />
+            <text x="30" y="14" class="a-check-text">Written proposal</text>
+          </g>
+          <g transform="translate(18 108)">
+            <circle cx="10" cy="10" r="10" class="a-ok" />
+            <path d="M5.5 10.5l3 3 6-6" class="a-tick-s a-t3" />
+            <text x="30" y="14" class="a-check-text">Weekly releases</text>
+          </g>
+          <g transform="translate(18 140)">
+            <circle cx="10" cy="10" r="10" class="a-ok" />
+            <path d="M5.5 10.5l3 3 6-6" class="a-tick-s a-t4" />
+            <text x="30" y="14" class="a-check-text">You own the code</text>
+          </g>
+        </g>
+        <g class="a-chip a-d5" transform="translate(380 40)">
+          <rect width="150" height="44" rx="10" />
+          <text class="a-chip-k" x="14" y="18">FIRST DEMO</text>
+          <text class="a-chip-v" x="14" y="35">Within weeks</text>
+        </g>
+      </svg>
+    )
+  }
+
+  {
+    name === 'contact' && (
+      <svg viewBox="0 0 560 400">
+        <g class="a-globe a-d1">
+          <circle cx="400" cy="140" r="90" class="a-globe-bg" />
+          <ellipse cx="400" cy="140" rx="40" ry="90" class="a-globe-line" />
+          <ellipse cx="400" cy="140" rx="90" ry="34" class="a-globe-line" />
+          <line x1="310" y1="140" x2="490" y2="140" class="a-globe-line" />
+          <line x1="400" y1="50" x2="400" y2="230" class="a-globe-line" />
+          <circle cx="400" cy="140" r="90" class="a-globe-rim" />
+          <circle cx="372" cy="118" r="5" class="a-pin" />
+          <circle cx="372" cy="118" r="5" class="a-pin-pulse" />
+        </g>
+        <path class="a-route" d="M100 300 C 180 300, 220 170, 372 118" />
+        <g class="a-mail a-d2" transform="translate(40 230)">
+          <rect width="300" height="130" rx="16" class="a-mail-bg" />
+          <rect x="22" y="24" width="48" height="48" rx="12" class="a-mail-ico" />
+          <path d="M34 42h24v18H34z" class="a-mail-glyph" />
+          <path d="M34 42l12 9 12-9" class="a-mail-glyph" />
+          <text x="86" y="40" class="a-chip-k">EMAIL US</text>
+          <text x="86" y="62" class="a-mail-addr">{email}</text>
+          <rect x="22" y="92" width="256" height="22" rx="11" class="a-reply" />
+          <text x="150" y="107" text-anchor="middle" class="a-reply-text">Replies within two working days</text>
+        </g>
+        <g class="a-bubble a-d3" transform="translate(60 60)">
+          <rect width="200" height="56" rx="16" />
+          <rect x="16" y="16" width="120" height="8" rx="4" class="a-skel a-skel--strong" />
+          <rect x="16" y="32" width="150" height="6" rx="3" class="a-skel" />
+        </g>
+        <g class="a-bubble a-bubble--accent a-d4" transform="translate(120 132)">
+          <rect width="170" height="48" rx="16" />
+          <rect x="16" y="14" width="100" height="8" rx="4" class="a-skel a-skel--light" />
+          <rect x="16" y="28" width="130" height="6" rx="3" class="a-skel a-skel--light" />
+        </g>
+        <g class="a-chip a-d5" transform="translate(380 290)">
+          <rect width="160" height="44" rx="10" />
+          <text class="a-chip-k" x="14" y="18">TIME ZONES</text>
+          <text class="a-chip-v" x="14" y="35">Any, by video</text>
+        </g>
+      </svg>
+    )
+  }
+</figure>
+
+<style>
+  .art {
+    --a-ink: var(--ink);
+    --a-accent: var(--indigo);
+    --a-line: var(--line-strong);
+    --a-soft: var(--line);
+    --a-surface: var(--surface);
+    --a-tint: var(--indigo-tint);
+    --a-ok: var(--signal);
+    --a-amber: var(--amber);
+    margin: 0;
+    width: 100%;
+    max-width: 560px;
+    margin-inline: auto;
+  }
+
+  .art svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    font-family: var(--font-sans);
+    overflow: visible;
+  }
+
+  /* Shared pieces */
+  .a-chip rect { fill: var(--a-surface); stroke: var(--a-line); stroke-width: 1.5; filter: drop-shadow(0 8px 16px rgba(14, 15, 42, 0.08)); }
+  .a-chip-k { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.1em; fill: var(--slate-light); }
+  .a-chip-v { font-size: 13px; font-weight: 600; fill: var(--a-ink); letter-spacing: -0.01em; }
+  .a-ok { fill: var(--a-ok); }
+  .a-skel { fill: var(--a-soft); }
+  .a-skel--strong { fill: var(--a-line); }
+  .a-skel--light { fill: rgba(255, 255, 255, 0.5); }
+
+  /* Reveal choreography */
+  .a-d1, .a-d2, .a-d3, .a-d4, .a-d5, .a-d6 {
+    opacity: 0;
+    translate: 0 14px;
+    transition: opacity 0.7s var(--ease), translate 0.7s var(--ease);
+  }
+  .a-d2 { transition-delay: 0.12s; }
+  .a-d3 { transition-delay: 0.24s; }
+  .a-d4 { transition-delay: 0.36s; }
+  .a-d5 { transition-delay: 0.48s; }
+  .a-d6 { transition-delay: 0.6s; }
+  .art.is-visible :is(.a-d1, .a-d2, .a-d3, .a-d4, .a-d5, .a-d6) { opacity: 1; translate: 0 0; }
+
+  /* Technology: stacked plates */
+  .a-iso { stroke: var(--a-line); stroke-width: 1.5; }
+  .a-iso--edge { fill: var(--a-surface); }
+  .a-iso--api { fill: var(--a-accent); stroke: var(--a-accent); }
+  .a-iso--svc { fill: var(--a-tint); }
+  .a-iso--data { fill: var(--a-surface); }
+  .a-iso-side { fill: rgba(14, 15, 42, 0.06); }
+  .a-iso-label { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.1em; fill: var(--a-ink); text-anchor: middle; }
+  .a-iso-label--light { fill: #fff; }
+  .a-spine { stroke: var(--a-accent); stroke-width: 1.5; stroke-dasharray: 3 5; opacity: 0.5; }
+  .a-spine-dot { fill: var(--a-accent); animation: a-travel 3.2s linear infinite; }
+  @keyframes a-travel { from { cy: 20px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } to { cy: 330px; opacity: 0; } }
+  .a-plate { filter: drop-shadow(0 10px 18px rgba(14, 15, 42, 0.08)); }
+  .art.is-visible .a-plate { animation: a-float 6s ease-in-out infinite; }
+  .art.is-visible .a-plate.a-d2 { animation-delay: -1.5s; }
+  .art.is-visible .a-plate.a-d3 { animation-delay: -3s; }
+  .art.is-visible .a-plate.a-d4 { animation-delay: -4.5s; }
+  @keyframes a-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -4px; } }
+
+  /* About: orbit */
+  .a-orbit circle { fill: none; stroke: var(--a-soft); stroke-width: 1.5; }
+  .a-ring-track { fill: none; stroke: none; }
+  .a-ring-dash { fill: none; stroke: var(--a-accent); stroke-width: 2; stroke-dasharray: 60 880; stroke-linecap: round; transform-origin: 280px 200px; animation: a-spin 14s linear infinite; }
+  @keyframes a-spin { to { transform: rotate(360deg); } }
+  .a-core-bg { fill: var(--a-accent); }
+  .a-core-pulse { fill: none; stroke: var(--a-accent); stroke-width: 1.5; transform-origin: 280px 200px; animation: a-pulse 2.8s ease-out infinite; }
+  @keyframes a-pulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.7); opacity: 0; } }
+  .a-core-text { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; fill: #fff; text-anchor: middle; font-weight: 600; }
+  .a-core-sub { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.1em; fill: rgba(255, 255, 255, 0.7); text-anchor: middle; }
+  .a-node rect { fill: var(--a-surface); stroke: var(--a-line); stroke-width: 1.5; filter: drop-shadow(0 8px 16px rgba(14, 15, 42, 0.08)); }
+  .a-node-ico { fill: var(--a-tint); }
+  .a-node-glyph { fill: none; stroke: var(--a-accent); stroke-width: 1.75; stroke-linecap: round; }
+  .a-node text { font-size: 12.5px; font-weight: 600; fill: var(--a-ink); letter-spacing: -0.01em; }
+
+  /* Products: card stack */
+  .a-card > rect:first-child { fill: var(--a-surface); stroke: var(--a-line); stroke-width: 1.5; filter: drop-shadow(0 16px 28px rgba(14, 15, 42, 0.1)); }
+  .a-card--back > rect:first-child { opacity: 0.6; }
+  .a-card--mid > rect:first-child { opacity: 0.85; }
+  .a-tag--amber { fill: rgba(224, 150, 42, 0.16); }
+  .a-tag--indigo { fill: var(--a-accent); }
+  .a-tag--ok { fill: var(--a-ok); }
+  .a-tag-text { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.1em; fill: #9a5f0c; font-weight: 600; }
+  .a-tag-text--light { fill: #fff; }
+  .a-track { fill: var(--a-soft); }
+  .a-progress { fill: var(--a-accent); transform-origin: 20px 0; transform: scaleX(0); transition: transform 1.6s var(--ease) 0.5s; }
+  .art.is-visible .a-progress { transform: scaleX(0.62); }
+  .a-mini rect { fill: var(--a-tint); }
+
+  /* Solutions: window being assembled */
+  .a-window-bg { fill: var(--a-surface); stroke: var(--a-line); stroke-width: 1.5; filter: drop-shadow(0 16px 28px rgba(14, 15, 42, 0.1)); }
+  .a-window-bar { fill: var(--canvas-2); }
+  .a-wdot { fill: var(--a-line); }
+  .a-block { fill: var(--canvas-2); stroke: var(--a-soft); stroke-width: 1.5; opacity: 0; transform: translateY(10px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+  .a-block--accent { fill: var(--a-accent); stroke: var(--a-accent); }
+  .a-b1 { transition-delay: 0.3s; } .a-b2 { transition-delay: 0.45s; } .a-b3 { transition-delay: 0.6s; } .a-b4 { transition-delay: 0.75s; }
+  .art.is-visible .a-block { opacity: 1; transform: translateY(0); }
+  .a-skel-set { opacity: 0; transition: opacity 0.6s ease 0.9s; }
+  .art.is-visible .a-skel-set { opacity: 1; }
+  .a-spark { fill: none; stroke: var(--a-accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 260; stroke-dashoffset: 260; transition: stroke-dashoffset 1.4s var(--ease) 1s; }
+  .art.is-visible .a-spark { stroke-dashoffset: 0; }
+  .a-check > rect { fill: var(--a-surface); stroke: var(--a-line); stroke-width: 1.5; filter: drop-shadow(0 16px 28px rgba(14, 15, 42, 0.12)); }
+  .a-check-text { font-size: 13px; font-weight: 600; fill: var(--a-ink); letter-spacing: -0.01em; }
+  .a-tick-s { fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 20; stroke-dashoffset: 20; transition: stroke-dashoffset 0.4s var(--ease); }
+  .a-t1 { transition-delay: 0.8s; } .a-t2 { transition-delay: 1s; } .a-t3 { transition-delay: 1.2s; } .a-t4 { transition-delay: 1.4s; }
+  .art.is-visible .a-tick-s { stroke-dashoffset: 0; }
+
+  /* Contact: globe and message */
+  .a-globe-bg { fill: var(--a-tint); }
+  .a-globe-line { fill: none; stroke: var(--a-accent); stroke-width: 1; opacity: 0.35; }
+  .a-globe-rim { fill: none; stroke: var(--a-accent); stroke-width: 1.5; opacity: 0.6; }
+  .a-pin { fill: var(--a-accent); }
+  .a-pin-pulse { fill: none; stroke: var(--a-accent); stroke-width: 1.5; transform-origin: 372px 118px; animation: a-pulse 2.4s ease-out infinite; }
+  .a-route { fill: none; stroke: var(--a-accent); stroke-width: 1.75; stroke-dasharray: 4 6; stroke-linecap: round; opacity: 0.7; animation: a-dash 1.2s linear infinite; }
+  @keyframes a-dash { to { stroke-dashoffset: -20; } }
+  .a-mail-bg { fill: var(--a-surface); stroke: var(--a-line); stroke-width: 1.5; filter: drop-shadow(0 16px 28px rgba(14, 15, 42, 0.1)); }
+  .a-mail-ico { fill: var(--a-accent); }
+  .a-mail-glyph { fill: none; stroke: #fff; stroke-width: 1.75; stroke-linejoin: round; }
+  .a-mail-addr { font-size: 15px; font-weight: 600; fill: var(--a-ink); letter-spacing: -0.01em; }
+  .a-reply { fill: rgba(15, 159, 122, 0.12); }
+  .a-reply-text { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.08em; fill: #0b7a5d; }
+  .a-bubble > rect:first-child { fill: var(--a-surface); stroke: var(--a-line); stroke-width: 1.5; filter: drop-shadow(0 10px 18px rgba(14, 15, 42, 0.08)); }
+  .a-bubble--accent > rect:first-child { fill: var(--a-accent); stroke: var(--a-accent); }
+
+  @media (max-width: 860px) {
+    .art { max-width: 480px; }
+  }
+</style>

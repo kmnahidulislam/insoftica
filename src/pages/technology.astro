@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import HeroArt from '../components/HeroArt.astro';
 import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
 import AiPipeline from '../components/AiPipeline.astro';
 import Icon from '../components/Icon.astro';
@@ -49,16 +50,7 @@ const ai = [
     title="Engineering principles that outlast any particular tool."
     lead="This page explains how we build, what we build with and how we approach AI. Tools change; the standards do not."
   >
-    <div class="panel">
-      <p class="panel__title">Targets we build to</p>
-      <dl>
-        <div><dt>Largest Contentful Paint</dt><dd>under 2.0 s</dd></div>
-        <div><dt>API latency, p95</dt><dd>under 300 ms</dd></div>
-        <div><dt>Availability target</dt><dd>99.9 %</dd></div>
-        <div><dt>Backup restore test</dt><dd>monthly</dd></div>
-        <div><dt>Security patch window</dt><dd>days, not weeks</dd></div>
-      </dl>
-    </div>
+    <HeroArt name="technology" />
   </PageHero>
 
   <section class="section">

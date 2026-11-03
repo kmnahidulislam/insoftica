@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import HeroArt from '../components/HeroArt.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
 import Illus from '../components/Illus.astro';
@@ -103,16 +104,7 @@ const fit = [
     title="The same engineering we use on our own products, applied to yours."
     lead="Insoftica is a product company first, and that is exactly why businesses work with us: the code, infrastructure and AI practices behind our products are the ones we bring to your project."
   >
-    <div class="panel">
-      <p class="panel__title">Every engagement includes</p>
-      <ul role="list">
-        <li><Icon name="check" size={16} /> Senior engineers from the first call to handover</li>
-        <li><Icon name="check" size={16} /> A written proposal with scope, timeline and cost</li>
-        <li><Icon name="check" size={16} /> Working software in the first weeks, then weekly releases</li>
-        <li><Icon name="check" size={16} /> Full ownership of code, infrastructure and documentation</li>
-        <li><Icon name="check" size={16} /> Data hosted in UK and EU regions by default</li>
-      </ul>
-    </div>
+    <HeroArt name="solutions" />
   </PageHero>
 
   <section class="section">

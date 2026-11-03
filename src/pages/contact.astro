@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import HeroArt from '../components/HeroArt.astro';
 import Icon from '../components/Icon.astro';
 import MapMark from '../components/MapMark.astro';
 import { site, addressLines } from '../data/site';
@@ -24,14 +25,7 @@ const next = [
     title="Tell us what you're working on."
     lead="Whether it is a project, a partnership or simply curiosity about what we are building, we read and answer every message, usually within two working days."
   >
-    <div class="panel">
-      <p class="panel__title">Direct</p>
-      <ul role="list">
-        <li><Icon name="mail" size={16} /><span><a href={`mailto:${site.email}`} class="panel__link">{site.email}</a><br /><span class="muted" style="font-size:0.85rem">Fastest way to reach us</span></span></li>
-        <li><Icon name="map-pin" size={16} /><span>{site.legalName}<br /><span class="muted" style="font-size:0.85rem">{addressLines.join(', ')}</span></span></li>
-        <li><Icon name="globe" size={16} /><span>UK and international<br /><span class="muted" style="font-size:0.85rem">Video and email, any time zone</span></span></li>
-      </ul>
-    </div>
+    <HeroArt name="contact" email={site.email} />
   </PageHero>
 
   <section class="section">
