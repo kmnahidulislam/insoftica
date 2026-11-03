@@ -1,9 +1,8 @@
 /**
  * Builds the email that a contact-form submission turns into: a plain-text
- * version and an HTML version in the website's own visual language (canvas
- * background, white cards with hairline borders, mono eyebrows, indigo
- * accents, pill button). Table-based with inline styles so it renders the
- * same in Gmail, Outlook, Apple Mail and Zoho.
+ * version and a simple HTML version. One column, every field labelled, the
+ * site's type and colours, nothing decorative. Table-based with inline
+ * styles so it renders the same in Gmail, Outlook, Apple Mail and Zoho.
  */
 import { site, addressLines } from '../data/site';
 
@@ -14,22 +13,20 @@ export interface ContactSubmission {
   topic?: string;
   message: string;
   receivedAt: Date;
+  /** Visitor IP as seen by the server, for abuse follow-up. */
+  ip?: string;
+  /** Browser user agent, trimmed. */
+  userAgent?: string;
 }
 
-/* Design tokens, mirrored from src/styles/global.css */
-const T = {
+const C = {
   canvas: '#fafaf8',
-  canvas2: '#f2f1ec',
   surface: '#ffffff',
   ink: '#0b0d1f',
   slate: '#5b5e73',
-  slateLight: '#8d8f9f',
+  muted: '#8d8f9f',
   line: '#e6e5df',
-  lineStrong: '#d9d8d0',
   indigo: '#4c4fd6',
-  indigoTint: '#eef0ff',
-  signal: '#0f9f7a',
-  signalTint: '#e6f6f0',
 };
 const SANS = "'Instrument Sans',-apple-system,'Segoe UI',Helvetica,Arial,sans-serif";
 const DISPLAY = "'Bricolage Grotesque','Instrument Sans',-apple-system,'Segoe UI',Helvetica,Arial,sans-serif";
@@ -41,61 +38,61 @@ const escape = (s: string) =>
 const nl2br = (s: string) => escape(s).replace(/\r?\n/g, '<br>');
 
 const formatDate = (d: Date) =>
-  d.toLocaleString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London' });
-
-const initials = (name: string) =>
-  name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0]!.toUpperCase())
-    .join('');
-
-/** Mono eyebrow with the site's square marker. */
-const eyebrow = (text: string, color = T.indigo) =>
-  `<span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:${color};vertical-align:middle;margin:-2px 8px 0 0"></span><span style="font:500 11px/1 ${MONO};letter-spacing:.12em;text-transform:uppercase;color:${color};vertical-align:middle">${text}</span>`;
-
-/** Small stat chip like the ones in the site's hero facts. */
-const chip = (k: string, v: string) => `
-  <td style="padding:0 8px 8px 0">
-    <table role="presentation" cellpadding="0" cellspacing="0" style="border:1px solid ${T.line};border-radius:12px;background:${T.surface}">
-      <tr>
-        <td style="padding:10px 14px">
-          <div style="font:500 10px/1.2 ${MONO};letter-spacing:.1em;text-transform:uppercase;color:${T.slateLight};padding-bottom:4px">${k}</div>
-          <div style="font:600 14px/1.3 ${SANS};letter-spacing:-.01em;color:${T.ink};white-space:nowrap">${v}</div>
-        </td>
-      </tr>
-    </table>
-  </td>`;
+  d.toLocaleString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London' }) +
+  ' (London time)';
 
 export function buildContactEmail(s: ContactSubmission) {
-  const topic = s.topic?.trim() || 'General enquiry';
+  const topic = s.topic?.trim() || 'Not specified';
   const company = s.company?.trim() || '';
   const when = formatDate(s.receivedAt);
-  const subject = `[Website] ${topic}: ${s.name}`;
-  const replyHref = `mailto:${encodeURIComponent(s.email)}?subject=${encodeURIComponent(`Re: your message to ${site.name}`)}`;
   const host = site.url.replace(/^https?:\/\//, '');
-  const preview = `${s.name}${company ? ` (${company})` : ''} wrote about "${topic}". ${s.message.slice(0, 90).replace(/\s+/g, ' ')}`;
+  const subject = `Website enquiry from ${s.name}${company ? `, ${company}` : ''} — ${topic}`;
+  const replyHref = `mailto:${encodeURIComponent(s.email)}?subject=${encodeURIComponent(`Re: your message to ${site.name}`)}`;
+
+  // Every field, in the order it should be read.
+  const fields: [string, string][] = [
+    ['Name', escape(s.name)],
+    ['Email', `<a href="mailto:${escape(s.email)}" style="color:${C.indigo};text-decoration:none">${escape(s.email)}</a>`],
+    ['Company', company ? escape(company) : `<span style="color:${C.muted}">Not given</span>`],
+    ['Topic', escape(topic)],
+    ['Received', escape(when)],
+    ['Sent from', `<a href="${site.url}/contact" style="color:${C.slate};text-decoration:none">${escape(host)}/contact</a>`],
+    ...(s.ip ? ([['IP address', escape(s.ip)]] as [string, string][]) : []),
+    ...(s.userAgent ? ([['Browser', escape(s.userAgent)]] as [string, string][]) : []),
+  ];
 
   const text = [
-    `NEW MESSAGE FROM THE ${site.name.toUpperCase()} WEBSITE`,
+    `New enquiry from the ${site.name} website`,
     '',
-    `Name:     ${s.name}`,
-    `Email:    ${s.email}`,
-    company ? `Company:  ${company}` : null,
-    `Topic:    ${topic}`,
-    `Received: ${when} (London)`,
+    `Name:       ${s.name}`,
+    `Email:      ${s.email}`,
+    `Company:    ${company || 'Not given'}`,
+    `Topic:      ${topic}`,
+    `Received:   ${when}`,
+    `Sent from:  ${host}/contact`,
+    s.ip ? `IP address: ${s.ip}` : null,
+    s.userAgent ? `Browser:    ${s.userAgent}` : null,
     '',
-    'MESSAGE',
-    '-------',
+    'Message',
+    '',
     s.message,
     '',
     `Reply to this email to answer ${s.name} directly.`,
-    `Sent by the contact form at ${host}/contact. Passed the form's spam checks.`,
+    '',
     `${site.legalName}, ${addressLines.join(', ')}`,
   ]
     .filter((l) => l !== null)
     .join('\n');
+
+  const rows = fields
+    .map(
+      ([k, v]) => `
+          <tr>
+            <td style="padding:9px 24px 9px 0;border-bottom:1px solid ${C.line};font:400 14px/1.5 ${SANS};color:${C.muted};white-space:nowrap;vertical-align:top;width:1%">${k}</td>
+            <td style="padding:9px 0;border-bottom:1px solid ${C.line};font:400 15px/1.5 ${SANS};color:${C.ink};vertical-align:top">${v}</td>
+          </tr>`
+    )
+    .join('');
 
   const html = `<!doctype html>
 <html lang="en">
@@ -106,124 +103,43 @@ export function buildContactEmail(s: ContactSubmission) {
 <meta name="supported-color-schemes" content="light">
 <title>${escape(subject)}</title>
 </head>
-<body style="margin:0;padding:0;background:${T.canvas};-webkit-font-smoothing:antialiased;word-break:break-word">
-<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent">${escape(preview)}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${T.canvas};background-image:radial-gradient(${T.lineStrong} 1px,transparent 1px);background-size:22px 22px">
+<body style="margin:0;padding:0;background:${C.canvas};-webkit-font-smoothing:antialiased;word-break:break-word">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent">${escape(s.message.slice(0, 120).replace(/\s+/g, ' '))}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.canvas}">
   <tr>
-    <td align="center" style="padding:36px 16px 40px">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:620px">
-
-        <!-- Header: wordmark + source -->
+    <td align="center" style="padding:40px 16px">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:${C.surface};border:1px solid ${C.line};border-radius:12px">
         <tr>
-          <td style="padding:0 2px 20px">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td style="vertical-align:middle">
-                  <a href="${site.url}" style="text-decoration:none">
-                    <img src="${site.url}/brand/insoftica-blue.png" width="134" height="24" alt="${escape(site.name)}" style="display:block;border:0;height:24px;width:auto;font:800 22px/1 ${DISPLAY};color:${T.indigo};letter-spacing:-.03em">
-                  </a>
-                </td>
-                <td align="right" style="vertical-align:middle;font:500 11px/1 ${MONO};letter-spacing:.1em;text-transform:uppercase;color:${T.slateLight}">
-                  Contact form &nbsp;&middot;&nbsp; ${escape(host)}
-                </td>
-              </tr>
+          <td style="padding:36px 40px 40px">
+
+            <a href="${site.url}" style="text-decoration:none">
+              <img src="${site.url}/brand/insoftica-blue.png" width="118" height="21" alt="${escape(site.name)}" style="display:block;border:0;height:21px;width:auto;font:800 20px/1 ${DISPLAY};color:${C.indigo}">
+            </a>
+
+            <h1 style="margin:28px 0 6px;font:700 22px/1.3 ${DISPLAY};letter-spacing:-.02em;color:${C.ink}">New enquiry from the website</h1>
+            <p style="margin:0 0 26px;font:400 15px/1.6 ${SANS};color:${C.slate}">Someone filled in the contact form at ${escape(host)}. Their details and message are below. Reply to this email and it goes to them.</p>
+
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid ${C.line}">${rows}
             </table>
+
+            <p style="margin:28px 0 10px;font:500 11px/1 ${MONO};letter-spacing:.1em;text-transform:uppercase;color:${C.muted}">Message</p>
+            <p style="margin:0;font:400 16px/1.65 ${SANS};color:${C.ink}">${nl2br(s.message)}</p>
+
+            <p style="margin:32px 0 0">
+              <a href="${replyHref}" style="display:inline-block;background:${C.indigo};color:#ffffff;text-decoration:none;border-radius:8px;padding:12px 18px;font:600 14px/1 ${SANS}">Reply to ${escape(s.name)}</a>
+            </p>
+
           </td>
         </tr>
+      </table>
 
-        <!-- Main card -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px">
         <tr>
-          <td style="background:${T.surface};border:1px solid ${T.line};border-radius:18px;box-shadow:0 10px 30px -18px rgba(11,13,31,.18)">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-
-              <!-- Card head -->
-              <tr>
-                <td style="padding:28px 30px 22px;border-bottom:1px solid ${T.line}">
-                  <div style="padding-bottom:12px">${eyebrow('New message')}</div>
-                  <table role="presentation" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="vertical-align:middle;padding-right:14px">
-                        <div style="width:46px;height:46px;border-radius:12px;background:${T.indigoTint};text-align:center;font:700 16px/46px ${DISPLAY};color:${T.indigo};letter-spacing:.02em">${escape(initials(s.name))}</div>
-                      </td>
-                      <td style="vertical-align:middle">
-                        <div style="font:800 24px/1.15 ${DISPLAY};letter-spacing:-.025em;color:${T.ink}">${escape(s.name)}</div>
-                        <div style="padding-top:4px;font:400 14px/1.4 ${SANS};color:${T.slate}">
-                          <a href="mailto:${escape(s.email)}" style="color:${T.indigo};text-decoration:none">${escape(s.email)}</a>${company ? ` &nbsp;&middot;&nbsp; ${escape(company)}` : ''}
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-
-              <!-- Chips -->
-              <tr>
-                <td style="padding:22px 30px 10px">
-                  <table role="presentation" cellpadding="0" cellspacing="0">
-                    <tr>
-                      ${chip('Topic', escape(topic))}
-                      ${chip('Received', escape(when))}
-                      ${chip('Checks', `<span style="color:${T.signal}">&#10003;</span>&nbsp;Passed`)}
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-
-              <!-- Message -->
-              <tr>
-                <td style="padding:12px 30px 28px">
-                  <div style="padding-bottom:12px">${eyebrow('Message', T.slateLight)}</div>
-                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="background:${T.canvas2};border-radius:14px;padding:20px 22px;font:400 16px/1.65 ${SANS};color:${T.ink}">
-                        ${nl2br(s.message)}
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-
-              <!-- Actions -->
-              <tr>
-                <td style="padding:0 30px 30px">
-                  <table role="presentation" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="padding-right:12px">
-                        <a href="${replyHref}" style="display:inline-block;background:${T.indigo};color:#ffffff;text-decoration:none;border-radius:999px;padding:13px 22px;font:600 14px/1 ${SANS};letter-spacing:-.005em">Reply to ${escape(s.name.split(/\s+/)[0] ?? s.name)} &nbsp;&rarr;</a>
-                      </td>
-                      <td style="font:400 13px/1.4 ${SANS};color:${T.slate}">or simply reply to this email</td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-
-            </table>
+          <td style="padding:20px 8px 0;font:400 12px/1.7 ${SANS};color:${C.muted}">
+            This message was sent to you by the contact form on ${escape(host)}. The form checks for spam before sending; if this still looks like spam, delete it.<br>
+            ${escape(site.legalName)}, ${addressLines.map(escape).join(', ')}
           </td>
         </tr>
-
-        <!-- Promise strip -->
-        <tr>
-          <td style="padding:14px 2px 0">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${T.signalTint};border-radius:12px">
-              <tr>
-                <td style="padding:12px 16px;font:500 13px/1.4 ${SANS};color:#0a6b52">
-                  The website promises a reply within two working days.
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <!-- Footer -->
-        <tr>
-          <td style="padding:22px 2px 0;font:400 12px/1.7 ${SANS};color:${T.slateLight}">
-            Sent by the contact form at <a href="${site.url}/contact" style="color:${T.slate}">${escape(host)}/contact</a>.
-            Reply-To is set to the sender, so a normal reply goes straight to them.<br>
-            ${escape(site.legalName)} &nbsp;&middot;&nbsp; ${addressLines.map(escape).join(', ')}
-          </td>
-        </tr>
-
       </table>
     </td>
   </tr>

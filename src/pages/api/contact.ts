@@ -81,7 +81,16 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return respond(request, false, 'The contact form is not configured yet.', 500);
   }
 
-  const mail = buildContactEmail({ name, email, company, topic, message, receivedAt: new Date() });
+  const mail = buildContactEmail({
+    name,
+    email,
+    company,
+    topic,
+    message,
+    receivedAt: new Date(),
+    ip: ip !== 'unknown' ? ip : undefined,
+    userAgent: (request.headers.get('user-agent') ?? '').slice(0, 160) || undefined,
+  });
 
   try {
     await WorkerMailer.send(
