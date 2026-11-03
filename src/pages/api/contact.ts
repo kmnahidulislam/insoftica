@@ -1,10 +1,12 @@
 /**
  * Contact form endpoint. Receives the form, checks it, and sends it on as an
- * email through SMTP. Credentials come from environment variables only; see
- * .env.example. Nothing here is ever rendered into the static pages.
+ * email through plain SMTP, so any provider works: change the SMTP_* values
+ * in the environment and nothing in the code changes. Credentials come from
+ * environment variables only (see .env.example) and are never rendered into
+ * the static pages. Runs on Cloudflare Workers via worker-mailer.
  */
 import type { APIRoute } from 'astro';
-import nodemailer from 'nodemailer';
+import { WorkerMailer } from 'worker-mailer';
 import { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CONTACT_TO, CONTACT_FROM } from 'astro:env/server';
 import { site } from '../../data/site';
 
@@ -81,13 +83,6 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return respond(request, false, 'The contact form is not configured yet.', 500);
   }
 
-  const transport = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    auth: { user, pass },
-  });
-
   const lines = [
     `Name: ${name}`,
     `Email: ${email}`,
@@ -98,14 +93,27 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   ].filter((l) => l !== '');
 
   try {
-    await transport.sendMail({
-      from: `"${site.name} website" <${from}>`,
-      to,
-      replyTo: `"${name.replace(/"/g, '')}" <${email}>`,
-      subject: `[Website] ${topic || 'Message'} from ${name}`,
-      text: lines.join('\n'),
-      html: `<p>${lines.map(escapeHtml).join('<br>')}</p>`.replace('<br><br>', '</p><p style="white-space:pre-wrap">'),
-    });
+    await WorkerMailer.send(
+      {
+        host,
+        port,
+        // 465 is implicit TLS; 587 and 2525 start plain and upgrade with STARTTLS.
+        secure: port === 465,
+        startTls: port !== 465,
+        credentials: { username: user, password: pass },
+        authType: ['plain', 'login'],
+        socketTimeoutMs: 15000,
+        responseTimeoutMs: 15000,
+      },
+      {
+        from: { name: `${site.name} website`, email: from },
+        to: { email: to },
+        reply: { name: name.replace(/"/g, ''), email },
+        subject: `[Website] ${topic || 'Message'} from ${name}`,
+        text: lines.join('\n'),
+        html: `<p>${lines.map(escapeHtml).join('<br>')}</p>`.replace('<br><br>', '</p><p style="white-space:pre-wrap">'),
+      }
+    );
   } catch (err) {
     console.error('[contact] send failed:', err instanceof Error ? err.message : err);
     return respond(request, false, 'Sending failed. Please email us directly.', 502);

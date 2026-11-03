@@ -1,0 +1,10 @@
+{
+  // Cloudflare Workers configuration. The Astro Cloudflare adapter fills in
+  // the entrypoint and static-asset settings at build time; the generated
+  // file to deploy is dist/server/wrangler.json.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "insoftica",
+  "compatibility_date": "2026-10-01",
+  // nodejs_compat is required by the SMTP client (TCP sockets, Buffer).
+  "compatibility_flags": ["nodejs_compat"]
+}

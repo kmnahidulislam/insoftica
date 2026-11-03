@@ -48,21 +48,21 @@ The Products page and the home page product section update automatically. For a 
 
 ## Contact form
 
-The form posts to `site.formEndpoint` (in `src/data/site.ts`). Set it to a Formspree or similar endpoint to receive messages by email without a backend. While it is empty, the form opens the visitor's email app with the message pre-filled and addressed to `site.email`.
+The form posts to `/api/contact` (set in `site.formEndpoint` in `src/data/site.ts`), a server endpoint in `src/pages/api/contact.ts` that emails the message through SMTP. See the deployment section for the environment variables it needs. If `formEndpoint` is emptied, the form falls back to opening the visitor's email app with the message pre-filled.
 
 ## Deployment
 
-`npm run build` prerenders every page to static HTML in `dist/client/` and produces a small Node server in `dist/server/` that serves those pages and handles the contact form (`POST /api/contact`). Run it with `npm start`; it listens on `PORT` (default 4321).
+The site is deployed as a Cloudflare Worker with static assets. `npm run build` prerenders every page to static HTML in `dist/` and produces a tiny Worker (`dist/server/`) that serves those files and handles the contact form (`POST /api/contact`). Deploy with `npm run deploy`, or let Cloudflare build from the repository: Build command `npm run build`, Deploy command `npm run deploy`. No GitHub Actions workflow is used.
 
-On Render: create a **Web Service** from this repository with Build Command `npm install; npm run build` and Start Command `npm start`. No GitHub Actions workflow is used.
+Moving to another host later only means swapping the Astro adapter in `astro.config.mjs` and the SMTP client in `src/pages/api/contact.ts`; the pages and the environment variables stay the same.
 
 ### Contact form email
 
-The form sends through SMTP. Set these environment variables on the host (and in a local `.env`, which is git-ignored, for development). See `.env.example`.
+The form sends through plain SMTP, so any provider works (Mailgun, Postmark, SES, Zoho, ...). Set these environment variables on the host (Cloudflare: Settings, Variables and secrets, type **Secret**) and in a local `.env`, which is git-ignored, for development. See `.env.example`. Changing provider means changing these values only.
 
 | Variable | Meaning |
 | --- | --- |
-| `SMTP_HOST`, `SMTP_PORT` | Mail server, e.g. `smtp.mailgun.org` and `587` |
+| `SMTP_HOST`, `SMTP_PORT` | Mail server and port. Use `587` (STARTTLS) or `465` (TLS); Cloudflare blocks port 25 |
 | `SMTP_USER`, `SMTP_PASS` | SMTP login |
 | `CONTACT_TO` | Inbox that receives messages (defaults to the site email) |
 | `CONTACT_FROM` | Sender address; must be one the SMTP account may send as |
