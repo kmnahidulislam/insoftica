@@ -26,7 +26,7 @@ src/
 public/
   brand/              logo files
   favicon/            favicons
-  CNAME               custom domain for GitHub Pages
+  CNAME               custom domain (www.insoftica.com)
 docs/brand-strategy.md  positioning, messaging and visual identity decisions
 ```
 
@@ -52,12 +52,4 @@ The form posts to `site.formEndpoint` (in `src/data/site.ts`). Set it to a Forms
 
 ## Deployment
 
-Every push to `main` runs `.github/workflows/deploy.yml`, which builds the site and publishes it to GitHub Pages.
-
-One-time setup in the GitHub repository:
-
-1. **Settings → Pages → Build and deployment → Source:** choose **GitHub Actions**.
-2. **Settings → Pages → Custom domain:** enter `www.insoftica.com` and tick **Enforce HTTPS** once DNS has propagated.
-3. At your DNS provider, add:
-   - `CNAME` record: `www` → `kmnahidulislam.github.io`
-   - For the bare domain, four `A` records for `@` pointing to `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (GitHub redirects the bare domain to `www`).
+`npm run build` writes a fully static site to `dist/`. Upload that folder to any static host (Cloudflare Pages, Netlify, Vercel, or a plain web server) and point `www.insoftica.com` at it. No GitHub Actions workflow is used.

@@ -220,9 +220,4 @@ const { name, class: className = '' } = Astro.props;
     --i-tint: rgba(157, 161, 255, 0.18);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .i-chart, .i-tick { stroke-dashoffset: 0; transition: none; }
-    .i-chart-fill { opacity: 0.12; transition: none; }
-    .i-pulse, .i-dot-accent { animation: none; }
-  }
 </style>
