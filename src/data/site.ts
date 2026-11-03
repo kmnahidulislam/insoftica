@@ -4,7 +4,7 @@ export const site = {
   url: 'https://www.insoftica.com',
   tagline: 'Software worth building.',
   description:
-    'Insoftica is a London-based technology company building its own software products and AI-powered tools, and engineering software platforms for businesses that need them built properly.',
+    'Insoftica is a technology company building its own software products and AI-powered tools, and engineering software platforms for businesses that need them built properly.',
   email: 'support@insoftica.com',
   address: {
     line1: '128 City Road',
