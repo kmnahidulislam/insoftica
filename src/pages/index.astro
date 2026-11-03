@@ -85,16 +85,16 @@ const capabilities = [
 
 const readiness = [
   { illus: 'integrations', title: 'Integrates with what you run', text: 'REST and webhook integrations with the systems you already use. Data moves on a schedule or in real time, and every transfer is logged.' },
-  { illus: 'security', title: 'Secure by default', text: 'Encryption in transit and at rest, least-privilege access, UK and EU data regions, dependency scanning on every release.' },
+  { illus: 'security', title: 'Secure by default', text: 'Encryption in transit and at rest, least-privilege access, regional data hosting, dependency scanning on every release.' },
   { illus: 'support', title: 'Supported by the people who built it', text: 'Direct access to the engineers. Documentation written as the product is built, not after. Incident runbooks ready before launch.' },
 ] as const;
 
 const faq: [string, string][] = [
   ['Does Insoftica have products I can use today?', 'Not yet. The first products are in development and are listed on the Products page with their status. We will only describe a product as available when you can actually sign up for it.'],
-  ['Where is data hosted?', 'By default in UK and EU cloud regions. For client projects we host where your data protection obligations require, and we document it.'],
+  ['Where is data hosted?', 'In the cloud region that fits your data protection obligations. We agree it with you at the start and document it.'],
   ['Who owns the code you write for us?', 'You do. Source code, infrastructure definitions and documentation are handed over in full. We ask only to keep generic tooling we built before your project.'],
   ['How do you price work?', 'Product builds are priced per phase with a written scope. Team extension is a monthly rate. Advisory work is a fixed fee. Every engagement starts with a written proposal.'],
-  ['Do you work with companies outside the UK?', 'Yes. We are registered in London and work with businesses internationally. Most collaboration happens over video and shared tooling.'],
+  ['Do you work with companies in other countries?', 'Yes. We work with businesses internationally. Most collaboration happens over video and shared tooling, in whatever time zone suits you.'],
 ];
 ---
 
@@ -110,7 +110,7 @@ const faq: [string, string][] = [
         </h1>
         <p class="lead reveal" style="--reveal-delay:120ms">
           Insoftica builds its own software products and AI-powered tools, and engineers platforms for
-          businesses that need them built properly. Based in London, working internationally.
+          businesses that need them built properly.
         </p>
         <div class="btn-row reveal" style="--reveal-delay:180ms">
           <a href="/contact" class="btn btn--primary">
@@ -151,9 +151,9 @@ const faq: [string, string][] = [
           how we build it, and how to reach us.
         </p>
         <dl class="facts">
-          <div><dt>Founded</dt><dd>{site.foundedYear}, London</dd></div>
+          <div><dt>Founded</dt><dd>{site.foundedYear}</dd></div>
           <div><dt>Focus</dt><dd>Software, AI, digital products</dd></div>
-          <div><dt>Markets</dt><dd>UK and international</dd></div>
+          <div><dt>Markets</dt><dd>International</dd></div>
         </dl>
       </div>
     </div>
@@ -260,7 +260,7 @@ const faq: [string, string][] = [
   </section>
 
   <!-- Engineering band with architecture -->
-  <section class="section on-dark dots eng" id="engineering">
+  <section class="section dots eng" id="engineering">
     <div class="container">
       <div class="eng__head">
         <div class="section-head reveal">
@@ -277,13 +277,13 @@ const faq: [string, string][] = [
         </a>
       </div>
       <div class="eng__diagram">
-        <ArchitectureDiagram tone="dark" />
+        <ArchitectureDiagram />
       </div>
     </div>
   </section>
 
   <!-- AI pipeline -->
-  <section class="section" id="ai">
+  <section class="section section--alt" id="ai">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow reveal">Applied AI</p>
@@ -674,9 +674,10 @@ const faq: [string, string][] = [
   .eng__diagram {
     margin-top: 8px;
     padding: clamp(16px, 3vw, 32px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid var(--line);
     border-radius: var(--radius-lg);
-    background: rgba(255, 255, 255, 0.02);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
   }
 
   /* Models */
